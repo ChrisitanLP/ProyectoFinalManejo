@@ -1,7 +1,9 @@
 <?php
+
     session_start();
     if(isset($_SESSION['u']))
-        header("Location: index.html");
+        header("Location: index.php");
+        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,25 +17,6 @@
     <link rel="stylesheet" type="text/css" href="CSS/styleLogin.css">
 
     <script src="JS/JqueryLib.js"></script>
-    <script>
-        $(document).ready(function(){
-            $("#ingresar").click(function(){
-                var usuario = $("#usuario").val();
-                var clave = $("#clave").val();
-                
-                $.post("Conexion/validar.php",{
-                    u: usuario,
-                    c: clave
-                },
-                function(data, status){
-                    if(data==1){
-                        location.href = 'index.html';
-                    }
-                });
-            });
-        });
-    </script>
-
 </head>
 <body>
     <div id="login-bg" class="container-fluid">

@@ -19,7 +19,7 @@ body {
 	padding: 0;
 	margin-left: 0;
 	height: 100%;
-	background-color: #e7a935;
+	background-color: #bd0808;
 	display: inline-block;
 	overflow: hidden;
 }
@@ -29,7 +29,7 @@ body {
 }
 
 .bg-img {
-	background-image: url(../Recursos/3GSOYZ6O5BH5NCTESTCBHG66OE.jpg);
+	background-image: url(../img/facultad.png);
 	background-size: cover;
 }
 
@@ -46,6 +46,7 @@ body {
 	background-color: #fff;
 	padding: 15px;
 	padding-top: 30px;
+	border-radius: 20px;
 }
 
 .login h1 {
@@ -67,7 +68,7 @@ body {
 	letter-spacing: 2px;
 	font-size: 20px;
 	padding: 14px;
-	background-color: #b84e07;
+	background-color: #b12306;
 }
 
 .form-group input {
@@ -107,7 +108,7 @@ body {
 }
 
 .forgot-password a {
-	color: #b84e07;
+	color: #b12306;
 	opacity: 0.6;
 }
 
@@ -156,11 +157,11 @@ body {
 }
 
 input:checked + .slider {
-  background-color: #b84e07;
+  background-color: #b12306;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #b84e07;
+  box-shadow: 0 0 1px #b12306;
 }
 
 input:checked + .slider:before {
