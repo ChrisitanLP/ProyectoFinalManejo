@@ -2,7 +2,7 @@
  if(isset($_SESSION)){//verifica si existe una variable de sesion
 
      if ($_SESSION['u'] == '') {
-         header("location:login.php");
+         header("location: login.php");
      }
         
     }else{
@@ -11,9 +11,9 @@
      if ($_SESSION['u'] != '') {
          echo $_SESSION['u'];
      }else{
-         header("location:login.php");
+         header("location: login.php");
      }
-	}    
+	}   
 ?>
 <!DOCTYPE html>
 <html lang="en">

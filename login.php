@@ -1,9 +1,7 @@
 <?php
-
     session_start();
     if(isset($_SESSION['u']))
-        header("Location: index.php");
-        
+        header("Location: index.php");    
 ?>
 <!DOCTYPE html>
 <html lang="en">
