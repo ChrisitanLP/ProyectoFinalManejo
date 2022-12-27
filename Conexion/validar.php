@@ -13,7 +13,7 @@
     
     if(isset($_POST['u'])){
         $con = conectar();
-        $query = "SELECT COUNT(*)cantidad FROM usuarios WHERE nom_usuario = ? AND passwordd = ? ";
+        $query = "SELECT COUNT(*)cantidad FROM login WHERE USU_LOG = ? AND PAS_LOG = ? ";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute(array($_POST['u'],$_POST['c']));
         $r = $sentencia -> fetch();
