@@ -15,6 +15,28 @@
     <link rel="stylesheet" type="text/css" href="CSS/styleLogin.css">
 
     <script src="JS/JqueryLib.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#ingresar").click(function(){
+                var usuario= $("#usuario").val();
+                var clave= $("#clave").val();
+
+                $.post("Conexion/validar.php",
+                {
+                    u: usuario,
+                    c: clave
+                },
+            
+                function(data, status){
+                    alert("valor:"+data+" Estado:"+status);
+                    if(data==1){
+                        location.href = 'index.php';
+                    }
+                });
+            });
+        });
+    </script>
+	
 </head>
 <body>
     <div id="login-bg" class="container-fluid">
