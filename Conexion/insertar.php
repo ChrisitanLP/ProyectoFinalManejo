@@ -88,8 +88,10 @@
         $lastInsertIdC = $con->lastInsertId();
         
         if($lastInsertIdC>0){
-        echo "<div class='content alert alert-primary' > Gracias .. Nombre CURSO es : $nombreC  </div>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/cursos.php'>";
+            echo "<div class='content alert alert-primary' > Gracias .. Nombre CURSO es : $nombreC  </div>";
         }else{
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/cursos.php'>";
             echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             print_r($consultaC->errorInfo()); 
         }
@@ -108,8 +110,10 @@
         $lastInsertIdA = $con->lastInsertId();
         
         if($lastInsertIdA>0){
-        echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreA  </div>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/asignaturas.php'>";
+            echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreA  </div>";
         }else{
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/asignaturas.php'>";
             echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             print_r($consultaA->errorInfo()); 
         }

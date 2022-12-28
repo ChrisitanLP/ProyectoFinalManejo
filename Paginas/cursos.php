@@ -282,79 +282,27 @@
                                         <div class="tab-pane fade" id="list">
                                             <div class="table-responsive">
                                                 <table class="table table-hover text-center">
-                                                    <thead>
+                                                <thead>
                                                         <tr>
-                                                            <th class="text-center">#</th>
-                                                            <th class="text-center">Name</th>
-                                                            <th class="text-center">Last Name</th>
-                                                            <th class="text-center">Address</th>
-                                                            <th class="text-center">Email</th>
-                                                            <th class="text-center">Phone</th>
-                                                            <th class="text-center">Birthday</th>
-                                                            <th class="text-center">Gender</th>
-                                                            <th class="text-center">Type</th>
-                                                            <th class="text-center">Section</th>
-                                                            <th class="text-center">Update</th>
-                                                            <th class="text-center">Delete</th>
+                                                            <th class="text-center">Codigo</th>
+                                                            <th class="text-center">Nombre</th>
+                                                            <th class="text-center">Modificar</th>
+                                                            <th class="text-center">Eliminar</th>
                                                         </tr>
                                                     </thead>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th class="text-center">Codigo</th>
+                                                            <th class="text-center">Nombre</th>
+                                                            <th class="text-center">Modificar</th>
+                                                            <th class="text-center">Eliminar</th>
+                                                        </tr>
+                                                    </tfoot>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Carlos</td>
-                                                            <td>Alfaro</td>
-                                                            <td>El Salvador</td>
-                                                            <td>carlos@gmail.com</td>
-                                                            <td>+50312345678</td>
-                                                            <td>07/03/1997</td>
-                                                            <td>Male</td>
-                                                            <td>Old</td>
-                                                            <td>Section</td>
-                                                            <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                                                            <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>2</td>
-                                                            <td>Alicia</td>
-                                                            <td>Melendez</td>
-                                                            <td>El Salvador</td>
-                                                            <td>alicia@gmail.com</td>
-                                                            <td>+50312345678</td>
-                                                            <td>07/07/1990</td>
-                                                            <td>Female</td>
-                                                            <td>New</td>
-                                                            <td>Section</td>
-                                                            <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                                                            <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>3</td>
-                                                            <td>Sarai</td>
-                                                            <td>Mercado</td>
-                                                            <td>El Salvador</td>
-                                                            <td>sarai@gmail.com</td>
-                                                            <td>+50312345678</td>
-                                                            <td>09/09/1991</td>
-                                                            <td>Female</td>
-                                                            <td>Old</td>
-                                                            <td>Section</td>
-                                                            <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                                                            <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>4</td>
-                                                            <td>Alba</td>
-                                                            <td>Bonilla</td>
-                                                            <td>El Salvador</td>
-                                                            <td>alba@gmail.com</td>
-                                                            <td>+50312345678</td>
-                                                            <td>01/10/1993</td>
-                                                            <td>Female</td>
-                                                            <td>New</td>
-                                                            <td>Section</td>
-                                                            <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                                                            <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
-                                                        </tr>
+                                                        <?php
+                                                            include_once("../Conexion/listar.php");
+                                                            echo listarCursos();
+                                                        ?>
                                                     </tbody>
                                                 </table>
                                             </div>
