@@ -90,7 +90,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes personalizados:</h6>
                         <a class="collapse-item" href="cursos.php">Cursos</a>
-                        <a class="collapse-item" href="asignaturas.php">Asignatura</a>
+                        <a class="collapse-item" href="asignaturas.php">Asignaturas</a>
 						<a class="collapse-item" href="asignacion.php">Asignación de Docentes</a>
                     </div>
                 </div>
