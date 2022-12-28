@@ -261,38 +261,38 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                                        <form action="">
+                                                        <form action="../Conexion/insertar.php" method="POST">
                                                             <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Estudiante</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Cedula: </label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="cedulaU">
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Nombre: </label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="nombreU">
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Apellido: </label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="apellidoU">
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Dirección</label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="direccionU">
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Correo Institucional: </label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="correoU">
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Telefono: </label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="telefonoU">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Fecha Nacimiento: </label>
-                                                                <input class="form-control" type="date">
+                                                                <input class="form-control" type="date" name="fechaU">
                                                             </div>
                                                             <p class="text-center">
-                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarU"><i class="zmdi zmdi-floppy"></i> Guardar</button>
                                                             </p>
                                                         </form>
                                                     </div>

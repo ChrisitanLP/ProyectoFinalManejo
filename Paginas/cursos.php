@@ -261,18 +261,18 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                                        <form action="">
+                                                        <form action="../Conexion/insertar.php" method="POST">
                                                             <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Curso</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Codigo: </label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="codigoC">
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Nombre: </label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="nombreC">
                                                             </div>
                                                             <p class="text-center">
-                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarC"><i class="zmdi zmdi-floppy"></i> Guardar</button>
                                                             </p>
                                                         </form>
                                                     </div>

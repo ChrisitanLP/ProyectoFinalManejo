@@ -261,26 +261,26 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                                        <form action="">
+                                                        <form action="../Conexion/insertar.php" method="POST">
                                                             <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información de la Asignatura</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Codigo: </label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="codigoA">
                                                             </div>
                                                             <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Nombre: </label>
-                                                                <input class="form-control" type="text">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;" >Nombre: </label>
+                                                                <input class="form-control" type="text" name="nombreA">
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Total Horas Semanales: </label>
-                                                                <input class="form-control" type="text">
+                                                                <input class="form-control" type="text" name="horasA">
                                                             </div>
                                                             <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Carrera: </label>
-                                                                <input class="form-control" type="text">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Curso: </label>
+                                                                <input class="form-control" type="text" name="cursoA">
                                                             </div>
                                                             <p class="text-center">
-                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarA"><i class="zmdi zmdi-floppy"></i> Guardar</button>
                                                             </p>
                                                         </form>
                                                     </div>
