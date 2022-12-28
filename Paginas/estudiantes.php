@@ -9,6 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="../CSS/stylePaginas.css">
+    <link rel="stylesheet" type="text/css" href="../CSS/main.css">
 
     <title>Usuarios</title>
 
@@ -39,9 +40,14 @@
                 });
             });
         });
-
     </script>
-
+    <script src="../JS/jquery-3.1.1.min.js"></script>
+	<script src="../JS/sweetalert2.min.js"></script>
+	<script src="../JS/bootstrap.min.js"></script>
+	<script src="../JS/material.min.js"></script>
+	<script src="../JS/ripples.min.js"></script>
+	<script src="../JS/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="../JS/main.js"></script>
 </head>
 
 <body id="page-top">
@@ -88,7 +94,7 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Componentes personalizados:</h6>
+                        <h6 class="collapse-header">Componentes:</h6>
                         <a class="collapse-item" href="cursos.php">Cursos</a>
                         <a class="collapse-item" href="asignaturas.php">Asignatura</a>
 						<a class="collapse-item" href="asignacion.php">Asignación de Docentes</a>
@@ -106,7 +112,7 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Componentes utiles: </h6>
+                        <h6 class="collapse-header">Componentes: </h6>
                         <a class="collapse-item" href="docentes.php">Docentes</a>
                         <a class="collapse-item" href="estudiantes.php">Estudiantes</a>
                         <a class="collapse-item" href="usuarios.php">Usuarios</a>
@@ -137,16 +143,11 @@
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append" >
-                                <button class="btn btn-primary" type="button" id="btnbuscar">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
+                                <h3 style="color: #000;">Estudiantes</h3>
                             </div>
                         </div>
                     </form>
-
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
@@ -245,7 +246,145 @@
 
                 </nav>
                 <!-- End of Topbar -->
-
+                <div class="container-fluid">
+                    <section>
+                        <div class="page-header" style="margin-top: -15px;">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <ul class="nav nav-tabs" style="margin-bottom: 15px; background: rgb(180, 39, 39);">
+                                        <li class="active" style="background: red;"><a href="#new" data-toggle="tab">Ingresar</a></li>
+                                        <li><a href="#list" data-toggle="tab">Modificar</a></li>
+                                    </ul>
+                                    <div id="myTabContent" class="tab-content">
+                                        <div class="tab-pane fade active in" id="new">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-md-10 col-md-offset-1">
+                                                        <form action="">
+                                                            <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Estudiante</fieldset>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Cedula: </label>
+                                                                <input class="form-control" type="text">
+                                                            </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Nombre: </label>
+                                                                <input class="form-control" type="text">
+                                                            </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Apellido: </label>
+                                                                <input class="form-control" type="text">
+                                                            </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Dirección</label>
+                                                                <input class="form-control" type="text">
+                                                            </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Correo Institucional: </label>
+                                                                <input class="form-control" type="text">
+                                                            </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Telefono: </label>
+                                                                <input class="form-control" type="text">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Fecha Nacimiento: </label>
+                                                                <input class="form-control" type="date">
+                                                            </div>
+                                                            <p class="text-center">
+                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+                                                            </p>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="list">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">#</th>
+                                                            <th class="text-center">Name</th>
+                                                            <th class="text-center">Last Name</th>
+                                                            <th class="text-center">Address</th>
+                                                            <th class="text-center">Email</th>
+                                                            <th class="text-center">Phone</th>
+                                                            <th class="text-center">Birthday</th>
+                                                            <th class="text-center">Gender</th>
+                                                            <th class="text-center">Type</th>
+                                                            <th class="text-center">Section</th>
+                                                            <th class="text-center">Update</th>
+                                                            <th class="text-center">Delete</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Carlos</td>
+                                                            <td>Alfaro</td>
+                                                            <td>El Salvador</td>
+                                                            <td>carlos@gmail.com</td>
+                                                            <td>+50312345678</td>
+                                                            <td>07/03/1997</td>
+                                                            <td>Male</td>
+                                                            <td>Old</td>
+                                                            <td>Section</td>
+                                                            <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
+                                                            <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2</td>
+                                                            <td>Alicia</td>
+                                                            <td>Melendez</td>
+                                                            <td>El Salvador</td>
+                                                            <td>alicia@gmail.com</td>
+                                                            <td>+50312345678</td>
+                                                            <td>07/07/1990</td>
+                                                            <td>Female</td>
+                                                            <td>New</td>
+                                                            <td>Section</td>
+                                                            <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
+                                                            <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>3</td>
+                                                            <td>Sarai</td>
+                                                            <td>Mercado</td>
+                                                            <td>El Salvador</td>
+                                                            <td>sarai@gmail.com</td>
+                                                            <td>+50312345678</td>
+                                                            <td>09/09/1991</td>
+                                                            <td>Female</td>
+                                                            <td>Old</td>
+                                                            <td>Section</td>
+                                                            <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
+                                                            <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>4</td>
+                                                            <td>Alba</td>
+                                                            <td>Bonilla</td>
+                                                            <td>El Salvador</td>
+                                                            <td>alba@gmail.com</td>
+                                                            <td>+50312345678</td>
+                                                            <td>01/10/1993</td>
+                                                            <td>Female</td>
+                                                            <td>New</td>
+                                                            <td>Section</td>
+                                                            <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
+                                                            <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+            </div>
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
