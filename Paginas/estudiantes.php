@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../CSS/main.css">
 
-    <title>Usuarios</title>
+    <title>Estudiantes</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

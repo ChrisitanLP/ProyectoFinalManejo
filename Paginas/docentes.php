@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../CSS/main.css">
 
-    <title>Usuarios</title>
+    <title>Docentes</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -287,9 +287,9 @@
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Telefono: </label>
                                                                 <input class="form-control" type="text">
                                                             </div>
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Titulo: </label>
-                                                                <input class="form-control" type="text">
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Fecha Nacimiento: </label>
+                                                                <input class="form-control" type="date">
                                                             </div>
                                                             <p class="text-center">
                                                                 <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);"><i class="zmdi zmdi-floppy"></i> Guardar</button>
