@@ -11,6 +11,7 @@
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../CSS/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <title>Docentes</title>
 
@@ -351,9 +352,14 @@
                                                                     <td>".$result -> TEL_DOC."</td>
                                                                     <td>".$result -> FEC_NAC_DOC."</td>
                                                                     <td>
+                                                                        <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
+                                                                            <a href='../Conexion/modificar.php' style='text-decoration: none; color: #fff;'>Editar</a>
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
                                                                         <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
                                                                             <input type='hidden' name='id' value='".$result -> id."'>
-                                                                            <button name='eliminar'>Eliminar</button>
+                                                                            <button class='btn btn-primary' style='color: #fff; background: rgb(168, 41, 9);' name='eliminar'>Eliminar</button>
                                                                         </form>
                                                                     </td>
                                                                 </tr>";
@@ -427,6 +433,24 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <div class="modal fade" id="exampleModalD" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Opciones</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" style="background-color:red; border-color:red;">Guardar cambios</button>
+            </div>
+          </div>
+      </div>
+    </div>
 </body>
 
 </html>
