@@ -353,7 +353,7 @@
                                                                     <td>".$result -> FEC_NAC_DOC."</td>
                                                                     <td>
                                                                         <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
-                                                                            <a href='../Conexion/modificar.php' style='text-decoration: none; color: #fff;'>Editar</a>
+                                                                            <a href='../Conexion/modificarD.php' style='text-decoration: none; color: #fff;'>Editar</a>
                                                                         </button>
                                                                     </td>
                                                                     <td>
