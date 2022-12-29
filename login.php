@@ -57,15 +57,6 @@
                         <div class="form-group">
                             <input type="password" class="form-control" id="clave" placeholder="Ingrese Contraseña">
                         </div>
-                        <div class="form-group">
-                            <select name="seleccionar" id="seleccionar">
-                                <option value="0" style="display:none;"><label>Seleccionar ocupación</label></option>
-                                <option value="admin">Administrador</option>
-                                <option value="docente">Docente</option>
-                                <option value="estudiante">Estudiante</option>
-                            </select>
-                        </div>
-
                         <div class="form-check">
                             <label class="switch">
                                 <input type="checkbox">
