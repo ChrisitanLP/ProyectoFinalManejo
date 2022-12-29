@@ -1,8 +1,9 @@
+<?php 
+    include_once('../Conexion/conectar.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,26 +22,7 @@
 
     <!-- Custom styles for this template-->
     <link href="../CSS/sb-admin-2.min.css" rel="stylesheet">
-    <script>
-        $(document).ready(function(){
-            $("#cerrar").click(function(){
-                alert("Cerrar sesion");
-                var usuario = $("#usuario").val();
-                var clave = $("#clave").val();
-                
-                $.post("Conexion/validar.php",{
-                    u: usuario,
-                    c: clave
-                },
-                function(data, status){
-                    //alert("valor:"+data+" Estado:"+status);
-                    if(data==1){
-                        location.href = 'index.php';
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="JqueryLib.js"></script>
     <script src="../JS/jquery-3.1.1.min.js"></script>
 	<script src="../JS/sweetalert2.min.js"></script>
 	<script src="../JS/bootstrap.min.js"></script>
@@ -299,6 +281,26 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php
+                                            $con = conectar();
+
+                                            if(isset($_POST['eliminar'])){
+                                                $consulta = "DELETE FROM `docentes` WHERE `id`=:id";
+                                                $sql = $con-> prepare($consulta);
+                                                $sql -> bindParam(':id', $id, PDO::PARAM_INT);
+                                                $id=trim($_POST['id']);
+                                                $sql->execute();
+                                        
+                                                if($sql->rowCount() > 0)
+                                                {
+                                                    $count = $sql -> rowCount();
+                                                    echo "";
+                                                }
+                                                else{
+                                                    echo "";
+                                                }
+                                            }
+                                        ?>
                                         <div class="tab-pane fade" id="list">
                                             <div class="table-responsive">
                                                 <table class="table table-hover text-center">
@@ -329,10 +331,35 @@
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-                                                        <?php
-                                                            include_once("../Conexion/listar.php");
-                                                            echo listarDocentes();
-                                                        ?>
+                                                    <?php
+                                                        $con = conectar();
+
+                                                        $sql = "SELECT * FROM docentes"; 
+                                                        $query = $con -> prepare($sql); 
+                                                        $query -> execute(); 
+                                                        $results = $query -> fetchAll(PDO::FETCH_OBJ); 
+
+                                                        if($query -> rowCount() > 0)   { 
+                                                            foreach($results as $result) { 
+                                                                echo "
+                                                                <tr>
+                                                                    <td>".$result -> CED_DOC."</td>
+                                                                    <td>".$result -> NOM_DOC."</td>
+                                                                    <td>".$result -> APE_DOC."</td>
+                                                                    <td>".$result -> DIR_DOC."</td>
+                                                                    <td>".$result -> COR_INS_DOC."</td>
+                                                                    <td>".$result -> TEL_DOC."</td>
+                                                                    <td>".$result -> FEC_NAC_DOC."</td>
+                                                                    <td>
+                                                                        <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
+                                                                            <input type='hidden' name='id' value='".$result -> id."'>
+                                                                            <button name='eliminar'>Eliminar</button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>";
+                                                            }
+                                                        }
+                                                    ?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -400,7 +427,6 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
-
 </body>
 
 </html>
