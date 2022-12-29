@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../CSS/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Docentes (editar)</title>
+    <title>Usuarios (editar)</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -55,7 +55,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="../Paginas/docentes.php">
+                <a class="nav-link" href="../Paginas/estudiantes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Regresar</span></a>
             </li>
@@ -84,7 +84,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <div class="input-group-append" >
-                                <h3 style="color: #000;">Docentes <small>modificaciones</small></h3>
+                                <h3 style="color: #000;">Usuarios <small>modificaciones</small></h3>
                             </div>
                         </div>
                     </form>
@@ -203,23 +203,23 @@
                                                 if(isset($_POST['actualizar']))
                                                 {
                                                     $id=trim($_POST['id']);
-                                                    $NOM_DOC=trim($_POST['NOM_DOC']);
-                                                    $APE_DOC=trim($_POST['APE_DOC']);
-                                                    $DIR_DOC=trim($_POST['DIR_DOC']);
-                                                    $COR_INS_DOC=trim($_POST['COR_INS_DOC']);
-                                                    $TEL_DOC=trim($_POST['TEL_DOC']);
-                                                    $FEC_NAC_DOC = trim($_POST['FEC_NAC_DOC']);
+                                                    $NOM_USU=trim($_POST['NOM_USU']);
+                                                    $APE_USU=trim($_POST['APE_USU']);
+                                                    $DIR_USU=trim($_POST['DIR_USU']);
+                                                    $COR_INS_USU=trim($_POST['COR_INS_USU']);
+                                                    $TEL_USU=trim($_POST['TEL_USU']);
+                                                    $FEC_NAC_USU = trim($_POST['FEC_NAC_USU']);
 
-                                                    $consulta = "UPDATE docentes SET `NOM_DOC`= :NOM_DOC, `APE_DOC` = :APE_DOC, `DIR_DOC` = :DIR_DOC, `COR_INS_DOC` = :COR_INS_DOC, `TEL_DOC` = :TEL_DOC, `FEC_NAC_DOC` = :FEC_NAC_DOC WHERE `id` = :id";
+                                                    $consulta = "UPDATE usuarios SET `NOM_USU`= :NOM_USU, `APE_USU` = :APE_USU, `DIR_USU` = :DIR_USU, `COR_INS_USU` = :COR_INS_USU, `TEL_USU` = :TEL_USU, `FEC_NAC_USU` = :FEC_NAC_USU WHERE `id` = :id";
                                                     
                                                     $sql = $con->prepare($consulta);
                                                     
-                                                    $sql->bindParam(':NOM_DOC',$NOM_DOC,PDO::PARAM_STR, 25);
-                                                    $sql->bindParam(':APE_DOC',$APE_DOC,PDO::PARAM_STR, 25);
-                                                    $sql->bindParam(':DIR_DOC',$DIR_DOC,PDO::PARAM_STR,25);
-                                                    $sql->bindParam(':COR_INS_DOC',$COR_INS_DOC,PDO::PARAM_STR,25);
-                                                    $sql->bindParam(':TEL_DOC',$TEL_DOC,PDO::PARAM_STR,25);
-                                                    $sql->bindParam(':FEC_NAC_DOC',$FEC_NAC_DOC,PDO::PARAM_STR);
+                                                    $sql->bindParam(':NOM_USU',$NOM_USU,PDO::PARAM_STR, 25);
+                                                    $sql->bindParam(':APE_USU',$APE_USU,PDO::PARAM_STR, 25);
+                                                    $sql->bindParam(':DIR_USU',$DIR_USU,PDO::PARAM_STR,25);
+                                                    $sql->bindParam(':COR_INS_USU',$COR_INS_USU,PDO::PARAM_STR,25);
+                                                    $sql->bindParam(':TEL_USU',$TEL_USU,PDO::PARAM_STR,25);
+                                                    $sql->bindParam(':FEC_NAC_USU',$FEC_NAC_USU,PDO::PARAM_STR);
                                                     $sql->bindParam(':id',$id,PDO::PARAM_INT);
 
                                                     $sql->execute();
@@ -242,7 +242,7 @@
                                                     if (isset($_POST['editar']))
                                                     {
                                                         $id = $_POST['id'];
-                                                        $sql= "SELECT * FROM docentes WHERE id = :id"; 
+                                                        $sql= "SELECT * FROM usuarios WHERE id = :id"; 
                                                         $stmt = $con->prepare($sql);
                                                         $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
                                                         $stmt->execute();
@@ -254,32 +254,32 @@
                                                         <input value="<?php echo $obj->id;?>" name="id" type="hidden">
                                                         <div class="form-row">
                                                             <div class="form-group col-md-6">
-                                                                <label for="NOM_DOC">Nombres</label>
-                                                                <input value="<?php echo $obj->NOM_DOC;?>" name="NOM_DOC" type="text" class="form-control" placeholder="Nombre...">
+                                                                <label for="NOM_USU">Nombres</label>
+                                                                <input value="<?php echo $obj->NOM_USU;?>" name="NOM_USU" type="text" class="form-control" placeholder="Nombre...">
                                                             </div>
                                                             <div class="form-group col-md-6">
-                                                                <label for="APE_DOC">Apellidos</label>
-                                                                <input value="<?php echo $obj->APE_DOC;?>" name="APE_DOC" type="text" class="form-control" placeholder="Apellido...">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row">  
-                                                            <div class="form-group col-md-6">
-                                                                <label for="DIR_DOC">Dirección</label>
-                                                                <input value="<?php echo $obj->DIR_DOC;?>" name="DIR_DOC" type="text" class="form-control" placeholder="Dirección...">
-                                                            </div>
-                                                            <div class="form-group col-md-6">
-                                                                <label for="COR_INS_DOC">Email</label>
-                                                                <input value="<?php echo $obj->COR_INS_DOC;?>" name="COR_INS_DOC" type="text" class="form-control" placeholder="Email...">
+                                                                <label for="APE_USU">Apellidos</label>
+                                                                <input value="<?php echo $obj->APE_USU;?>" name="APE_USU" type="text" class="form-control" placeholder="Apellido...">
                                                             </div>
                                                         </div>
                                                         <div class="form-row">  
                                                             <div class="form-group col-md-6">
-                                                                <label for="TEL_DOC">Telefono</label>
-                                                                <input value="<?php echo $obj->TEL_DOC;?>" name="TEL_DOC" type="text" class="form-control" placeholder="Telefono...">
+                                                                <label for="DIR_USU">Dirección</label>
+                                                                <input value="<?php echo $obj->DIR_USU;?>" name="DIR_USU" type="text" class="form-control" placeholder="Dirección...">
                                                             </div>
                                                             <div class="form-group col-md-6">
-                                                                <label for="FEC_NAC_DOC">Fecha Nacimiento</label>
-                                                                <input value="<?php echo $obj->FEC_NAC_DOC;?>" name="FEC_NAC_DOC" type="text" class="form-control" placeholder="Fecha Nacimiento...">
+                                                                <label for="COR_INS_USU">Email</label>
+                                                                <input value="<?php echo $obj->COR_INS_USU;?>" name="COR_INS_USU" type="text" class="form-control" placeholder="Email...">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">  
+                                                            <div class="form-group col-md-6">
+                                                                <label for="TEL_USU">Telefono</label>
+                                                                <input value="<?php echo $obj->TEL_USU;?>" name="TEL_USU" type="text" class="form-control" placeholder="Telefono...">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label for="FEC_NAC_USU">Fecha Nacimiento</label>
+                                                                <input value="<?php echo $obj->FEC_NAC_USU;?>" name="FEC_NAC_USU" type="text" class="form-control" placeholder="Fecha Nacimiento...">
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
@@ -319,7 +319,7 @@
                                                                 <?php
                                                                     $con = conectar();
 
-                                                                    $sql = "SELECT * FROM docentes"; 
+                                                                    $sql = "SELECT * FROM usuarios"; 
                                                                     $query = $con -> prepare($sql); 
                                                                     $query -> execute(); 
                                                                     $results = $query -> fetchAll(PDO::FETCH_OBJ); 
@@ -330,13 +330,13 @@
                                                                         { 
                                                                             echo "
                                                                                 <tr>
-                                                                                    <td>".$result -> CED_DOC."</td>
-                                                                                    <td>".$result -> NOM_DOC."</td>
-                                                                                    <td>".$result -> APE_DOC."</td>
-                                                                                    <td>".$result -> DIR_DOC."</td>
-                                                                                    <td>".$result -> COR_INS_DOC."</td>
-                                                                                    <td>".$result -> TEL_DOC."</td>
-                                                                                    <td>".$result -> FEC_NAC_DOC."</td>
+                                                                                    <td>".$result -> CED_USU."</td>
+                                                                                    <td>".$result -> NOM_USU."</td>
+                                                                                    <td>".$result -> APE_USU."</td>
+                                                                                    <td>".$result -> DIR_USU."</td>
+                                                                                    <td>".$result -> COR_INS_USU."</td>
+                                                                                    <td>".$result -> TEL_USU."</td>
+                                                                                    <td>".$result -> FEC_NAC_USU."</td>
                                                                                     <td>
                                                                                         <form method='POST' action='".$_SERVER['PHP_SELF']."'>
                                                                                             <input type='hidden' name='id' value='".$result -> id."'>
