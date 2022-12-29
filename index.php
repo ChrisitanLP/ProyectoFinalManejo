@@ -1,4 +1,4 @@
-<?php/*
+<?php
  if(isset($_SESSION)){//verifica si existe una variable de sesion
 
      if ($_SESSION['u'] == '') {
@@ -13,7 +13,7 @@
      }else{
          header("location: login.php");
      }
-	}   */
+	}   
 ?>
 <!DOCTYPE html>
 <html lang="en">

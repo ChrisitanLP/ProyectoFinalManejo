@@ -1,7 +1,5 @@
 <?php
-    session_start();
-    if(isset($_SESSION['u']))
-        header("Location: index.php");  
+    session_start(); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="CSS/styleLogin.css">
 
     <script src="JS/JqueryLib.js"></script>
-    <script>
+    <!--<script>
         $(document).ready(function(){
             $("#ingresar").click(function(){
                 var usuario= $("#usuario").val();
@@ -35,7 +33,7 @@
                 });
             });
         });
-    </script>
+    </script>-->
 	
 </head>
 <body>
@@ -50,22 +48,13 @@
                 <div class="login">
 
                     <h1>Login</h1>
-                    <form>
+                    <form action="Conexion/validar.php" method="post">
                         <div class="form-group">
-                            <input type="text" class="form-control form-control-user" id="usuario" aria-describedby="emailHelp" placeholder="Ingrese Usuario">
+                            <input type="text" class="form-control form-control-user" id="usuario" name="usuario" aria-describedby="emailHelp" placeholder="Ingrese Usuario">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="clave" placeholder="Ingrese Contraseña">
+                            <input type="password" class="form-control" id="clave" name="contraseña" placeholder="Ingrese Contraseña">
                         </div>
-                        <div class="form-group">
-                            <select name="seleccionar" id="seleccionar">
-                                <option value="0" style="display:none;"><label>Seleccionar ocupación</label></option>
-                                <option value="admin">Administrador</option>
-                                <option value="docente">Docente</option>
-                                <option value="estudiante">Estudiante</option>
-                            </select>
-                        </div>
-
                         <div class="form-check">
                             <label class="switch">
                                 <input type="checkbox">
@@ -74,7 +63,7 @@
                             <label class="form-check-label" for="exampleCheck1">Recordar Contraseña</label>
                         </div>
                         <br>
-                        <button type="submit" class="btn btn-lg btn-block btn-success" id="ingresar">Enviar</button>
+                        <button type="submit" class="btn btn-lg btn-block btn-success" id="ingresar" name="Ingresar">Enviar</button>
                     </form>
                 </div>
             </div>
