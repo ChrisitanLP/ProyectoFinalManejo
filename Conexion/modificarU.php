@@ -203,6 +203,7 @@
                                                 if(isset($_POST['actualizar']))
                                                 {
                                                     $id=trim($_POST['id']);
+                                                    $CED_USU=trim($_POST['CED_USU']);
                                                     $NOM_USU=trim($_POST['NOM_USU']);
                                                     $APE_USU=trim($_POST['APE_USU']);
                                                     $DIR_USU=trim($_POST['DIR_USU']);
@@ -210,10 +211,11 @@
                                                     $TEL_USU=trim($_POST['TEL_USU']);
                                                     $FEC_NAC_USU = trim($_POST['FEC_NAC_USU']);
 
-                                                    $consulta = "UPDATE usuarios SET `NOM_USU`= :NOM_USU, `APE_USU` = :APE_USU, `DIR_USU` = :DIR_USU, `COR_INS_USU` = :COR_INS_USU, `TEL_USU` = :TEL_USU, `FEC_NAC_USU` = :FEC_NAC_USU WHERE `id` = :id";
+                                                    $consulta = "UPDATE usuarios SET `CED_USU`= :CED_USU, `NOM_USU`= :NOM_USU, `APE_USU` = :APE_USU, `DIR_USU` = :DIR_USU, `COR_INS_USU` = :COR_INS_USU, `TEL_USU` = :TEL_USU, `FEC_NAC_USU` = :FEC_NAC_USU WHERE `id` = :id";
                                                     
                                                     $sql = $con->prepare($consulta);
                                                     
+                                                    $sql->bindParam(':CED_USU',$CED_USU,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':NOM_USU',$NOM_USU,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':APE_USU',$APE_USU,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':DIR_USU',$DIR_USU,PDO::PARAM_STR,25);
@@ -280,6 +282,12 @@
                                                             <div class="form-group col-md-6">
                                                                 <label for="FEC_NAC_USU">Fecha Nacimiento</label>
                                                                 <input value="<?php echo $obj->FEC_NAC_USU;?>" name="FEC_NAC_USU" type="text" class="form-control" placeholder="Fecha Nacimiento...">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">  
+                                                            <div class="form-group col-md-6">
+                                                                <label for="CED_USU">Cedula</label>
+                                                                <input value="<?php echo $obj->CED_USU;?>" name="CED_USU" type="text" class="form-control" placeholder="Telefono...">
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
