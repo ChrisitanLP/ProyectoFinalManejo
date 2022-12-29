@@ -1,3 +1,6 @@
+<?php 
+    include_once('../Conexion/conectar.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -299,6 +302,26 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php
+                                            $con = conectar();
+
+                                            if(isset($_POST['eliminar'])){
+                                                $consulta = "DELETE FROM `usuarios` WHERE `id`=:id";
+                                                $sql = $con-> prepare($consulta);
+                                                $sql -> bindParam(':id', $id, PDO::PARAM_INT);
+                                                $id=trim($_POST['id']);
+                                                $sql->execute();
+                                        
+                                                if($sql->rowCount() > 0)
+                                                {
+                                                    $count = $sql -> rowCount();
+                                                    echo "";
+                                                }
+                                                else{
+                                                    echo "";
+                                                }
+                                            }
+                                        ?>
                                         <div class="tab-pane fade" id="list">
                                             <div class="table-responsive">
                                                 <table class="table table-hover text-center">
@@ -329,10 +352,40 @@
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-                                                        <?php
-                                                            include_once("../Conexion/listar.php");
-                                                            echo listarUsuarios();
-                                                        ?>
+                                                    <?php
+                                                        $con = conectar();
+
+                                                        $sql = "SELECT * FROM usuarios"; 
+                                                        $query = $con -> prepare($sql); 
+                                                        $query -> execute(); 
+                                                        $results = $query -> fetchAll(PDO::FETCH_OBJ); 
+
+                                                        if($query -> rowCount() > 0)   { 
+                                                            foreach($results as $result) { 
+                                                                echo "
+                                                                <tr>
+                                                                    <td>".$result -> CED_USU."</td>
+                                                                    <td>".$result -> NOM_USU."</td>
+                                                                    <td>".$result -> APE_USU."</td>
+                                                                    <td>".$result -> DIR_USU."</td>
+                                                                    <td>".$result -> COR_INS_USU."</td>
+                                                                    <td>".$result -> TEL_USU."</td>
+                                                                    <td>".$result -> FEC_NAC_USU."</td>
+                                                                    <td>
+                                                                        <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
+                                                                            <a href='../Conexion/modificarU.php' style='text-decoration: none; color: #fff;'>Editar</a>
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
+                                                                        <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
+                                                                            <input type='hidden' name='id' value='".$result -> id."'>
+                                                                            <button class='btn btn-primary' style='color: #fff; background: rgb(168, 41, 9);' name='eliminar'>Eliminar</button>
+                                                                        </form>
+                                                                    </td>
+                                                                </tr>";
+                                                            }
+                                                        }
+                                                    ?>
                                                     </tbody>
                                                 </table>
                                             </div>
