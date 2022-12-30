@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../CSS/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Eatudiantes (editar)</title>
+    <title>Asignaturas (editar)</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -47,7 +47,7 @@
                     <img src="../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
                 <br>
-                <div class="sidebar-brand-text mx-3">Admin</div>
+                <div class="sidebar-brand-text mx-3">UTA</div>
             </a>
 
             <!-- Divider -->
@@ -55,7 +55,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="../Paginas/Admin/estudiantes.php">
+                <a class="nav-link" href="../Paginas/Admin/asignaturas.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Regresar</span></a>
             </li>
@@ -84,7 +84,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <div class="input-group-append" >
-                                <h3 style="color: #000;">Estudiantes <small>modificaciones</small></h3>
+                                <h3 style="color: #000;">Asignaturas <small>modificaciones</small></h3>
                             </div>
                         </div>
                     </form>
@@ -155,7 +155,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" >Opciones</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" >Admin</span>
                                 <img class="img-profile rounded-circle"
                                     src="../img/undraw_profile.svg">
                             </a>
@@ -203,25 +203,19 @@
                                                 if(isset($_POST['actualizar']))
                                                 {
                                                     $id=trim($_POST['id']);
-                                                    $CED_EST=trim($_POST['CED_EST']);
-                                                    $NOM_EST=trim($_POST['NOM_EST']);
-                                                    $APE_EST=trim($_POST['APE_EST']);
-                                                    $DIR_EST=trim($_POST['DIR_EST']);
-                                                    $COR_INS_EST=trim($_POST['COR_INS_EST']);
-                                                    $TEL_EST=trim($_POST['TEL_EST']);
-                                                    $FEC_NAC_EST = trim($_POST['FEC_NAC_EST']);
+                                                    $COD_ASI=trim($_POST['COD_ASI']);
+                                                    $NOM_ASI=trim($_POST['NOM_ASI']);
+                                                    $HOR_ASI=trim($_POST['HOR_ASI']);
+                                                    $CUR_ASI=trim($_POST['CUR_ASI']);
 
-                                                    $consulta = "UPDATE estudiantes SET `CED_EST`= :CED_EST, `NOM_EST`= :NOM_EST, `APE_EST` = :APE_EST, `DIR_EST` = :DIR_EST, `COR_INS_EST` = :COR_INS_EST, `TEL_EST` = :TEL_EST, `FEC_NAC_EST` = :FEC_NAC_EST WHERE `id` = :id";
+                                                    $consulta = "UPDATE asignaturas SET `NOM_ASI`= :NOM_ASI, `COD_ASI` = :COD_ASI, `HOR_ASI`= :HOR_ASI, `CUR_ASI` = :CUR_ASI  WHERE `id` = :id";
                                                     
                                                     $sql = $con->prepare($consulta);
                                                     
-                                                    $sql->bindParam(':CED_EST',$CED_EST,PDO::PARAM_STR, 25);
-                                                    $sql->bindParam(':NOM_EST',$NOM_EST,PDO::PARAM_STR, 25);
-                                                    $sql->bindParam(':APE_EST',$APE_EST,PDO::PARAM_STR, 25);
-                                                    $sql->bindParam(':DIR_EST',$DIR_EST,PDO::PARAM_STR,25);
-                                                    $sql->bindParam(':COR_INS_EST',$COR_INS_EST,PDO::PARAM_STR,25);
-                                                    $sql->bindParam(':TEL_EST',$TEL_EST,PDO::PARAM_STR,25);
-                                                    $sql->bindParam(':FEC_NAC_EST',$FEC_NAC_EST,PDO::PARAM_STR);
+                                                    $sql->bindParam(':NOM_ASI',$NOM_ASI,PDO::PARAM_STR, 25);
+                                                    $sql->bindParam(':COD_ASI',$COD_ASI,PDO::PARAM_STR, 25);
+                                                    $sql->bindParam(':HOR_ASI',$HOR_ASI,PDO::PARAM_STR, 25);
+                                                    $sql->bindParam(':CUR_ASI',$CUR_ASI,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':id',$id,PDO::PARAM_INT);
 
                                                     $sql->execute();
@@ -244,7 +238,7 @@
                                                     if (isset($_POST['editar']))
                                                     {
                                                         $id = $_POST['id'];
-                                                        $sql= "SELECT * FROM estudiantes WHERE id = :id"; 
+                                                        $sql= "SELECT * FROM asignaturas WHERE id = :id"; 
                                                         $stmt = $con->prepare($sql);
                                                         $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
                                                         $stmt->execute();
@@ -256,38 +250,22 @@
                                                         <input value="<?php echo $obj->id;?>" name="id" type="hidden">
                                                         <div class="form-row">
                                                             <div class="form-group col-md-6">
-                                                                <label for="NOM_EST">Nombres</label>
-                                                                <input value="<?php echo $obj->NOM_EST;?>" name="NOM_EST" type="text" class="form-control" placeholder="Nombre...">
+                                                                <label for="NOM_ASI">Nombre</label>
+                                                                <input value="<?php echo $obj->NOM_ASI;?>" name="NOM_ASI" type="text" class="form-control" placeholder="Nombre...">
                                                             </div>
                                                             <div class="form-group col-md-6">
-                                                                <label for="APE_EST">Apellidos</label>
-                                                                <input value="<?php echo $obj->APE_EST;?>" name="APE_EST" type="text" class="form-control" placeholder="Apellido...">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row">  
-                                                            <div class="form-group col-md-6">
-                                                                <label for="DIR_EST">Dirección</label>
-                                                                <input value="<?php echo $obj->DIR_EST;?>" name="DIR_EST" type="text" class="form-control" placeholder="Dirección...">
-                                                            </div>
-                                                            <div class="form-group col-md-6">
-                                                                <label for="COR_INS_EST">Email</label>
-                                                                <input value="<?php echo $obj->COR_INS_EST;?>" name="COR_INS_EST" type="text" class="form-control" placeholder="Email...">
+                                                                <label for="COD_ASI">Codigo</label>
+                                                                <input value="<?php echo $obj->COD_ASI;?>" name="COD_ASI" type="text" class="form-control" placeholder="Codigo...">
                                                             </div>
                                                         </div>
-                                                        <div class="form-row">  
+                                                        <div class="form-row">
                                                             <div class="form-group col-md-6">
-                                                                <label for="TEL_EST">Telefono</label>
-                                                                <input value="<?php echo $obj->TEL_EST;?>" name="TEL_EST" type="text" class="form-control" placeholder="Telefono...">
+                                                                <label for="HOR_ASI">Horas Semanales</label>
+                                                                <input value="<?php echo $obj->HOR_ASI;?>" name="HOR_ASI" type="text" class="form-control" placeholder="Nombre...">
                                                             </div>
                                                             <div class="form-group col-md-6">
-                                                                <label for="FEC_NAC_EST">Fecha Nacimiento</label>
-                                                                <input value="<?php echo $obj->FEC_NAC_EST;?>" name="FEC_NAC_EST" type="text" class="form-control" placeholder="Fecha Nacimiento...">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row">  
-                                                            <div class="form-group col-md-6">
-                                                                <label for="CED_EST">Cedula</label>
-                                                                <input value="<?php echo $obj->CED_EST;?>" name="CED_EST" type="text" class="form-control" placeholder="Telefono...">
+                                                                <label for="CUR_ASI">Curso</label>
+                                                                <input value="<?php echo $obj->CUR_ASI;?>" name="CUR_ASI" type="text" class="form-control" placeholder="Codigo...">
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
@@ -301,25 +279,19 @@
                                                         <table class="table table-hover text-center">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="text-center">Cedula</th>
+                                                                    <th class="text-center">Codigo</th>
                                                                     <th class="text-center">Nombre</th>
-                                                                    <th class="text-center">Apellido</th>
-                                                                    <th class="text-center">Dirección</th>
-                                                                    <th class="text-center">Email</th>
-                                                                    <th class="text-center">Telefono</th>
-                                                                    <th class="text-center">Nacimiento</th>
+                                                                    <th class="text-center">Horas Semanales</th>
+                                                                    <th class="text-center">Cursos</th>
                                                                     <th class="text-center">Modificar</th>
                                                                 </tr>
                                                             </thead>
                                                             <tfoot>
                                                                 <tr>
-                                                                    <th class="text-center">Cedula</th>
+                                                                    <th class="text-center">Codigo</th>
                                                                     <th class="text-center">Nombre</th>
-                                                                    <th class="text-center">Apellido</th>
-                                                                    <th class="text-center">Dirección</th>
-                                                                    <th class="text-center">Email</th>
-                                                                    <th class="text-center">Telefono</th>
-                                                                    <th class="text-center">Nacimiento</th>
+                                                                    <th class="text-center">Horas Semanales</th>
+                                                                    <th class="text-center">Cursos</th>
                                                                     <th class="text-center">Modificar</th>
                                                                 </tr>
                                                             </tfoot>
@@ -327,7 +299,7 @@
                                                                 <?php
                                                                     $con = conectar();
 
-                                                                    $sql = "SELECT * FROM estudiantes"; 
+                                                                    $sql = "SELECT * FROM asignaturas"; 
                                                                     $query = $con -> prepare($sql); 
                                                                     $query -> execute(); 
                                                                     $results = $query -> fetchAll(PDO::FETCH_OBJ); 
@@ -338,13 +310,10 @@
                                                                         { 
                                                                             echo "
                                                                                 <tr>
-                                                                                    <td>".$result -> CED_EST."</td>
-                                                                                    <td>".$result -> NOM_EST."</td>
-                                                                                    <td>".$result -> APE_EST."</td>
-                                                                                    <td>".$result -> DIR_EST."</td>
-                                                                                    <td>".$result -> COR_INS_EST."</td>
-                                                                                    <td>".$result -> TEL_EST."</td>
-                                                                                    <td>".$result -> FEC_NAC_EST."</td>
+                                                                                    <td>".$result -> COD_ASI."</td>
+                                                                                    <td>".$result -> NOM_ASI."</td>
+                                                                                    <td>".$result -> HOR_ASI."</td>
+                                                                                    <td>".$result -> CUR_ASI."</td>
                                                                                     <td>
                                                                                         <form method='POST' action='".$_SERVER['PHP_SELF']."'>
                                                                                             <input type='hidden' name='id' value='".$result -> id."'>

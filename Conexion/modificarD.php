@@ -55,7 +55,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="../Paginas/docentes.php">
+                <a class="nav-link" href="../Paginas/Admin/docentes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Regresar</span></a>
             </li>

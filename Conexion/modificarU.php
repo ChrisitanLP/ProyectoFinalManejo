@@ -55,7 +55,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="../Paginas/estudiantes.php">
+                <a class="nav-link" href="../Paginas/Admin/usuarios.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Regresar</span></a>
             </li>

@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../../CSS/main.css">
 
-    <title>Usuarios</title>
+    <title>Asignaturas</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -352,7 +352,7 @@
                                                                     <td>".$result -> CUR_ASI."</td>
                                                                     <td>
                                                                         <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
-                                                                            <a href='../../Conexion/modificarC.php' style='text-decoration: none; color: #fff;'>Editar</a>
+                                                                            <a href='../../Conexion/modificarA.php' style='text-decoration: none; color: #fff;'>Editar</a>
                                                                         </button>
                                                                     </td>
                                                                     <td>
