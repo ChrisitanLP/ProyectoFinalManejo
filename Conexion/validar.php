@@ -17,11 +17,11 @@
     $filas=mysqli_fetch_array($resultado);
     
     if($filas['ROL_LOG']=="Administrador"){ //administrador
-        header("location:../Paginas/pag_admin.php");
+        header("location:../Paginas/Admin/pag_admin.php");
     
     }else
     if($filas['ROL_LOG']=="Docente"){ //cliente
-    header("location:../Paginas/pag_docentes.php");
+    header("location:../Paginas/Docentes/pag_docentes.php");
     }
     else{
         header("location:../login.php"); 
