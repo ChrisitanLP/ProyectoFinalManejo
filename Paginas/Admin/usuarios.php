@@ -67,7 +67,7 @@
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
                 <br>
-                <div class="sidebar-brand-text mx-3">Admin</div>
+                <div class="sidebar-brand-text mx-3">UTA</div>
             </a>
 
             <!-- Divider -->
@@ -218,7 +218,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" >Opciones</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" >Admin</span>
                                 <img class="img-profile rounded-circle"
                                     src="../../img/undraw_profile.svg">
                             </a>
@@ -431,7 +431,7 @@
                 <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal" style="background: rgb(75, 65, 65);" >Cancelar</button>
-                    <a class="btn btn-primary" href="cerrar.php" id="cerrar" style="background: rgb(138, 4, 4);">Cerrar Sesión</a>
+                    <a class="btn btn-primary" href="../../cerrar.php" id="cerrar" style="background: rgb(138, 4, 4);">Cerrar Sesión</a>
                 </div>
             </div>
         </div>
