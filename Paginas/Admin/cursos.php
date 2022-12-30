@@ -1,5 +1,5 @@
 <?php 
-    include_once('../Conexion/conectar.php');
+    include_once('../../Conexion/conectar.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,19 +11,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="stylesheet" type="text/css" href="../CSS/stylePaginas.css">
-    <link rel="stylesheet" type="text/css" href="../CSS/main.css">
+    <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
+    <link rel="stylesheet" type="text/css" href="../../CSS/main.css">
 
     <title>Usuarios</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../CSS/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../../CSS/sb-admin-2.min.css" rel="stylesheet">
     <script>
         $(document).ready(function(){
             $("#cerrar").click(function(){
@@ -31,26 +31,26 @@
                 var usuario = $("#usuario").val();
                 var clave = $("#clave").val();
                 
-                $.post("Conexion/validar.php",{
+                $.post("../../Conexion/validar.php",{
                     u: usuario,
                     c: clave
                 },
                 function(data, status){
                     //alert("valor:"+data+" Estado:"+status);
                     if(data==1){
-                        location.href = 'index.php';
+                        location.href = 'pag_admin.php';
                     }
                 });
             });
         });
     </script>
-    <script src="../JS/jquery-3.1.1.min.js"></script>
-	<script src="../JS/sweetalert2.min.js"></script>
-	<script src="../JS/bootstrap.min.js"></script>
-	<script src="../JS/material.min.js"></script>
-	<script src="../JS/ripples.min.js"></script>
-	<script src="../JS/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="../JS/main.js"></script>
+    <script src="../../JS/jquery-3.1.1.min.js"></script>
+	<script src="../../JS/sweetalert2.min.js"></script>
+	<script src="../../JS/bootstrap.min.js"></script>
+	<script src="../../JS/material.min.js"></script>
+	<script src="../../JS/ripples.min.js"></script>
+	<script src="../../JS/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="../../JS/main.js"></script>
 </head>
 
 <body id="page-top">
@@ -62,12 +62,12 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../index.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_admin.php">
                 <div class="sidebar-brand-icon">
-                    <img src="../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
+                    <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
                 <br>
-                <div class="sidebar-brand-text mx-3">Admin</div>
+                <div class="sidebar-brand-text mx-3">UTA</div>
             </a>
 
             <!-- Divider -->
@@ -75,7 +75,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="../index.php">
+                <a class="nav-link" href="pag_admin.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -218,9 +218,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" >Opciones</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" >Admin</span>
                                 <img class="img-profile rounded-circle"
-                                    src="../img/undraw_profile.svg">
+                                    src="../../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -338,7 +338,7 @@
                                                                     <td>".$result -> NOM_CUR."</td>
                                                                     <td>
                                                                         <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
-                                                                            <a href='../Conexion/modificarC.php' style='text-decoration: none; color: #fff;'>Editar</a>
+                                                                            <a href='../../Conexion/modificarC.php' style='text-decoration: none; color: #fff;'>Editar</a>
                                                                         </button>
                                                                     </td>
                                                                     <td>
@@ -396,28 +396,28 @@
                 <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal" style="background: rgb(75, 65, 65);" >Cancelar</button>
-                    <a class="btn btn-primary" href="cerrar.php" id="cerrar" style="background: rgb(138, 4, 4);">Cerrar Sesión</a>
+                    <a class="btn btn-primary" href="../../cerrar.php" id="cerrar" style="background: rgb(138, 4, 4);">Cerrar Sesión</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../../JS/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="../vendor/chart.js/Chart.min.js"></script>
+    <script src="../../vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="../../JS/demo/chart-area-demo.js"></script>
+    <script src="../../JS/demo/chart-pie-demo.js"></script>
 
 </body>
 
