@@ -244,7 +244,7 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                                        <form action="../Conexion/insertar.php" method="POST">
+                                                        <form action="../../Conexion/insertar.php" method="POST">
                                                             <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Docente</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Cedula: </label>

@@ -18,10 +18,10 @@
         $lastInsertIdD = $con->lastInsertId();
         
         if($lastInsertIdD>0){
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/docentes.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/docentes.php'>";
             echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreD  </div>";
         }else{
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/docentes.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/docentes.php'>";
             echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             print_r($consultaD->errorInfo()); 
         }
@@ -43,10 +43,10 @@
         $lastInsertIdE = $con->lastInsertId();
         
         if($lastInsertIdE>0){
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/estudiantes.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
             echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreE  </div>";
         }else{
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/estudiantes.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
             echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             print_r($consultaE->errorInfo()); 
         }
@@ -68,10 +68,10 @@
         $lastInsertIdU = $con->lastInsertId();
         
         if($lastInsertIdU>0){
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/usuarios.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
             echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
         }else{
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/usuarios.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
             echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             print_r($consultaU->errorInfo()); 
         }
@@ -88,10 +88,10 @@
         $lastInsertIdC = $con->lastInsertId();
         
         if($lastInsertIdC>0){
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/cursos.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/cursos.php'>";
             echo "<div class='content alert alert-primary' > Gracias .. Nombre CURSO es : $nombreC  </div>";
         }else{
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/cursos.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/cursos.php'>";
             echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             print_r($consultaC->errorInfo()); 
         }
@@ -110,10 +110,10 @@
         $lastInsertIdA = $con->lastInsertId();
         
         if($lastInsertIdA>0){
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/asignaturas.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/asignaturas.php'>";
             echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreA  </div>";
         }else{
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/asignaturas.php'>";
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/asignaturas.php'>";
             echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             print_r($consultaA->errorInfo()); 
         }
