@@ -26,6 +26,23 @@
             print_r($consultaD->errorInfo()); 
         }
     };
+    if(isset($_POST["enviarD"]))
+    {   
+        $rolD = "Docente";
+        $sqlD = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG)values('$correoD', '$cedulaD', '$rolD')";
+        $consultaD = $con->prepare($sqlD);
+        $consultaD -> execute();
+        $lastInsertIdD = $con->lastInsertId();
+        
+        if($lastInsertIdD>0){
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/docentes.php'>";
+            echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $correoD  </div>";
+        }else{
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/docentes.php'>";
+            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+            print_r($consultaD->errorInfo()); 
+        }
+    };
 
     $nombreE = $_POST["nombreE"];
     $apellidoE = $_POST["apellidoE"];
@@ -45,6 +62,23 @@
         if($lastInsertIdE>0){
             echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
             echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreE  </div>";
+        }else{
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
+            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+            print_r($consultaE->errorInfo()); 
+        }
+    };
+    if(isset($_POST["enviarE"]))
+    {   
+        $rolE = "Estudiante";
+        $sqlE = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG)values('$correoE', '$cedulaE', '$rolE')";
+        $consultaE = $con->prepare($sqlE);
+        $consultaE -> execute();
+        $lastInsertIdE = $con->lastInsertId();
+        
+        if($lastInsertIdE>0){
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
+            echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $correoE  </div>";
         }else{
             echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
             echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
@@ -76,6 +110,24 @@
             print_r($consultaU->errorInfo()); 
         }
     };
+    if(isset($_POST["enviarU"]))
+    {   
+        $rolU = "Invitado";
+        $sqlU = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG)values('$correoU', '$cedulaU', '$rolU')";
+        $consultaU = $con->prepare($sqlU);
+        $consultaU -> execute();
+        $lastInsertIdU = $con->lastInsertId();
+        
+        if($lastInsertIdU>0){
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
+            echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $correoU  </div>";
+        }else{
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
+            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+            print_r($consultaU->errorInfo()); 
+        }
+    };
+
 
     $nombreC = $_POST["nombreC"];
     $codigoC = $_POST["codigoC"];
