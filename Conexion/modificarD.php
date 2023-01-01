@@ -203,23 +203,23 @@
                                                 if(isset($_POST['actualizar']))
                                                 {
                                                     $id=trim($_POST['id']);
-                                                    $CED_DOC=trim($_POST['CED_DOC']);
+                                                    
                                                     $NOM_DOC=trim($_POST['NOM_DOC']);
                                                     $APE_DOC=trim($_POST['APE_DOC']);
                                                     $DIR_DOC=trim($_POST['DIR_DOC']);
-                                                    $COR_INS_DOC=trim($_POST['COR_INS_DOC']);
+                                                   
                                                     $TEL_DOC=trim($_POST['TEL_DOC']);
                                                     $FEC_NAC_DOC = trim($_POST['FEC_NAC_DOC']);
 
-                                                    $consulta = "UPDATE docentes SET `CED_DOC`= :CED_DOC, `NOM_DOC`= :NOM_DOC, `APE_DOC` = :APE_DOC, `DIR_DOC` = :DIR_DOC, `COR_INS_DOC` = :COR_INS_DOC, `TEL_DOC` = :TEL_DOC, `FEC_NAC_DOC` = :FEC_NAC_DOC WHERE `id` = :id";
+                                                    $consulta = "UPDATE docentes SET  `NOM_DOC`= :NOM_DOC, `APE_DOC` = :APE_DOC, `DIR_DOC` = :DIR_DOC, `TEL_DOC` = :TEL_DOC, `FEC_NAC_DOC` = :FEC_NAC_DOC WHERE `id` = :id";
                                                     
                                                     $sql = $con->prepare($consulta);
                                                     
-                                                    $sql->bindParam(':CED_DOC',$CED_DOC,PDO::PARAM_STR, 25);
+                                                   
                                                     $sql->bindParam(':NOM_DOC',$NOM_DOC,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':APE_DOC',$APE_DOC,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':DIR_DOC',$DIR_DOC,PDO::PARAM_STR,25);
-                                                    $sql->bindParam(':COR_INS_DOC',$COR_INS_DOC,PDO::PARAM_STR,25);
+                                                    
                                                     $sql->bindParam(':TEL_DOC',$TEL_DOC,PDO::PARAM_STR,25);
                                                     $sql->bindParam(':FEC_NAC_DOC',$FEC_NAC_DOC,PDO::PARAM_STR);
                                                     $sql->bindParam(':id',$id,PDO::PARAM_INT);
@@ -270,24 +270,14 @@
                                                                 <input value="<?php echo $obj->DIR_DOC;?>" name="DIR_DOC" type="text" class="form-control" placeholder="Dirección...">
                                                             </div>
                                                             <div class="form-group col-md-6">
-                                                                <label for="COR_INS_DOC">Email</label>
-                                                                <input value="<?php echo $obj->COR_INS_DOC;?>" name="COR_INS_DOC" type="text" class="form-control" placeholder="Email...">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row">  
-                                                            <div class="form-group col-md-6">
-                                                                <label for="TEL_DOC">Telefono</label>
-                                                                <input value="<?php echo $obj->TEL_DOC;?>" name="TEL_DOC" type="text" class="form-control" placeholder="Telefono...">
-                                                            </div>
-                                                            <div class="form-group col-md-6">
                                                                 <label for="FEC_NAC_DOC">Fecha Nacimiento</label>
                                                                 <input value="<?php echo $obj->FEC_NAC_DOC;?>" name="FEC_NAC_DOC" type="text" class="form-control" placeholder="Fecha Nacimiento...">
                                                             </div>
                                                         </div>
                                                         <div class="form-row">  
                                                             <div class="form-group col-md-6">
-                                                                <label for="CED_DOC">Cedula</label>
-                                                                <input value="<?php echo $obj->CED_DOC;?>" name="CED_DOC" type="text" class="form-control" placeholder="Telefono...">
+                                                                <label for="TEL_DOC">Telefono</label>
+                                                                <input value="<?php echo $obj->TEL_DOC;?>" name="TEL_DOC" type="text" class="form-control" placeholder="Telefono...">
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
