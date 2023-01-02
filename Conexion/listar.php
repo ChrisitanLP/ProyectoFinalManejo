@@ -142,4 +142,19 @@
         }
         return $opciones;
     }
+
+    function consultaEstudiantes(){
+        $con = conectar();
+
+        $query = "SELECT * FROM estudiantes";
+        $sentencia = $con -> prepare($query);
+        $sentencia -> execute();
+        $r = $sentencia -> fetchAll();
+
+        $opciones = "";
+        foreach($r as $p){
+           $opciones.= '<option value='.$p['id'].'>'.$p['NOM_EST'].'</option>';
+        }
+        return $opciones;
+    }
 ?>

@@ -247,10 +247,10 @@
                                         ?>
                                         <script>
                                             $(document).ready(function(){
-                                                agregarDocentes();
+                                                agregarEstudiantes();
                                                 agregarAsignaturas();
                                             
-                                                function agregarDocentes(){
+                                                function agregarEstudiantes(){
                                                     $dato = $("#estudiantesAE").val();
                                                     $.ajax({
                                                         type: "GET",

@@ -9,4 +9,8 @@
 		
 		echo (consultaAsignaturas());
 	}
+    if (isset($_GET['action_type']) && $_GET['action_type'] == 'estudiante') {
+		
+		echo (consultaEstudiantes());
+	}
 ?>
