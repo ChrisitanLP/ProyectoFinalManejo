@@ -113,4 +113,33 @@
         }    
         return $filas;
     }
+
+    function consultaAsignaturas(){
+        $con = conectar();
+        $query = "SELECT * FROM asignaturas";
+        $sentencia = $con -> prepare($query);
+        $sentencia -> execute();
+        $r = $sentencia -> fetchAll();
+
+        $opciones = "";
+        foreach($r as $p){
+           $opciones.= '<option value='.$p['id'].'>'.$p['NOM_ASI'].'</option>';
+        }
+        return $opciones;
+    }
+
+    function consultaDocentes(){
+        $con = conectar();
+
+        $query = "SELECT * FROM docentes";
+        $sentencia = $con -> prepare($query);
+        $sentencia -> execute();
+        $r = $sentencia -> fetchAll();
+
+        $opciones = "";
+        foreach($r as $p){
+           $opciones.= '<option value='.$p['id'].'>'.$p['NOM_DOC'].'</option>';
+        }
+        return $opciones;
+    }
 ?>

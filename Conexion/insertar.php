@@ -171,4 +171,24 @@
         }
     };
     
+    $codigoAD = $_POST["codigoAD"];
+    $docentesAD = $_POST["docentesAD"];
+    $asignaturasAD = $_POST["asignaturasAD"];
+
+    if(isset($_POST["enviarAD"]))
+    {
+        $sqlAD = "INSERT INTO asignacionD(COD_ASID, NOM_DOC_ASID, NOM_ASI_ASID)values('$codigoAD', '$docentesAD', '$asignaturasAD')";
+        $consultaAD = $con->prepare($sqlAD);
+        $consultaAD -> execute();
+        $lastInsertIdAD = $con->lastInsertId();
+        
+        if($lastInsertIdAD>0){
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/asignacionD.php'>";
+            echo "<div class='content alert alert-primary' > Gracias .. Nombre CURSO es : $nombreC  </div>";
+        }else{
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/asignacionD.php'>";
+            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+            print_r($consultaAD->errorInfo()); 
+        }
+    };
 ?>

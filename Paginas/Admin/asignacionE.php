@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../../CSS/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Asignación Docentes</title>
+    <title>Asignación Estudiantes</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -84,7 +84,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <div class="input-group-append" >
-                                <h3 style="color: #000;">Docentes</h3>
+                                <h3 style="color: #000;">Estudiantes</h3>
                             </div>
                         </div>
                     </form>
@@ -205,20 +205,19 @@
                                                             <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Codigo: </label>
-                                                                <input class="form-control" type="text" name="codigoAD">
-                                                                
+                                                                <input class="form-control" type="text" name="cedulaD">
                                                             </div>
                                                             <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Nombre Docente: </label>
-                                                                <select  class="form-select" aria-label="Default select example" name="docentesAD" id = "docentesAD"></select>
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Nombre Estudiante: </label>
+                                                                <input class="form-control" type="text" name="nombreD">
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Nombre Asignatura: </label>
-                                                                <select  class="form-select" aria-label="Default select example" name="asignaturasAD" id = "asignaturasAD"></select>
+                                                                <input class="form-control" type="text" name="apellidoD">
                                                             </div>
                                                             
                                                             <p class="text-center">
-                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarAD"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarAE"><i class="zmdi zmdi-floppy"></i> Guardar</button>
                                                             </p>
                                                         </form>
                                                     </div>
@@ -229,7 +228,7 @@
                                             $con = conectar();
 
                                             if(isset($_POST['eliminar'])){
-                                                $consulta = "DELETE FROM `asignacionD` WHERE `id`=:id";
+                                                $consulta = "DELETE FROM `asignacionE` WHERE `id`=:id";
                                                 $sql = $con-> prepare($consulta);
                                                 $sql -> bindParam(':id', $id, PDO::PARAM_INT);
                                                 $id=trim($_POST['id']);
@@ -245,46 +244,13 @@
                                                 }
                                             }
                                         ?>
-                                        <script>
-                                            $(document).ready(function(){
-                                                agregarDocentes();
-                                                agregarAsignaturas();
-                                            
-                                                function agregarDocentes(){
-                                                    $dato = $("#docentesAD").val();
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        url:  "../../Conexion/ajax.php",
-                                                        data: {action_type: 'docente', valor: $dato},
-                                                        async: false,
-                                                        success: function(data){
-                                                            $("#docentesAD").append(data);
-                                                    
-                                                        }
-                                                    });
-                                                }
-                                                function agregarAsignaturas(){
-                                                    $dato = $("#asignaturasAD").val();
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        url:  "../../Conexion/ajax.php",
-                                                        data: {action_type: 'asignatura', valor: $dato},
-                                                        async: false,
-                                                        success: function(data){
-                                                            $("#asignaturasAD").append(data);
-                                                    
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                        </script>
                                         <div class="tab-pane fade" id="list">
                                             <div class="table-responsive">
                                                 <table class="table table-hover text-center">
                                                     <thead>
                                                         <tr>
                                                             <th class="text-center">Codigo</th>
-                                                            <th class="text-center">Docente</th>
+                                                            <th class="text-center">Estudiante</th>
                                                             <th class="text-center">Asignatura</th>
                                                             <th class="text-center">Eliminar</th>
                                                         </tr>
@@ -292,7 +258,7 @@
                                                     <tfoot>
                                                         <tr>
                                                             <th class="text-center">Codigo</th>
-                                                            <th class="text-center">Docente</th>
+                                                            <th class="text-center">Estudiante</th>
                                                             <th class="text-center">Asignatura</th>
                                                             <th class="text-center">Eliminar</th>
                                                         </tr>
@@ -301,7 +267,7 @@
                                                     <?php
                                                         $con = conectar();
 
-                                                        $sql = "SELECT * FROM asignacionD"; 
+                                                        $sql = "SELECT * FROM asignacionE"; 
                                                         $query = $con -> prepare($sql); 
                                                         $query -> execute(); 
                                                         $results = $query -> fetchAll(PDO::FETCH_OBJ); 
@@ -310,9 +276,9 @@
                                                             foreach($results as $result) { 
                                                                 echo "
                                                                 <tr>
-                                                                    <td>".$result -> COD_ASID."</td>
-                                                                    <td>".$result -> NOM_DOC_ASID."</td>
-                                                                    <td>".$result -> NOM_ASI_ASID."</td>
+                                                                    <td>".$result -> COD_ASIE."</td>
+                                                                    <td>".$result -> NOM_DOC_ASIE."</td>
+                                                                    <td>".$result -> NOM_ASI_ASIE."</td>
                                                                     <td>
                                                                         <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
                                                                             <input type='hidden' name='id' value='".$result -> id."'>
