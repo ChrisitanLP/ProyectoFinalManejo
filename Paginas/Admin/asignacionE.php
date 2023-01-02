@@ -205,15 +205,16 @@
                                                             <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Codigo: </label>
-                                                                <input class="form-control" type="text" name="cedulaD">
+                                                                <input class="form-control" type="text" name="codigoAE">
+                                                                
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Nombre Estudiante: </label>
-                                                                <input class="form-control" type="text" name="nombreD">
+                                                                <select  class="form-select" aria-label="Default select example" name="docentesAE" id = "docentesAE"></select>
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Nombre Asignatura: </label>
-                                                                <input class="form-control" type="text" name="apellidoD">
+                                                                <select  class="form-select" aria-label="Default select example" name="asignaturasAE" id = "asignaturasAE"></select>
                                                             </div>
                                                             
                                                             <p class="text-center">
@@ -244,6 +245,39 @@
                                                 }
                                             }
                                         ?>
+                                        <script>
+                                            $(document).ready(function(){
+                                                agregarDocentes();
+                                                agregarAsignaturas();
+                                            
+                                                function agregarDocentes(){
+                                                    $dato = $("#estudiantesAE").val();
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        url:  "../../Conexion/ajax.php",
+                                                        data: {action_type: 'estudiante', valor: $dato},
+                                                        async: false,
+                                                        success: function(data){
+                                                            $("#estudiantesAE").append(data);
+                                                    
+                                                        }
+                                                    });
+                                                }
+                                                function agregarAsignaturas(){
+                                                    $dato = $("#asignaturasAE").val();
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        url:  "../../Conexion/ajax.php",
+                                                        data: {action_type: 'asignatura', valor: $dato},
+                                                        async: false,
+                                                        success: function(data){
+                                                            $("#asignaturasAE").append(data);
+                                                    
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        </script>
                                         <div class="tab-pane fade" id="list">
                                             <div class="table-responsive">
                                                 <table class="table table-hover text-center">
