@@ -13,7 +13,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Admin</title>
+    <title>Pagina Principal (Docentes)</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -261,7 +261,7 @@
                 </nav>
                 <header>
                   <section>
-                  <a href="index.html" class="logo"><img src="../img/Logos/Escudo_de_la_Universidad_Técnica_de_Ambato.png" alt="" class="logo"></a>
+                  <a href="index.html" class="logo"><img src="../../img/Logos/FISEI.png" alt="" class="logo"></a>
                   <div class="navigation">
                     <ul class="menu">
                       <div class="close-btn"></div>

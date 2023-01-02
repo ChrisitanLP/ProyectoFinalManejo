@@ -100,7 +100,7 @@
                         <h6 class="collapse-header">Componentes:</h6>
                         <a class="collapse-item" href="cursos.php">Cursos</a>
                         <a class="collapse-item" href="asignaturas.php">Asignatura</a>
-						<a class="collapse-item" href="asignacion.php">Asignación de Docentes</a>
+						<a class="collapse-item" href="asignacion.php">Asignación</a>
                     </div>
                 </div>
             </li>

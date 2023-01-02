@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
 
-    <title>Admin</title>
+    <title>Pagina Principal (Administrador)</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -91,7 +91,7 @@
                         <h6 class="collapse-header">Componentes:</h6>
                         <a class="collapse-item" href="cursos.php">Cursos</a>
                         <a class="collapse-item" href="asignaturas.php">Asignatura</a>
-						            <a class="collapse-item" href="asignacion.php">Asignación de Docentes</a>
+						            <a class="collapse-item" href="asignacion.php">Asignación</a>
                     </div>
                 </div>
             </li>

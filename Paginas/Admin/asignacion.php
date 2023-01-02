@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../../CSS/main.css">
 
-    <title>Cursos</title>
+    <title>Asignación</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -38,7 +38,7 @@
                 function(data, status){
                     //alert("valor:"+data+" Estado:"+status);
                     if(data==1){
-                        location.href = 'pag_admin.php';
+                        location.href = 'index.php';
                     }
                 });
             });
@@ -110,7 +110,7 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench" style="color: #fff;"></i>
-                    <span>Usuarios</span>
+                    <span>Asignación</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
@@ -147,7 +147,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <div class="input-group-append" >
-                                <h3 style="color: #000;">Cursos</h3>
+                                <h3 style="color: #000;">Estudiantes</h3>
                             </div>
                         </div>
                     </form>
@@ -265,17 +265,37 @@
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
                                                         <form action="../../Conexion/insertar.php" method="POST">
-                                                            <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Curso</fieldset>
+                                                            <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Estudiante</fieldset>
                                                             <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Codigo: </label>
-                                                                <input class="form-control" type="text" name="codigoC">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Cedula: </label>
+                                                                <input class="form-control" type="text" name="cedulaE">
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Nombre: </label>
-                                                                <input class="form-control" type="text" name="nombreC">
+                                                                <input class="form-control" type="text" name="nombreE">
+                                                            </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Apellido: </label>
+                                                                <input class="form-control" type="text" name="apellidoE">
+                                                            </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Dirección</label>
+                                                                <input class="form-control" type="text" name="direccionE">
+                                                            </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Correo Institucional: </label>
+                                                                <input class="form-control" type="text" name="correoE">
+                                                            </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Telefono: </label>
+                                                                <input class="form-control" type="text" name="telefonoE">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Fecha Nacimiento: </label>
+                                                                <input class="form-control" type="date" name="fechaE">
                                                             </div>
                                                             <p class="text-center">
-                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarC"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarE"><i class="zmdi zmdi-floppy"></i> Guardar</button>
                                                             </p>
                                                         </form>
                                                     </div>
@@ -286,7 +306,7 @@
                                             $con = conectar();
 
                                             if(isset($_POST['eliminar'])){
-                                                $consulta = "DELETE FROM `cursos` WHERE `id`=:id";
+                                                $consulta = "DELETE FROM `estudiantes` WHERE `id`=:id";
                                                 $sql = $con-> prepare($consulta);
                                                 $sql -> bindParam(':id', $id, PDO::PARAM_INT);
                                                 $id=trim($_POST['id']);
@@ -307,16 +327,26 @@
                                                 <table class="table table-hover text-center">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center">Codigo</th>
+                                                            <th class="text-center">Cedula</th>
                                                             <th class="text-center">Nombre</th>
+                                                            <th class="text-center">Apellido</th>
+                                                            <th class="text-center">Dirección</th>
+                                                            <th class="text-center">Email</th>
+                                                            <th class="text-center">Telefono</th>
+                                                            <th class="text-center">Nacimiento</th>
                                                             <th class="text-center">Modificar</th>
                                                             <th class="text-center">Eliminar</th>
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
                                                         <tr>
-                                                            <th class="text-center">Codigo</th>
+                                                            <th class="text-center">Cedula</th>
                                                             <th class="text-center">Nombre</th>
+                                                            <th class="text-center">Apellido</th>
+                                                            <th class="text-center">Dirección</th>
+                                                            <th class="text-center">Email</th>
+                                                            <th class="text-center">Telefono</th>
+                                                            <th class="text-center">Nacimiento</th>
                                                             <th class="text-center">Modificar</th>
                                                             <th class="text-center">Eliminar</th>
                                                         </tr>
@@ -325,7 +355,7 @@
                                                     <?php
                                                         $con = conectar();
 
-                                                        $sql = "SELECT * FROM cursos"; 
+                                                        $sql = "SELECT * FROM estudiantes"; 
                                                         $query = $con -> prepare($sql); 
                                                         $query -> execute(); 
                                                         $results = $query -> fetchAll(PDO::FETCH_OBJ); 
@@ -334,11 +364,16 @@
                                                             foreach($results as $result) { 
                                                                 echo "
                                                                 <tr>
-                                                                    <td>".$result -> COD_CUR."</td>
-                                                                    <td>".$result -> NOM_CUR."</td>
+                                                                    <td>".$result -> CED_EST."</td>
+                                                                    <td>".$result -> NOM_EST."</td>
+                                                                    <td>".$result -> APE_EST."</td>
+                                                                    <td>".$result -> DIR_EST."</td>
+                                                                    <td>".$result -> COR_INS_EST."</td>
+                                                                    <td>".$result -> TEL_EST."</td>
+                                                                    <td>".$result -> FEC_NAC_EST."</td>
                                                                     <td>
                                                                         <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
-                                                                            <a href='../../Conexion/modificarC.php' style='text-decoration: none; color: #fff;'>Editar</a>
+                                                                            <a href='../../Conexion/modificarE.php' style='text-decoration: none; color: #fff;'>Editar</a>
                                                                         </button>
                                                                     </td>
                                                                     <td>
@@ -395,8 +430,8 @@
                 </div>
                 <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal" style="background: rgb(75, 65, 65);" >Cancelar</button>
-                    <a class="btn btn-primary" href="../../cerrar.php" id="cerrar" style="background: rgb(138, 4, 4);">Cerrar Sesión</a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal" style="background: rgb(75, 65, 65); color: #fff" >Cancelar</button>
+                    <a class="btn btn-primary" href="../../cerrar.php" id="cerrar" style="background: rgb(138, 4, 4); color: #fff;">Cerrar Sesión</a>
                 </div>
             </div>
         </div>
