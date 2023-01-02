@@ -210,7 +210,7 @@
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Nombre Estudiante: </label>
-                                                                <select  class="form-select" aria-label="Default select example" name="docentesAE" id = "docentesAE"></select>
+                                                                <select  class="form-select" aria-label="Default select example" name="estudiantesAE" id = "estudiantesAE"></select>
                                                             </div>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Nombre Asignatura: </label>
@@ -311,7 +311,7 @@
                                                                 echo "
                                                                 <tr>
                                                                     <td>".$result -> COD_ASIE."</td>
-                                                                    <td>".$result -> NOM_DOC_ASIE."</td>
+                                                                    <td>".$result -> NOM_EST_ASIE."</td>
                                                                     <td>".$result -> NOM_ASI_ASIE."</td>
                                                                     <td>
                                                                         <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
