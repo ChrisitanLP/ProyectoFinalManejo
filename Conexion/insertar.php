@@ -191,4 +191,25 @@
             print_r($consultaAD->errorInfo()); 
         }
     };
+
+    $codigoAE = $_POST["codigoAE"];
+    $estudiantesAE = $_POST["estudiantesAE"];
+    $asignaturasAE = $_POST["asignaturasAE"];
+
+    if(isset($_POST["enviarAE"]))
+    {
+        $sqlAE = "INSERT INTO asignacionE(COD_ASIE, NOM_EST_ASIE, NOM_ASI_ASIE)values('$codigoAE', '$estudiantesAE', '$asignaturasAE')";
+        $consultaAE = $con->prepare($sqlAE);
+        $consultaAE -> execute();
+        $lastInsertIdAE = $con->lastInsertId();
+        
+        if($lastInsertIdAE>0){
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/asignacionE.php'>";
+            echo "<div class='content alert alert-primary' > Gracias .. Nombre CURSO es : $nombreC  </div>";
+        }else{
+            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/asignacionE.php'>";
+            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+            print_r($consultaAE->errorInfo()); 
+        }
+    };
 ?>
