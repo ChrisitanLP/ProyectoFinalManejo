@@ -12,7 +12,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
+    <link rel="stylesheet" type="text/css" href="../../CSS/footer.css">
     <link rel="stylesheet" type="text/css" href="../../CSS/main.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript" src="../../JS/jquery.backtotop.js"></script>
 
     <title>Asignación</title>
 
@@ -110,7 +114,7 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench" style="color: #fff;"></i>
-                    <span>Asignación</span>
+                    <span>Usuarios</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
@@ -147,7 +151,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <div class="input-group-append" >
-                                <h3 style="color: #000;">Estudiantes</h3>
+                                <h3 style="color: #000;">Asignación</h3>
                             </div>
                         </div>
                     </form>
@@ -249,153 +253,48 @@
 
                 </nav>
                 <!-- End of Topbar -->
-                <div class="container-fluid">
-                    <section>
-                        <div class="page-header" style="margin-top: -15px;">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <ul class="nav nav-tabs" style="margin-bottom: 15px; background: rgb(180, 39, 39);">
-                                        <li class="active" style="background: red;"><a href="#new" data-toggle="tab">Ingresar</a></li>
-                                        <li><a href="#list" data-toggle="tab">Modificar</a></li>
-                                    </ul>
-                                    <div id="myTabContent" class="tab-content">
-                                        <div class="tab-pane fade active in" id="new">
-                                            <div class="container-fluid">
-                                                <div class="row">
-                                                    <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                                        <form action="../../Conexion/insertar.php" method="POST">
-                                                            <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Estudiante</fieldset>
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Cedula: </label>
-                                                                <input class="form-control" type="text" name="cedulaE">
-                                                            </div>
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Nombre: </label>
-                                                                <input class="form-control" type="text" name="nombreE">
-                                                            </div>
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Apellido: </label>
-                                                                <input class="form-control" type="text" name="apellidoE">
-                                                            </div>
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Dirección</label>
-                                                                <input class="form-control" type="text" name="direccionE">
-                                                            </div>
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Correo Institucional: </label>
-                                                                <input class="form-control" type="text" name="correoE">
-                                                            </div>
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Telefono: </label>
-                                                                <input class="form-control" type="text" name="telefonoE">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Fecha Nacimiento: </label>
-                                                                <input class="form-control" type="date" name="fechaE">
-                                                            </div>
-                                                            <p class="text-center">
-                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarE"><i class="zmdi zmdi-floppy"></i> Guardar</button>
-                                                            </p>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <?php
-                                            $con = conectar();
-
-                                            if(isset($_POST['eliminar'])){
-                                                $consulta = "DELETE FROM `estudiantes` WHERE `id`=:id";
-                                                $sql = $con-> prepare($consulta);
-                                                $sql -> bindParam(':id', $id, PDO::PARAM_INT);
-                                                $id=trim($_POST['id']);
-                                                $sql->execute();
-                                        
-                                                if($sql->rowCount() > 0)
-                                                {
-                                                    $count = $sql -> rowCount();
-                                                    echo "";
-                                                }
-                                                else{
-                                                    echo "";
-                                                }
-                                            }
-                                        ?>
-                                        <div class="tab-pane fade" id="list">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover text-center">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-center">Cedula</th>
-                                                            <th class="text-center">Nombre</th>
-                                                            <th class="text-center">Apellido</th>
-                                                            <th class="text-center">Dirección</th>
-                                                            <th class="text-center">Email</th>
-                                                            <th class="text-center">Telefono</th>
-                                                            <th class="text-center">Nacimiento</th>
-                                                            <th class="text-center">Modificar</th>
-                                                            <th class="text-center">Eliminar</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th class="text-center">Cedula</th>
-                                                            <th class="text-center">Nombre</th>
-                                                            <th class="text-center">Apellido</th>
-                                                            <th class="text-center">Dirección</th>
-                                                            <th class="text-center">Email</th>
-                                                            <th class="text-center">Telefono</th>
-                                                            <th class="text-center">Nacimiento</th>
-                                                            <th class="text-center">Modificar</th>
-                                                            <th class="text-center">Eliminar</th>
-                                                        </tr>
-                                                    </tfoot>
-                                                    <tbody>
-                                                    <?php
-                                                        $con = conectar();
-
-                                                        $sql = "SELECT * FROM estudiantes"; 
-                                                        $query = $con -> prepare($sql); 
-                                                        $query -> execute(); 
-                                                        $results = $query -> fetchAll(PDO::FETCH_OBJ); 
-
-                                                        if($query -> rowCount() > 0)   { 
-                                                            foreach($results as $result) { 
-                                                                echo "
-                                                                <tr>
-                                                                    <td>".$result -> CED_EST."</td>
-                                                                    <td>".$result -> NOM_EST."</td>
-                                                                    <td>".$result -> APE_EST."</td>
-                                                                    <td>".$result -> DIR_EST."</td>
-                                                                    <td>".$result -> COR_INS_EST."</td>
-                                                                    <td>".$result -> TEL_EST."</td>
-                                                                    <td>".$result -> FEC_NAC_EST."</td>
-                                                                    <td>
-                                                                        <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
-                                                                            <a href='../../Conexion/modificarE.php' style='text-decoration: none; color: #fff;'>Editar</a>
-                                                                        </button>
-                                                                    </td>
-                                                                    <td>
-                                                                        <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
-                                                                            <input type='hidden' name='id' value='".$result -> id."'>
-                                                                            <button class='btn btn-primary' style='color: #fff; background: rgb(168, 41, 9);' name='eliminar'>Eliminar</button>
-                                                                        </form>
-                                                                    </td>
-                                                                </tr>";
-                                                            }
-                                                        }
-                                                    ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+                <center>
+                    <div class="contenedorTexto">
+                        <div class="topic">Asignación</div>
+                            <div class="contentText">
+                                <input type="radio" name="slider" checked id="home">
+                                <input type="radio" name="slider" id="blog">
+                                <input type="radio" name="slider" id="help">
+                                <input type="radio" name="slider" id="code">
+                                <input type="radio" name="slider" id="about">
+                                <div class="list">
+                                    <label for="home" class="home">
+                                        <i class="fas fa-home"></i>
+                                        <span class="title">Docentes</span>
+                                    </label>
+                                    <label for="blog" class="blog">
+                                        <span class="icon"><i class="fas fa-blog"></i></span>
+                                        <span class="title">Estudiantes</span>
+                                    </label>
+                                    
+                                    <div class="slider"></div>
                                 </div>
+                            <div class="text-content">
+                                <div class="home text">
+                                    <div class="title" style="color: #000;">Información</div>
+                                    <p style="color: #000;">Se asignaran docentes a las asignaturas</p>
+                                    <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(158, 7, 7);'>
+                                        <a href='asignacionD.php' style='text-decoration: none; color: #fff;'>Pagina</a>
+                                    </button>
+                                </div>
+                                <div class="blog text">
+                                    <div class="title" style="color: #000;">Información</div>
+                                    <p style="color: #000;">Se asignaran estudiantes a las asignaturas</p>
+                                    <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(158, 7, 7);'>
+                                        <a href='asignacionE.php' style='text-decoration: none; color: #fff;'>Pagina</a>
+                                    </button>
+                                </div>
+                                
                             </div>
                         </div>
-                    </section>
-            </div>
+                    </div>
+                </center>
+            
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
