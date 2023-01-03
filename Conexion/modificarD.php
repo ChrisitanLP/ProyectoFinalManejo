@@ -319,6 +319,7 @@
                                                                     <th class="text-center">Telefono</th>
                                                                     <th class="text-center">Nacimiento</th>
                                                                     <th class="text-center">Modificar</th>
+                                                                    <th class="text-center">Eliminar</th>
                                                                 </tr>
                                                             </thead>
                                                             <tfoot>
@@ -331,6 +332,7 @@
                                                                     <th class="text-center">Telefono</th>
                                                                     <th class="text-center">Nacimiento</th>
                                                                     <th class="text-center">Modificar</th>
+                                                                    <th class="text-center">Eliminar</th>
                                                                 </tr>
                                                             </tfoot>
                                                             <tbody>

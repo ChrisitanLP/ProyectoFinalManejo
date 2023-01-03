@@ -19,8 +19,6 @@
                         <td>'.$listado['COR_INS_DOC'].'</td>
                         <td>'.$listado['TEL_DOC'].'</td>
                         <td>'.$listado['FEC_NAC_DOC'].'</td>
-                        <td><a href="../Conexion/eliminar.php" class="btn btn-success btn-raised btn-xs editar"><i class="zmdi zmdi-refresh"></i></a></td>
-                        <td><button id="eliminarD">Editar</button></td>
                     </tr>';
         }    
         return $filas;

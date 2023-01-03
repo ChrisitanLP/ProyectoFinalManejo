@@ -288,6 +288,7 @@
                                                                     <th class="text-center">Codigo</th>
                                                                     <th class="text-center">Nombre</th>
                                                                     <th class="text-center">Modificar</th>
+                                                                    <th class="text-center">Eliminar</th>
                                                                 </tr>
                                                             </thead>
                                                             <tfoot>
@@ -295,6 +296,7 @@
                                                                     <th class="text-center">Codisgo</th>
                                                                     <th class="text-center">Nombre</th>
                                                                     <th class="text-center">Modificar</th>
+                                                                    <th class="text-center">Eliminar</th>
                                                                 </tr>
                                                             </tfoot>
                                                             <tbody>
