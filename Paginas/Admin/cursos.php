@@ -282,26 +282,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php
-                                            $con = conectar();
-
-                                            if(isset($_POST['eliminar'])){
-                                                $consulta = "DELETE FROM `cursos` WHERE `id`=:id";
-                                                $sql = $con-> prepare($consulta);
-                                                $sql -> bindParam(':id', $id, PDO::PARAM_INT);
-                                                $id=trim($_POST['id']);
-                                                $sql->execute();
                                         
-                                                if($sql->rowCount() > 0)
-                                                {
-                                                    $count = $sql -> rowCount();
-                                                    echo "";
-                                                }
-                                                else{
-                                                    echo "";
-                                                }
-                                            }
-                                        ?>
                                         <div class="tab-pane fade" id="list">
                                             <div class="table-responsive">
                                                 <table class="table table-hover text-center">
@@ -309,51 +290,26 @@
                                                         <tr>
                                                             <th class="text-center">Codigo</th>
                                                             <th class="text-center">Nombre</th>
-                                                            <th class="text-center">Modificar</th>
-                                                            <th class="text-center">Eliminar</th>
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
                                                         <tr>
                                                             <th class="text-center">Codigo</th>
                                                             <th class="text-center">Nombre</th>
-                                                            <th class="text-center">Modificar</th>
-                                                            <th class="text-center">Eliminar</th>
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
                                                     <?php
-                                                        $con = conectar();
-
-                                                        $sql = "SELECT * FROM cursos"; 
-                                                        $query = $con -> prepare($sql); 
-                                                        $query -> execute(); 
-                                                        $results = $query -> fetchAll(PDO::FETCH_OBJ); 
-
-                                                        if($query -> rowCount() > 0)   { 
-                                                            foreach($results as $result) { 
-                                                                echo "
-                                                                <tr>
-                                                                    <td>".$result -> COD_CUR."</td>
-                                                                    <td>".$result -> NOM_CUR."</td>
-                                                                    <td>
-                                                                        <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
-                                                                            <a href='../../Conexion/modificarC.php' style='text-decoration: none; color: #fff;'>Editar</a>
-                                                                        </button>
-                                                                    </td>
-                                                                    <td>
-                                                                        <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
-                                                                            <input type='hidden' name='id' value='".$result -> id."'>
-                                                                            <button class='btn btn-primary' style='color: #fff; background: rgb(168, 41, 9);' name='eliminar'>Eliminar</button>
-                                                                        </form>
-                                                                    </td>
-                                                                </tr>";
-                                                            }
-                                                        }
-                                                    ?>
+                                                        include_once('../../Conexion/listar.php');
+                                                        echo listarCursos();                                           ?>
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            <center>
+                                                <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
+                                                    <a href='../../Conexion/modificarC.php' style='text-decoration: none; color: #fff;'>Editar Tabla</a>
+                                                </button>
+                                            </center>
                                         </div>
                                     </div>
                                 </div>

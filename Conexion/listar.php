@@ -86,8 +86,6 @@
             $filas.='<tr>
                         <td>'.$listado['COD_CUR'].'</td>
                         <td>'.$listado['NOM_CUR'].'</td>
-                        <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                        <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
                     </tr>';
         }    
         return $filas;
