@@ -71,7 +71,7 @@
     if(isset($_POST["enviarE"]))
     {   
         $rolE = "Estudiante";
-        $sqlE = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG)values('$correoE', '$cedulaE', '$rolE')";
+        $sqlE = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG, NOM_USU_LOG)values('$correoE', '$cedulaE', '$rolE', '$nombreE')";
         $consultaE = $con->prepare($sqlE);
         $consultaE -> execute();
         $lastInsertIdE = $con->lastInsertId();
