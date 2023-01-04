@@ -29,7 +29,7 @@
     if(isset($_POST["enviarD"]))
     {   
         $rolD = "Docente";
-        $sqlD = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG)values('$correoD', '$cedulaD', '$rolD')";
+        $sqlD = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG, NOM_USU_LOG)values('$correoD', '$cedulaD', '$rolD', '$nombreD')";
         $consultaD = $con->prepare($sqlD);
         $consultaD -> execute();
         $lastInsertIdD = $con->lastInsertId();
