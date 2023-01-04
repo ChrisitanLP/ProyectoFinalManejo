@@ -41,8 +41,7 @@
                         <td>'.$listado['COR_INS_EST'].'</td>
                         <td>'.$listado['TEL_EST'].'</td>
                         <td>'.$listado['FEC_NAC_EST'].'</td>
-                        <td><a href="#!" class="btn btn-success btn-raised btn-xs editar"><i class="zmdi zmdi-refresh"></i></a></td>
-                        <td><a href="#!" class="btn btn-danger btn-raised btn-xs eliminar"><i class="zmdi zmdi-delete"></i></a></td>
+                        
                     </tr>';
         }    
         return $filas;
@@ -65,8 +64,7 @@
                         <td>'.$listado['COR_INS_USU'].'</td>
                         <td>'.$listado['TEL_USU'].'</td>
                         <td>'.$listado['FEC_NAC_USU'].'</td>
-                        <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                        <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
+                        
                     </tr>';
         }    
         return $filas;
@@ -103,8 +101,7 @@
                         <td>'.$listado['NOM_ASI'].'</td>
                         <td>'.$listado['HOR_ASI'].'</td>
                         <td>'.$listado['CUR_ASI'].'</td>
-                        <td><a href="#!" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a></td>
-                        <td><a href="#!" class="btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></a></td>
+                        
                     </tr>';
         }    
         return $filas;

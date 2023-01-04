@@ -265,7 +265,7 @@
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
                                                         <form action="../../Conexion/insertar.php" method="POST">
-                                                            <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Curso</fieldset>
+                                                            <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información de la Asignatura</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Codigo: </label>
                                                                 <input class="form-control" type="text" name="codigoA">
@@ -290,26 +290,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php
-                                            $con = conectar();
-
-                                            if(isset($_POST['eliminar'])){
-                                                $consulta = "DELETE FROM `asignaturas` WHERE `id`=:id";
-                                                $sql = $con-> prepare($consulta);
-                                                $sql -> bindParam(':id', $id, PDO::PARAM_INT);
-                                                $id=trim($_POST['id']);
-                                                $sql->execute();
-                                        
-                                                if($sql->rowCount() > 0)
-                                                {
-                                                    $count = $sql -> rowCount();
-                                                    echo "";
-                                                }
-                                                else{
-                                                    echo "";
-                                                }
-                                            }
-                                        ?>
+                    
                                         <div class="tab-pane fade" id="list">
                                             <div class="table-responsive">
                                                 <table class="table table-hover text-center">
@@ -319,8 +300,7 @@
                                                             <th class="text-center">Nombre</th>
                                                             <th class="text-center">Horas Semanales</th>
                                                             <th class="text-center">Curso</th>
-                                                            <th class="text-center">Modificar</th>
-                                                            <th class="text-center">Eliminar</th>
+           
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
@@ -329,45 +309,22 @@
                                                             <th class="text-center">Nombre</th>
                                                             <th class="text-center">Horas Semanales</th>
                                                             <th class="text-center">Curso</th>
-                                                            <th class="text-center">Modificar</th>
-                                                            <th class="text-center">Eliminar</th>
+   
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
                                                     <?php
-                                                        $con = conectar();
-
-                                                        $sql = "SELECT * FROM asignaturas"; 
-                                                        $query = $con -> prepare($sql); 
-                                                        $query -> execute(); 
-                                                        $results = $query -> fetchAll(PDO::FETCH_OBJ); 
-
-                                                        if($query -> rowCount() > 0)   { 
-                                                            foreach($results as $result) { 
-                                                                echo "
-                                                                <tr>
-                                                                    <td>".$result -> COD_ASI."</td>
-                                                                    <td>".$result -> NOM_ASI."</td>
-                                                                    <td>".$result -> HOR_ASI."</td>
-                                                                    <td>".$result -> CUR_ASI."</td>
-                                                                    <td>
-                                                                        <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
-                                                                            <a href='../../Conexion/modificarA.php' style='text-decoration: none; color: #fff;'>Editar</a>
-                                                                        </button>
-                                                                    </td>
-                                                                    <td>
-                                                                        <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
-                                                                            <input type='hidden' name='id' value='".$result -> id."'>
-                                                                            <button class='btn btn-primary' style='color: #fff; background: rgb(168, 41, 9);' name='eliminar'>Eliminar</button>
-                                                                        </form>
-                                                                    </td>
-                                                                </tr>";
-                                                            }
-                                                        }
+                                                        include_once('../../Conexion/listar.php');
+                                                        echo listarAsignaturas();   
                                                     ?>
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            <center>
+                                                <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
+                                                    <a href='../../Conexion/modificarA.php' style='text-decoration: none; color: #fff;'>Editar Tabla</a>
+                                                </button>
+                                            </center>
                                         </div>
                                     </div>
                                 </div>
