@@ -18,14 +18,17 @@
     
     if($filas['ROL_LOG']=="Administrador"){ //administrador
         header("location:../Paginas/Admin/pag_admin.php");
-    
     }else
-    if($filas['ROL_LOG']=="Docente"){ //cliente
-    header("location:../Paginas/Docentes/pag_docentes.php");
-    }
-    else{
-        header("location:../login.php"); 
-    }
+        if($filas['ROL_LOG']=="Docente"){ //cliente
+            header("location:../Paginas/Docentes/pag_docentes.php");
+        }
+        else{
+            if($filas['ROL_LOG']=="Estudiante"){ //cliente
+                header("location:../Paginas/Estudiantes/pag_estudiantes.php");
+            }else{
+                header("location:../login.php"); 
+            }
+        }
     mysqli_free_result($resultado);
     mysqli_close($conexion);
 ?>

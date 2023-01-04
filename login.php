@@ -11,30 +11,7 @@
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="CSS/styleLogin.css">
-
     <script src="JS/JqueryLib.js"></script>
-    <!--<script>
-        $(document).ready(function(){
-            $("#ingresar").click(function(){
-                var usuario= $("#usuario").val();
-                var clave= $("#clave").val();
-
-                $.post("Conexion/validar.php",
-                {
-                    u: usuario,
-                    c: clave
-                },
-            
-                function(data, status){
-                    alert("valor:"+data+" Estado:"+status);
-                    if(data==1){
-                        location.href = 'index.php';
-                    }
-                });
-            });
-        });
-    </script>-->
-	
 </head>
 <body>
     <div id="login-bg" class="container-fluid">
