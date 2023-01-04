@@ -200,6 +200,26 @@
                                             <div class="container-fluid">
                                             <?php
                                                 $con = conectar();
+
+                                                if(isset($_POST['eliminar'])){
+                                                    $consulta = "DELETE FROM `usuarios` WHERE `id`=:id";
+                                                    $sql = $con-> prepare($consulta);
+                                                    $sql -> bindParam(':id', $id, PDO::PARAM_INT);
+                                                    $id=trim($_POST['id']);
+                                                    $sql->execute();
+                                            
+                                                    if($sql->rowCount() > 0)
+                                                    {
+                                                        $count = $sql -> rowCount();
+                                                        echo "";
+                                                    }
+                                                    else{
+                                                        echo "";
+                                                    }
+                                                }
+                                            ?>
+                                            <?php
+                                                $con = conectar();
                                                 if(isset($_POST['actualizar']))
                                                 {
                                                     $id=trim($_POST['id']);
@@ -300,6 +320,7 @@
                                                                     <th class="text-center">Telefono</th>
                                                                     <th class="text-center">Nacimiento</th>
                                                                     <th class="text-center">Modificar</th>
+                                                                    <th class="text-center">Eliminar</th>
                                                                 </tr>
                                                             </thead>
                                                             <tfoot>
@@ -312,6 +333,7 @@
                                                                     <th class="text-center">Telefono</th>
                                                                     <th class="text-center">Nacimiento</th>
                                                                     <th class="text-center">Modificar</th>
+                                                                    <th class="text-center">Eliminar</th>
                                                                 </tr>
                                                             </tfoot>
                                                             <tbody>
@@ -340,6 +362,12 @@
                                                                                         <form method='POST' action='".$_SERVER['PHP_SELF']."'>
                                                                                             <input type='hidden' name='id' value='".$result -> id."'>
                                                                                             <button name='editar' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>Editar</button>
+                                                                                        </form>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
+                                                                                            <input type='hidden' name='id' value='".$result -> id."'>
+                                                                                            <button class='btn btn-primary' style='color: #fff; background: rgb(168, 41, 9);' name='eliminar'>Eliminar</button>
                                                                                         </form>
                                                                                     </td>
                                                                                 </tr>";
