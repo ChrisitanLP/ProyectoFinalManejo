@@ -112,8 +112,10 @@
     };
     if(isset($_POST["enviarU"]))
     {   
+
+
         $rolU = "Invitado";
-        $sqlU = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG)values('$correoU', '$cedulaU', '$rolU')";
+        $sqlU = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG, NOM_USU_LOG)values('$correoU', '$cedulaU', '$rolU', '$nombreU')";
         $consultaU = $con->prepare($sqlU);
         $consultaU -> execute();
         $lastInsertIdU = $con->lastInsertId();

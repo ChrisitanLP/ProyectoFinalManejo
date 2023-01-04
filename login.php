@@ -1,5 +1,10 @@
 <?php
-    session_start(); 
+    require "Conexion/conectar.php";
+    session_start();
+    if($_POST){
+        $usuario = $_POST['usuario'];
+        $contraseña = $_POST['contraseña'];
+    } 
 ?>
 <!DOCTYPE html>
 <html lang="en">

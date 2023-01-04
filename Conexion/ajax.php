@@ -13,4 +13,8 @@
 		
 		echo (consultaEstudiantes());
 	}
+	if (isset($_GET['action_type']) && $_GET['action_type'] == 'curso') {
+		
+		echo (consultaCursos());
+	}
 ?>

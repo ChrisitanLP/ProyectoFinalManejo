@@ -107,6 +107,21 @@
         return $filas;
     }
 
+    function consultaCursos(){
+        $con = conectar();
+        $query = "SELECT * FROM cursos";
+        $sentencia = $con -> prepare($query);
+        $sentencia -> execute();
+        $r = $sentencia -> fetchAll();
+
+        $opciones = "";
+        foreach($r as $p){
+           $opciones.= '<option value='.$p['id'].'>'.$p['NOM_CUR'].'</option>';
+        }
+        return $opciones;
+    }
+
+
     function consultaAsignaturas(){
         $con = conectar();
         $query = "SELECT * FROM asignaturas";

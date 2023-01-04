@@ -279,8 +279,8 @@
                                                                 <input class="form-control" type="text" name="horasA">
                                                             </div>
                                                             <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Curso: </label>
-                                                                <input class="form-control" type="number" name="cursoA">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Nombre Curso: </label>
+                                                                <select  class="form-select" aria-label="Default select example" name="cursoA" id = "cursoA"></select>
                                                             </div>
                                                             <p class="text-center">
                                                                 <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarA"><i class="zmdi zmdi-floppy"></i> Guardar</button>
@@ -290,7 +290,26 @@
                                                 </div>
                                             </div>
                                         </div>
-                    
+                                        <script>
+                                            $(document).ready(function(){
+                                                agregarCursos();
+                                            
+                                                function agregarCursos(){
+                                                    $dato = $("#cursoA").val();
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        url:  "../../Conexion/ajax.php",
+                                                        data: {action_type: 'curso', valor: $dato},
+                                                        async: false,
+                                                        success: function(data){
+                                                            $("#cursoA").append(data);
+                                                    
+                                                        }
+                                                    });
+                                                }
+                                                
+                                            });
+                                        </script>
                                         <div class="tab-pane fade" id="list">
                                             <div class="table-responsive">
                                                 <table class="table table-hover text-center">
