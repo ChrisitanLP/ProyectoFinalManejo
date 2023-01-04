@@ -2,7 +2,7 @@
     include_once('../../Conexion/conectar.php');
     session_start();
     
-    if (isset($_SESSION['usuario'])){
+    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Administrador"){
         $usuario = $_SESSION['usuario'];
     }else{
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.

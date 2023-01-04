@@ -17,7 +17,9 @@
     $resultado=mysqli_query($conexion,$consulta);
     
     $filas=mysqli_fetch_array($resultado);
-    
+
+    $_SESSION['rol'] = $filas['ROL_LOG'];
+
     if($filas['ROL_LOG']=="Administrador"){ //administrador
         header("location:../Paginas/Admin/pag_admin.php");
     }else

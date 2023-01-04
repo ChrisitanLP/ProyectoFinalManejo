@@ -1,3 +1,13 @@
+<?php
+    session_start();
+
+    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
+        $usuario = $_SESSION['usuario'];
+    }else{
+        header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
+        die() ;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -229,7 +239,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" >Estudiantes</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" ><?php echo $usuario; ?></span>
                                 <img class="img-profile rounded-circle"
                                     src="../../img/undraw_profile.svg">
                             </a>
