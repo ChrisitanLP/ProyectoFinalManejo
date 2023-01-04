@@ -1,5 +1,13 @@
 <?php 
     include_once('../../Conexion/conectar.php');
+    session_start();
+    
+    if (isset($_SESSION['usuario'])){
+        $usuario = $_SESSION['usuario'];
+    }else{
+        header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
+        die() ;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,26 +36,6 @@
 
     <!-- Custom styles for this template-->
     <link href="../../CSS/sb-admin-2.min.css" rel="stylesheet">
-    <script>
-        $(document).ready(function(){
-            $("#cerrar").click(function(){
-                alert("Cerrar sesion");
-                var usuario = $("#usuario").val();
-                var clave = $("#clave").val();
-                
-                $.post("../../Conexion/validar.php",{
-                    u: usuario,
-                    c: clave
-                },
-                function(data, status){
-                    //alert("valor:"+data+" Estado:"+status);
-                    if(data==1){
-                        location.href = 'index.php';
-                    }
-                });
-            });
-        });
-    </script>
     <script src="../../JS/jquery-3.1.1.min.js"></script>
 	<script src="../../JS/sweetalert2.min.js"></script>
 	<script src="../../JS/bootstrap.min.js"></script>

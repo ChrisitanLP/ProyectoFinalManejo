@@ -1,6 +1,15 @@
 <?php 
     include_once('../../Conexion/conectar.php');
+    session_start();
+    
+    if (isset($_SESSION['usuario'])){
+        $usuario = $_SESSION['usuario'];
+    }else{
+        header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
+        die() ;
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 

@@ -1,3 +1,13 @@
+<?php
+    session_start();
+
+    if (isset($_SESSION['usuario'])){
+        $usuario = $_SESSION['usuario'];
+    }else{
+        header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
+        die() ;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,28 +31,6 @@
 
     <!-- Custom styles for this template-->
     <link href="../../CSS/sb-admin-2.min.css" rel="stylesheet">
-    <script>
-        $(document).ready(function(){
-            $("#cerrar").click(function(){
-                alert("Cerrar sesion");
-                var usuario = $("#usuario").val();
-                var clave = $("#clave").val();
-                
-                $.post("../../Conexion/validar.php",{
-                    u: usuario,
-                    c: clave
-                },
-                function(data, status){
-                    //alert("valor:"+data+" Estado:"+status);
-                    if(data==1){
-                        location.href = 'pag_admin.php';
-                    }
-                });
-            });
-        });
-
-    </script>
-
 </head>
 
 <body id="page-top">
@@ -59,7 +47,7 @@
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
                 <br>
-                <div class="sidebar-brand-text mx-3">UTA</div>
+                <div class="sidebar-brand-text mx-3"><?php echo $usuario; ?></div>
             </a>
 
             <!-- Divider -->
@@ -226,7 +214,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" >Admin</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" ><?php echo $usuario; ?></span>
                                 <img class="img-profile rounded-circle"
                                     src="../../img/undraw_profile.svg">
                             </a>
