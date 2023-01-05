@@ -155,10 +155,11 @@
     $codigoA = $_POST["codigoA"];
     $horasA = $_POST["horasA"];
     $cursoA = $_POST["cursoA"];
+    $docenteA = $_POST["docenteA"];
 
     if(isset($_POST["enviarA"]))
     {
-        $sqlA = "INSERT INTO asignaturas(COD_ASI, NOM_ASI, HOR_ASI, CUR_ASI)values('$codigoA', '$nombreA', '$horasA', '$cursoA')";
+        $sqlA = "INSERT INTO asignaturas(COD_ASI, NOM_ASI, HOR_ASI, CUR_ASI, DOC_ASI)values('$codigoA', '$nombreA', '$horasA', '$cursoA', '$docenteA')";
         $consultaA = $con->prepare($sqlA);
         $consultaA -> execute();
         $lastInsertIdA = $con->lastInsertId();

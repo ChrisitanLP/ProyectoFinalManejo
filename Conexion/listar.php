@@ -101,7 +101,7 @@
                         <td>'.$listado['NOM_ASI'].'</td>
                         <td>'.$listado['HOR_ASI'].'</td>
                         <td>'.$listado['CUR_ASI'].'</td>
-                        
+                        <td>'.$listado['DOC_ASI'].'</td>
                     </tr>';
         }    
         return $filas;

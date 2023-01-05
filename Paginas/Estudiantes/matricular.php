@@ -1,7 +1,8 @@
 <?php
+    include_once('../../Conexion/conectar.php');
     session_start();
 
-    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
+    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
         $usuario = $_SESSION['usuario'];
     }else{
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
@@ -23,7 +24,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Pagina Principal (Docente)</title>
+    <title>Pagina Principal (Estudiantes)</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -260,8 +261,60 @@
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
-
-                    
+                    <section>
+                        <div class="page-header" style="margin-top: -15px;">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    
+                                    <div id="myTabContent" class="tab-content">
+                                        
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-md-10 col-md-offset-1">
+                                                        <form action="../../Conexion/insertar.php" method="POST">
+                                                            <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información</fieldset>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Codigo: </label>
+                                                                <input class="form-control" type="text" name="codigoAE">     
+                                                            </div>
+                                                            
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Nombre Asignatura: </label>
+                                                                <select  class="form-select" aria-label="Default select example" name="asignaturasAE" id = "asignaturasAE"></select>
+                                                            </div>
+                                                            
+                                                            <p class="text-center">
+                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarAE"><i class="zmdi zmdi-floppy"></i> Guardar</button>
+                                                            </p>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                        <script>
+                                            $(document).ready(function(){
+                                                agregarAsignaturas();
+                                                function agregarAsignaturas(){
+                                                    $dato = $("#asignaturasAE").val();
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        url:  "../../Conexion/ajax.php",
+                                                        data: {action_type: 'asignatura', valor: $dato},
+                                                        async: false,
+                                                        success: function(data){
+                                                            $("#asignaturasAE").append(data);
+                                                    
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
                     <!-- Content Row -->
 

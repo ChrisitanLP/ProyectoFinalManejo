@@ -33,27 +33,6 @@
 
     <!-- Custom styles for this template-->
     <link href="../../CSS/sb-admin-2.min.css" rel="stylesheet">
-    <script>
-        $(document).ready(function(){
-            $("#cerrar").click(function(){
-                alert("Cerrar sesion");
-                var usuario = $("#usuario").val();
-                var clave = $("#clave").val();
-                
-                $.post("../../Conexion/validar.php",{
-                    u: usuario,
-                    c: clave
-                },
-                function(data, status){
-                    //alert("valor:"+data+" Estado:"+status);
-                    if(data==1){
-                        location.href = 'pag_admin.php';
-                    }
-                });
-            });
-        });
-
-    </script>
 
 </head>
 
@@ -281,7 +260,9 @@
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
-
+                    <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
+                        <a href='matricular.php' style='text-decoration: none; color: #fff;'>Matricular</a>
+                    </button>
                     
 
                     <!-- Content Row -->

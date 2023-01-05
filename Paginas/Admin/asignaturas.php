@@ -32,26 +32,7 @@
 
     <!-- Custom styles for this template-->
     <link href="../../CSS/sb-admin-2.min.css" rel="stylesheet">
-    <script>
-        $(document).ready(function(){
-            $("#cerrar").click(function(){
-                alert("Cerrar sesion");
-                var usuario = $("#usuario").val();
-                var clave = $("#clave").val();
-                
-                $.post("../../Conexion/validar.php",{
-                    u: usuario,
-                    c: clave
-                },
-                function(data, status){
-                    //alert("valor:"+data+" Estado:"+status);
-                    if(data==1){
-                        location.href = 'pag_admin.php';
-                    }
-                });
-            });
-        });
-    </script>
+    
     <script src="../../JS/jquery-3.1.1.min.js"></script>
 	<script src="../../JS/sweetalert2.min.js"></script>
 	<script src="../../JS/bootstrap.min.js"></script>
@@ -290,6 +271,10 @@
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Nombre Curso: </label>
                                                                 <select  class="form-select" aria-label="Default select example" name="cursoA" id = "cursoA"></select>
                                                             </div>
+                                                            <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Nombre Docente: </label>
+                                                                <select  class="form-select" aria-label="Default select example" name="docenteA" id = "docenteA"></select>
+                                                            </div>
                                                             <p class="text-center">
                                                                 <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarA"><i class="zmdi zmdi-floppy"></i> Guardar</button>
                                                             </p>
@@ -301,7 +286,7 @@
                                         <script>
                                             $(document).ready(function(){
                                                 agregarCursos();
-                                            
+                                                agregarDocentes();
                                                 function agregarCursos(){
                                                     $dato = $("#cursoA").val();
                                                     $.ajax({
@@ -315,7 +300,19 @@
                                                         }
                                                     });
                                                 }
-                                                
+                                                function agregarDocentes(){
+                                                    $dato = $("#docenteA").val();
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        url:  "../../Conexion/ajax.php",
+                                                        data: {action_type: 'docente', valor: $dato},
+                                                        async: false,
+                                                        success: function(data){
+                                                            $("#docenteA").append(data);
+                                                    
+                                                        }
+                                                    });
+                                                }
                                             });
                                         </script>
                                         <div class="tab-pane fade" id="list">
@@ -327,7 +324,7 @@
                                                             <th class="text-center">Nombre</th>
                                                             <th class="text-center">Horas Semanales</th>
                                                             <th class="text-center">Curso</th>
-           
+                                                            <th class="text-center">Docente</th>
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
@@ -336,7 +333,7 @@
                                                             <th class="text-center">Nombre</th>
                                                             <th class="text-center">Horas Semanales</th>
                                                             <th class="text-center">Curso</th>
-   
+                                                            <th class="text-center">Docente</th>
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
