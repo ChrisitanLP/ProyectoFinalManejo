@@ -269,8 +269,7 @@
                         <div class="card-group">
                             <?php 
                                     $consulta = "   SELECT COUNT(id)
-                                                    AS numero FROM login 
-                                                    WHERE ROL_LOG = 'Estudiante'
+                                                    AS numero FROM estudiantes
                                                     ";
                                     $sentencia = $con -> prepare($consulta);
                                     $sentencia -> execute();
@@ -300,8 +299,7 @@
                             ?>
                             <?php 
                                     $consulta = "   SELECT COUNT(id)
-                                                    AS numero FROM login 
-                                                    WHERE ROL_LOG = 'Docente'
+                                                    AS numero FROM docentes
                                                     ";
                                     $sentencia = $con -> prepare($consulta);
                                     $sentencia -> execute();
@@ -331,8 +329,7 @@
                             ?>
                             <?php 
                                     $consulta = "   SELECT COUNT(id)
-                                                    AS numero FROM login 
-                                                    WHERE ROL_LOG = 'Invitado'
+                                                    AS numero FROM usuarios 
                                                     ";
                                     $sentencia = $con -> prepare($consulta);
                                     $sentencia -> execute();
