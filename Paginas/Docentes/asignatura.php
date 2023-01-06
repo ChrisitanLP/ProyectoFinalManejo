@@ -1,14 +1,26 @@
 <?php
     include_once('../../Conexion/conectar.php');
-    $con = conectar();
-
     session_start();
 
-    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Administrador"){
+    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
         $usuario = $_SESSION['usuario'];
     }else{
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
+    }
+
+    $contraseña = $_SESSION['contraseña'];
+    $con = conectar();
+    
+    $consulta = "   SELECT id
+                    FROM docentes
+                    WHERE COR_INS_DOC = ? AND CED_DOC = ?";
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+    $r = $sentencia -> fetchAll();
+    $codigo = "";
+    foreach($r as $resu){
+        $codigo.= $resu['id'];
     }
 ?>
 <!DOCTYPE html>
@@ -24,7 +36,9 @@
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../../CSS/footer.css">
 
-    <title>Pagina Principal (Administrador)</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+
+    <title>Asignación</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,10 +48,11 @@
 
     <!-- Custom styles for this template-->
     <link href="../../CSS/sb-admin-2.min.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario'] ; echo $_SESSION['rol'] ; echo $_SESSION['contraseña'];?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo); echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -45,12 +60,12 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_admin.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
                 <br>
-                <div class="sidebar-brand-text mx-3"><?php echo $usuario; ?></div>
+                <div class="sidebar-brand-text mx-3">UTA</div>
             </a>
 
             <!-- Divider -->
@@ -58,7 +73,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_admin.php">
+                <a class="nav-link" href="pag_estudiantes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -81,9 +96,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="cursos.php">Cursos</a>
-                        <a class="collapse-item" href="asignaturas.php">Asignatura</a>
-						            <a class="collapse-item" href="asignacion.php">Asignación</a>
+                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
                     </div>
                 </div>
             </li>
@@ -93,15 +106,30 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench" style="color: #fff;"></i>
-                    <span>Usuarios</span>
+                    <span>Asignaturas</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
-                        <a class="collapse-item" href="docentes.php">Docentes</a>
-                        <a class="collapse-item" href="estudiantes.php">Estudiantes</a>
-                        <a class="collapse-item" href="usuarios.php">Usuarios</a>
+                            <?php 
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE DOC_ASI IN (
+                                                                    SELECT id 
+                                                                    FROM docentes
+                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
+                                                    )";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                        <a class="collapse-item" href="asignatura.php" id="'.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                    }   
+                                    echo ($codigo);      
+                            ?>
                     </div>
                 </div>
             </li>
@@ -120,6 +148,7 @@
             <!-- Sidebar Message -->
 
         </ul>
+      
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -247,6 +276,7 @@
                     </ul>
 
                 </nav>
+                
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -254,221 +284,71 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Información</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Asignación Tareas</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
 
-                    
+                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
+                        <div id="myTabContent" class="tab-content">
+
+                                <div class="container-fluid">
+                                    <br>
+                                    <h1 class="h4 mb-0 text-danger-800" style="color: red;">General</h1>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-10 col-md-offset-1">
+                                            <form action="../../Conexion/insertar.php" method="POST">
+                                                <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
+                                                    <div>
+                                                        <label class="control-label" style="color: #000; font-weight: 500;">Asignación: </label>
+                                                    </div>
+                                                    <center>
+                                                    <div>
+                                                        <div class="form-group label-floating">
+                                                            <div class="col-md-9">
+                                                                <input id="fname" name="name" type="text" placeholder="Asignación..." class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </center>
+                                                    <div>
+                                                        <label class="control-label" style="color: #000; font-weight: 500;">Descripción: </label>
+                                                    </div>
+                                                    <center>
+                                                    <div>
+                                                        <div class="form-group label-floating">
+                                                            <div class="col-md-9">
+                                                                <textarea class="form-control" id="message" name="message" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </center>
+                                                    <div>
+                                                        <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
+                                                    </div>
+                                                    <center>
+                                                    <div>
+                                                        <div class="form-group label-floating">
+                                                            <input type="file" id="archivo">
+                                                        </div>
+                                                    </div>
+                                                    </center>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
 
                     <!-- Content Row -->
-                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">
-                        <br>
-                        <h1 class="h5 mb-0 text-gray-800">Usuarios</h1>
-                        <br>
-                        <div class="card-group">
-                            <?php 
-                                    $consulta = "   SELECT COUNT(id)
-                                                    AS numero FROM login 
-                                                    WHERE ROL_LOG = 'Estudiante'
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute();
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-primary shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    FISEI</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
-                                                                <p class="titulo">Estudiantes</p>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
-                            <?php 
-                                    $consulta = "   SELECT COUNT(id)
-                                                    AS numero FROM login 
-                                                    WHERE ROL_LOG = 'Docente'
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute();
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-info shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                FISEI</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
-                                                                <p class="titulo">Docentes</p>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
-                            <?php 
-                                    $consulta = "   SELECT COUNT(id)
-                                                    AS numero FROM login 
-                                                    WHERE ROL_LOG = 'Invitado'
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute();
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-success shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                FISEI</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
-                                                                <p class="titulo">Invitados</p>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
-                            <?php 
-                                    $consulta = "   SELECT COUNT(id)
-                                                    AS numero FROM login 
-                                                    WHERE ROL_LOG = 'Administrador'
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute();
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-success shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    FISEI</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
-                                                                <p class="titulo">Administradores</p>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">
-                        <br>
-                        <h1 class="h5 mb-0 text-gray-800">Administración</h1>
-                        <br>
-                        <div class="card-group">
-                            <?php 
-                                    $consulta = "   SELECT COUNT(id)
-                                                    AS numero FROM asignaturas 
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute();
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-primary shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    Asignaturas</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
-                            <?php 
-                                    $consulta = "   SELECT COUNT(id)
-                                                    AS numero FROM cursos
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute();
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-info shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    Cursos</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
-                        </div>
-                    </div>
-                    <br>
-                    
-                    
+
                     
 
                     <!-- Content Row -->
                     
 
-                        
-                    
 
                 </div>
                 <!-- /.container-fluid -->

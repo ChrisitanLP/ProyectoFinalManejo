@@ -1,4 +1,5 @@
 <?php
+    include_once('../../Conexion/conectar.php');
     session_start();
 
     if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
@@ -6,6 +7,20 @@
     }else{
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
+    }
+
+    $contraseña = $_SESSION['contraseña'];
+    $con = conectar();
+    
+    $consulta = "   SELECT id
+                    FROM docentes
+                    WHERE COR_INS_DOC = ? AND CED_DOC = ?";
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+    $r = $sentencia -> fetchAll();
+    $codigo = "";
+    foreach($r as $resu){
+        $codigo.= $resu['id'];
     }
 ?>
 <!DOCTYPE html>
@@ -37,7 +52,7 @@
 </head>
 
 <body id="page-top">
-
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo); echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -76,14 +91,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
-                    <span>Asignaturas</span>
+                    <span>Administración</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="cursos.php">Cursos</a>
-                        <a class="collapse-item" href="asignaturas.php">Asignatura</a>
-						<a class="collapse-item" href="asignacion.php">Asignación de Docentes</a>
+                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
                     </div>
                 </div>
             </li>
@@ -93,15 +106,30 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench" style="color: #fff;"></i>
-                    <span>Plataforma Virtual</span>
+                    <span>Asignaturas</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
-                        <a class="collapse-item" href="docentes.php">Docentes</a>
-                        <a class="collapse-item" href="estudiantes.php">Estudiantes</a>
-                        <a class="collapse-item" href="usuarios.php">Usuarios</a>
+                            <?php 
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE DOC_ASI IN (
+                                                                    SELECT id 
+                                                                    FROM docentes
+                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
+                                                    )";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                        <a class="collapse-item" href="asignatura.php" id="'.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                    }   
+                                    echo ($codigo);      
+                            ?>
                     </div>
                 </div>
             </li>
@@ -256,12 +284,52 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Información</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Información <?php echo $_SESSION['rol']; ?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
-
-                    
+                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">
+                        <br>
+                        <h1 class="h5 mb-0 text-gray-800">Asignaturas</h1>
+                        <br>
+                        <div class="card-group">
+                            <?php 
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE DOC_ASI IN (
+                                                                    SELECT id 
+                                                                    FROM docentes
+                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
+                                                    )";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                            <div class="col-xl-3 col-md-6 mb-4">
+                                                <div class="card border-left-primary shadow h-100 py-2">
+                                                    <div class="card-body">
+                                                        <div class="row no-gutters align-items-center">
+                                                            <div class="col mr-2">
+                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                    FISEI</div>
+                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASI'].'.</div>
+                                                                <p class="titulo">'.$resu['NOM_ASI'].'</p>
+                                                                <a href="#" class="card-link">Ingresar al Curso</a>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                    }   
+                                    echo ($codigo);      
+                            ?>
+                        </div>
+                    </div>
 
                     <!-- Content Row -->
 

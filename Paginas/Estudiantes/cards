@@ -26,7 +26,11 @@
     //Devolver imagen de la bdd
     if(isset($_POST['devolverImagen'])){
         $con = conectar();
-        $query = "SELECT FOTO_USU FROM usuarios WHERE USU_USU=? and TIPO_USU=?";
+
+        $query = "  SELECT FOTO_USU 
+                    FROM usuarios 
+                    WHERE USU_USU=? and TIPO_USU=?";
+                    
         $sentencia = $con -> prepare($query);
         if($sentencia -> execute(array($_SESSION['nomUsuario'], $_SESSION['tipoUsuario']))){
             $r = $sentencia -> fetch();
@@ -42,10 +46,28 @@
 
             $con = conectar();
             if($_SESSION['tipoUsuario'] == "ESTUDIANTE"){
-                $queryTipo = "SELECT * FROM asignaturas WHERE ID_ASI IN (SELECT ID_ASI_DET FROM detalle_asignaturas
-                    WHERE ID_USU_DET IN (SELECT ID_USU FROM usuarios WHERE USU_USU = ? AND TIPO_USU= ?))";
+
+                $queryTipo = "  SELECT * 
+                                FROM asignaturas 
+                                WHERE ID_ASI IN (
+                                                SELECT ID_ASI_DET 
+                                                FROM detalle_asignaturas
+                                                WHERE ID_USU_DET IN (
+                                                                    SELECT ID_USU 
+                                                                    FROM usuarios 
+                                                                    WHERE USU_USU = ? AND TIPO_USU= ?
+                                                )
+                                )";
+
             }elseif($_SESSION['tipoUsuario'] == "DOCENTE"){
-                $queryTipo = "SELECT * FROM asignaturas WHERE ID_DOC_ASI = (SELECT ID_USU FROM usuarios WHERE USU_USU = ? AND TIPO_USU= ?)";
+
+                $queryTipo = "  SELECT * 
+                                FROM asignaturas 
+                                WHERE ID_DOC_ASI = (
+                                                SELECT ID_USU 
+                                                FROM usuarios 
+                                                WHERE USU_USU = ? AND TIPO_USU= ?
+                                )";
             }
 
             $sentencia = $con -> prepare($queryTipo);
@@ -75,3 +97,22 @@
             echo($cartas);
         }
 ?>
+
+<?php 
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE DOC_ASI IN (
+                                                                    SELECT id 
+                                                                    FROM docentes
+                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
+                                                    )";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                        <a class="collapse-item" href="asignatura.php">'.$resu['NOM_ASI'].'</a>';
+                                    }   
+                                    echo ($codigo);      
+                            ?>

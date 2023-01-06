@@ -235,8 +235,9 @@
                                                     $NOM_ASI=trim($_POST['NOM_ASI']);
                                                     $HOR_ASI=trim($_POST['HOR_ASI']);
                                                     $CUR_ASI=trim($_POST['CUR_ASI']);
+                                                    $DOC_ASI=trim($_POST['DOC_ASI']);
 
-                                                    $consulta = "UPDATE asignaturas SET `NOM_ASI`= :NOM_ASI, `COD_ASI` = :COD_ASI, `HOR_ASI`= :HOR_ASI, `CUR_ASI` = :CUR_ASI  WHERE `id` = :id";
+                                                    $consulta = "UPDATE asignaturas SET `NOM_ASI`= :NOM_ASI, `COD_ASI` = :COD_ASI, `HOR_ASI`= :HOR_ASI, `CUR_ASI` = :CUR_ASI, `DOC_ASI` = :DOC_ASI  WHERE `id` = :id";
                                                     
                                                     $sql = $con->prepare($consulta);
                                                     
@@ -244,6 +245,7 @@
                                                     $sql->bindParam(':COD_ASI',$COD_ASI,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':HOR_ASI',$HOR_ASI,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':CUR_ASI',$CUR_ASI,PDO::PARAM_STR, 25);
+                                                    $sql->bindParam(':DOC_ASI',$DOC_ASI,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':id',$id,PDO::PARAM_INT);
 
                                                     $sql->execute();
@@ -296,6 +298,13 @@
                                                                 <input value="<?php echo $obj->CUR_ASI;?>" name="CUR_ASI" type="text" class="form-control" placeholder="Codigo...">
                                                             </div>
                                                         </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label for="DOC_ASI">Docente</label>
+                                                                <input value="<?php echo $obj->DOC_ASI;?>" name="DOC_ASI" type="text" class="form-control" placeholder="Nombre...">
+                                                            </div>
+                                                           
+                                                        </div>
                                                         <div class="form-group">
                                                             <button name="actualizar" type="submit" class="btn btn-primary  btn-block" style="color: #fff;">Actualizar Registro</button>
                                                         </div>
@@ -311,6 +320,7 @@
                                                                     <th class="text-center">Nombre</th>
                                                                     <th class="text-center">Horas Semanales</th>
                                                                     <th class="text-center">Cursos</th>
+                                                                    <th class="text-center">Docentes</th>
                                                                     <th class="text-center">Modificar</th>
                                                                     <th class="text-center">Eliminar</th>
                                                                 </tr>
@@ -321,6 +331,7 @@
                                                                     <th class="text-center">Nombre</th>
                                                                     <th class="text-center">Horas Semanales</th>
                                                                     <th class="text-center">Cursos</th>
+                                                                    <th class="text-center">Docentes</th>
                                                                     <th class="text-center">Modificar</th>
                                                                     <th class="text-center">Eliminar</th>
                                                                 </tr>
@@ -344,6 +355,7 @@
                                                                                     <td>".$result -> NOM_ASI."</td>
                                                                                     <td>".$result -> HOR_ASI."</td>
                                                                                     <td>".$result -> CUR_ASI."</td>
+                                                                                    <td>".$result -> DOC_ASI."</td>
                                                                                     <td>
                                                                                         <form method='POST' action='".$_SERVER['PHP_SELF']."'>
                                                                                             <input type='hidden' name='id' value='".$result -> id."'>

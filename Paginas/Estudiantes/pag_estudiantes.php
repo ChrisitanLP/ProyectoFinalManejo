@@ -1,4 +1,5 @@
 <?php
+    include_once('../../Conexion/conectar.php');
     session_start();
 
     if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
@@ -6,6 +7,21 @@
     }else{
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
+    }
+
+    $contraseña = $_SESSION['contraseña'];
+    $con = conectar();
+    
+    $consulta = "   SELECT id
+                    FROM estudiantes
+                    WHERE COR_INS_EST = ? AND CED_EST = ?";
+
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+    $r = $sentencia -> fetchAll();
+    $codigo = "";
+    foreach($r as $resu){
+        $codigo.= $resu['id'];
     }
 ?>
 <!DOCTYPE html>
@@ -37,7 +53,7 @@
 </head>
 
 <body id="page-top">
-
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo); echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -256,10 +272,12 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Información</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Información <?php echo $_SESSION['rol']; ?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
+                    
+                    
                     <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
                         <a href='matricular.php' style='text-decoration: none; color: #fff;'>Matricular</a>
                     </button>
