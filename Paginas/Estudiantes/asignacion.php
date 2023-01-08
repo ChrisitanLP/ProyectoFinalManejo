@@ -2,7 +2,7 @@
     include_once('../../Conexion/conectar.php');
     session_start();
 
-    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
+    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
         $usuario = $_SESSION['usuario'];
     }else{
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
@@ -10,23 +10,23 @@
     }
 
     $contraseña = $_SESSION['contraseña'];
+
     $con = conectar();
     
     $consulta = "   SELECT id
-                    FROM docentes
-                    WHERE COR_INS_DOC = ? AND CED_DOC = ?";
+                    FROM estudiantes
+                    WHERE COR_INS_EST = ? AND CED_EST = ?";
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
-    $codigodoc = "";
+    $codigoEs = "";
     foreach($r as $resu){
-        $codigodoc.= $resu['id'];
+        $codigoEs.= $resu['id'];
     }
 
-    $_SESSION['codigoDocente'] = $codigodoc;
+    $_SESSION['codigoEstudiante'] = $codigoEs;
 
     if(isset($_GET['codAsignacion'])){
-        //$_SESSION['CodAsig'] = $_GET['codpagina'];
         $codigoAsig = $_GET['codAsignacion'];
     }else{
         header('Location: pag_docentes.php');
@@ -78,7 +78,7 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigodoc); echo $_SESSION['rol']; ?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigoEs); echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 

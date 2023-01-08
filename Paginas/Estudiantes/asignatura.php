@@ -361,7 +361,7 @@
                                                                         Tarea</div>
                                                                     <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
                                                                     <p class="titulo">'.$resu['DES_ASIG'].'</p>
-                                                                        <a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Ver Asignación</strong></a>
+                                                                        <a  href="asignacion.php?codAsignacion='.$resu['id'].'" ><strong>Ver Asignación</strong></a>
                                                                 </div>
                                                                 <div class="col-auto">
                                                                     <i class="fa fa-bookmark" aria-hidden="true"></i>
