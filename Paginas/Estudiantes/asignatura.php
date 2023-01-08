@@ -24,11 +24,7 @@
         $codigo.= $resu['id'];
     }
 
-    //$codigoAsig = $_GET['codpagina'];
-    //echo $codigoAsig;
-
     if(isset($_GET['codpagina'])){
-        //$_SESSION['CodAsig'] = $_GET['codpagina'];
         $codigoAsig = $_GET['codpagina'];
     }else{
         header('Location: pag_docentes.php');
@@ -47,6 +43,7 @@
     foreach($r as $resu){
         $nombreA.= $resu['NOM_ASI'];
     }
+    $_SESSION['NombreAsignatura'] = $nombreA;
 
 ?>
 <!DOCTYPE html>

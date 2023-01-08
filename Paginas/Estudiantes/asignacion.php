@@ -36,18 +36,33 @@
     $con = conectar();
     
     $consulta = "   SELECT *
-                    FROM asignaturas
+                    FROM asignacion_deberes
                     WHERE id = ? ";
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($codigoAsig));
     $r = $sentencia -> fetchAll();
-    $nombreA = "";
+    
+    $nombreAsig = "";
+    $descripcionAsig = "";
+    $tipoArchivo = "";
+    $rutaArchivo = "";
+    $nombreArchivo = "";
+    $fecha = "";
+
     foreach($r as $resu){
-        $nombreA.= $resu['NOM_ASI'];
+        $nombreAsig.= $resu['NOM_ASIG'];
+        $descripcionAsig.= $resu['DES_ASIG']; 
+        $tipoArchivo.= $resu['TIP_ARCH'];
+        $rutaArchivo.= $resu['RUT_ARCH'];
+        $nombreArchivo.= $resu['NOM_ARCH'];
+        $fecha.= $resu['FEC_ASIG'];
     }
-
-    $_SESSION['codigoAsignatura'] = $codigoAsig;
-
+    $_SESSION['NombreAsignacion'] = $nombreAsig;
+    $_SESSION['codigoAsignacion'] = $codigoAsig;
+    $_SESSION['descripcionAsignacion'] = $descripcionAsig;
+    $_SESSION['tipArchivo'] = $tipoArchivo;
+    $_SESSION['rutaArchivo'] = $rutaArchivo;
+    $_SESSION['nombreArchivo'] = $nombreArchivo;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +79,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Asignación <?php echo $nombreA;?></title>
+    <title>Asignación <?php echo $_SESSION['NombreAsignatura'];?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -78,7 +93,7 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigoEs); echo $_SESSION['rol']; ?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo $_SESSION['NombreAsignacion']; echo $_SESSION['rol']; echo $_SESSION['codigoAsignacion']; echo $_SESSION['nombreArchivo'];?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -310,7 +325,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Asignación <?php echo $nombreA;?></h1>
+                        <h1 class="h3 mb-0 text-gray-800">Asignación <?php echo $_SESSION['NombreAsignacion'];?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
@@ -322,12 +337,58 @@
                                     <br>
                                     <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">General</h1>
                                     <br>
+                                    <?php 
+                                        $categoria= $tipoArchivo;
+                                         
+                                        $valor="";
+                                         if($categoria=='image/jpeg' || $categoria=='png'){
+                                             $valor="<img width='40' src='../../img/Logos/desconocido.png'>";
+                                         }
+                     
+                                         if($categoria=='application/pdf'){
+                                             $valor="<img  width='40' src='../../img/Logos/pdf.png'>";
+                                         }
+                     
+                                         if($categoria=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoria=='xlsm' ){
+                                             $valor="<img  width='40' src='../../img/Logos/exel.png'>";
+                                         }
+                     
+                                         if($categoria=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoria=='docx'){
+                                             $valor="<img  width='40' src='../../img/Logos/word.png'>";
+                                         }
+                                         if($categoria=='application/zip'){
+                                             $valor="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
+                                         }
+                     
+                                         if($categoria=='mp3'){
+                                             $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                         }
+                     
+                                         if($valor==''){
+                                             $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                         }
+
+                                       echo '<div>
+                                                <label class="control-label" style="color: #000; font-weight: 500;">'.$_SESSION['descripcionAsignacion'].'</label>
+                                                <br><label class="control-label" style="color: #000; font-weight: 500;">Fecha Limite: '.$fecha.'</label>
+                                                <br><label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
+                                            </div>';
+                                    ?>
+                                    <?php 
+                                        if($_SESSION['nombreArchivo'] == ''){    
+                                            echo '<p>Sin archivo</p>';
+                                        }else{
+                                           echo '<a href="cargar.php?id='.$_SESSION['nombreArchivo'].'">'.$valor.'descargar</a>';
+                                        };
+                                    ?>
+                                    <br>
                                     <div class="row">
                                         <div class="col-xs-12 col-md-10 col-md-offset-1">
+                                            <br>
                                             <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
                                                 <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
                                                     <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Descripción: </label>
+                                                        <label class="control-label" style="color: #000; font-weight: 500;">Información: </label>
                                                     </div>
                                                     <center>
                                                     <div>
