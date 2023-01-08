@@ -327,18 +327,6 @@
                                             <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
                                                 <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
                                                     <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Asignación: </label>
-                                                    </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <input id="fname" name="nombreAsig" type="text" placeholder="Asignación..." class="form-control">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </center>
-                                                    <div>
                                                         <label class="control-label" style="color: #000; font-weight: 500;">Descripción: </label>
                                                     </div>
                                                     <center>
@@ -346,18 +334,6 @@
                                                         <div class="form-group label-floating">
                                                             <div class="col-md-9">
                                                                 <textarea class="form-control" id="message" name="descripcionAsig" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </center>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Fecha: </label>
-                                                    </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <input class="form-control" type="date" name="fechaAsig">
                                                             </div>
                                                         </div>
                                                     </div>
