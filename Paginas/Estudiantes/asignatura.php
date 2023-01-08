@@ -8,6 +8,46 @@
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }
+
+    $contraseña = $_SESSION['contraseña'];
+
+    $con = conectar();
+    
+    $consulta = "   SELECT id
+                    FROM estudiantes
+                    WHERE COR_INS_EST = ? AND CED_EST = ?";
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+    $r = $sentencia -> fetchAll();
+    $codigo = "";
+    foreach($r as $resu){
+        $codigo.= $resu['id'];
+    }
+
+    //$codigoAsig = $_GET['codpagina'];
+    //echo $codigoAsig;
+
+    if(isset($_GET['codpagina'])){
+        //$_SESSION['CodAsig'] = $_GET['codpagina'];
+        $codigoAsig = $_GET['codpagina'];
+    }else{
+        header('Location: pag_docentes.php');
+        die();
+    }
+
+    $con = conectar();
+    
+    $consulta = "   SELECT *
+                    FROM asignaturas
+                    WHERE id = ? ";
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($codigoAsig));
+    $r = $sentencia -> fetchAll();
+    $nombreA = "";
+    foreach($r as $resu){
+        $nombreA.= $resu['NOM_ASI'];
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,9 +62,11 @@
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../../CSS/footer.css">
 
+
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Pagina Principal (Estudiantes)</title>
+    <title><?php echo $nombreA;?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -38,7 +80,7 @@
 </head>
 
 <body id="page-top">
-
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo);  ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -46,7 +88,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_asignatura.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -59,7 +101,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_estudiantes.php">
+                <a class="nav-link" href="pag_docentes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -77,14 +119,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
-                    <span>Asignaturas</span>
+                    <span>Administración</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="cursos.php">Cursos</a>
-                        <a class="collapse-item" href="asignaturas.php">Asignatura</a>
-						<a class="collapse-item" href="asignacion.php">Asignación de Docentes</a>
+                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
                     </div>
                 </div>
             </li>
@@ -94,15 +134,30 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench" style="color: #fff;"></i>
-                    <span>Plataforma Virtual</span>
+                    <span>Asignaturas</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
-                        <a class="collapse-item" href="docentes.php">Docentes</a>
-                        <a class="collapse-item" href="estudiantes.php">Estudiantes</a>
-                        <a class="collapse-item" href="usuarios.php">Usuarios</a>
+                            <?php 
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE DOC_ASI IN (
+                                                                    SELECT id 
+                                                                    FROM docentes
+                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
+                                                    )";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                    }   
+                                    echo ($codigo);      
+                            ?>
                     </div>
                 </div>
             </li>
@@ -261,61 +316,69 @@
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
-                    <section>
-                        <div class="page-header" style="margin-top: -15px;">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    
-                                    <div id="myTabContent" class="tab-content">
-                                        
-                                            <div class="container-fluid">
-                                                <div class="row">
-                                                    <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                                        <form action="../../Conexion/insertar.php" method="POST">
-                                                            <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información</fieldset>
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Codigo: </label>
-                                                                <input class="form-control" type="text" name="codigoAE">     
-                                                            </div>
-                                                            
-                                                            <div class="form-group label-floating">
-                                                                <label class="control-label" style="color: #000; font-weight: 500;">Nombre Asignatura: </label>
-                                                                <select  class="form-select" aria-label="Default select example" name="asignaturasAE" id = "asignaturasAE"></select>
-                                                            </div>
-                                                            
-                                                            <p class="text-center">
-                                                                <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarAE"><i class="zmdi zmdi-floppy"></i> Guardar</button>
-                                                            </p>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        
-                                        <script>
-                                            $(document).ready(function(){
-                                                agregarAsignaturas();
-                                                function agregarAsignaturas(){
-                                                    $dato = $("#asignaturasAE").val();
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        url:  "../../Conexion/ajax.php",
-                                                        data: {action_type: 'asignatura', valor: $dato},
-                                                        async: false,
-                                                        success: function(data){
-                                                            $("#asignaturasAE").append(data);
-                                                    
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                        </script>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
 
+                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
+                        <div id="myTabContent" class="tab-content">
+                                <div class="container-fluid">
+                                    <br>
+                                    <section class="full-reset font-cover" style="background-image: url(../../img/font-index.jpg); border-radius: 20px;">
+                                        <div class="full-reset" style="height: 100%; padding: 60px 0;">
+                                            <h1 class="text-center titles" style="color: #fff; font-family: Arial Black;"><?php echo $nombreA;?></h1>
+                                            <p class="lead text-center">
+                                                Descripcion 
+                                            </p>
+                                        </div>
+                                    </section>
+                                </div>
+                        </div>
+                        <br><br>
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4" >
+                            <h1 class="h4 mb-0 text-gray-800"> Acciones Generales</h1>
+                        </div>
+                        <br>
+                        <div class="container-fluid" style="background: #fff; border-radius: 20px;">
+                            <br>
+                            <h1 class="h5 mb-0 text-gray-800">Asignaciones </h1>
+                            <br>
+                            <div class="card-group">
+                                <?php 
+                                        $consulta = "   SELECT *
+                                                        FROM asignacion_deberes
+                                                        WHERE COD_ASI = ?
+                                                        ";
+                                        $sentencia = $con -> prepare($consulta);
+                                        $sentencia -> execute(array($codigoAsig));
+                                        $r = $sentencia -> fetchAll();
+                                        $codigo = "";
+                                        foreach($r as $resu){
+                                            $codigo.='
+                                                <div class="col-xl-3 col-md-6 mb-4">
+                                                    <div class="card border-left-primary shadow h-100 py-2">
+                                                        <div class="card-body">
+                                                            <div class="row no-gutters align-items-center">
+                                                                <div class="col mr-2">
+                                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                        Tarea</div>
+                                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
+                                                                    <p class="titulo">'.$resu['DES_ASIG'].'</p>
+                                                                        <a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Crear Asignación</strong></a>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+                                        }   
+                                        echo ($codigo);      
+                                ?>
+                            </div>
+                            <br>
+                        </div>
+                        <br>
+                    </div>
+                    <br>
                     <!-- Content Row -->
 
                     

@@ -331,8 +331,10 @@
                                     </section>
                                 </div>
                         </div>
-                        <br>
-                        
+                        <br><br>
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4" >
+                            <h1 class="h4 mb-0 text-gray-800"> Acciones Generales</h1>
+                        </div>
                         <br>
                         <div class="card-group">           
                             <div class="container-fluid" style="alig-content: center; alig-items: center;">
@@ -367,7 +369,7 @@
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Listar Estudiantes</div>
                                                         <p class="titulo">Se podra ver todos los estudiantes que se encuentren matriculados en la asignatura</p>
                                                     <?php
-                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Crear Asignación</strong></a>';
+                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Observar Estudiantes</strong></a>';
                                                         ?>
                                                     </div>
                                                     <div class="col-auto">
@@ -387,7 +389,7 @@
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Listar Notas</div>
                                                         <p class="titulo">Se podra ver todos las notas de los estudiantes que se encuentren matriculados en la asignatura</p>
                                                     <?php
-                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Crear Asignación</strong></a>';
+                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Observar Notas</strong></a>';
                                                         ?>
                                                     </div>
                                                     <div class="col-auto">
@@ -402,7 +404,7 @@
                         </div>
                         <br>
                     </div>
-
+                    <br>
                     <!-- Content Row -->
 
                     

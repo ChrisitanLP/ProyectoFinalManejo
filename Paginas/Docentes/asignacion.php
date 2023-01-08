@@ -18,11 +18,12 @@
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
-    $codigo = "";
+    $codigodoc = "";
     foreach($r as $resu){
-        $codigo.= $resu['id'];
+        $codigodoc.= $resu['id'];
     }
 
+    $_SESSION['codigoDocente'] = $codigodoc;
 
     if(isset($_GET['codAsignacion'])){
         //$_SESSION['CodAsig'] = $_GET['codpagina'];
@@ -44,6 +45,8 @@
     foreach($r as $resu){
         $nombreA.= $resu['NOM_ASI'];
     }
+
+    $_SESSION['codigoAsignatura'] = $codigoAsig;
 
 ?>
 <!DOCTYPE html>
@@ -75,7 +78,7 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo); echo $_SESSION['rol']; ?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigodoc); echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -83,7 +86,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_docentes.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -96,7 +99,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_estudiantes.php">
+                <a class="nav-link" href="pag_docentes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -149,7 +152,7 @@
                                     $codigo = "";
                                     foreach($r as $resu){
                                         $codigo.='
-                                        <a class="collapse-item" href="asignatura.php" id="'.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
                                     echo ($codigo);      
                             ?>
@@ -317,11 +320,11 @@
 
                                 <div class="container-fluid">
                                     <br>
-                                    <h1 class="h4 mb-0 text-danger-800" style="color: red;">General</h1>
+                                    <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">General</h1>
                                     <br>
                                     <div class="row">
                                         <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                            <form action="../../Conexion/insertar.php" method="POST">
+                                            <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
                                                 <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
                                                     <div>
                                                         <label class="control-label" style="color: #000; font-weight: 500;">Asignación: </label>
@@ -330,7 +333,7 @@
                                                     <div>
                                                         <div class="form-group label-floating">
                                                             <div class="col-md-9">
-                                                                <input id="fname" name="name" type="text" placeholder="Asignación..." class="form-control">
+                                                                <input id="fname" name="nombreAsig" type="text" placeholder="Asignación..." class="form-control">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -342,7 +345,19 @@
                                                     <div>
                                                         <div class="form-group label-floating">
                                                             <div class="col-md-9">
-                                                                <textarea class="form-control" id="message" name="message" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
+                                                                <textarea class="form-control" id="message" name="descripcionAsig" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </center>
+                                                    <div>
+                                                        <label class="control-label" style="color: #000; font-weight: 500;">Fecha: </label>
+                                                    </div>
+                                                    <center>
+                                                    <div>
+                                                        <div class="form-group label-floating">
+                                                            <div class="col-md-9">
+                                                                <input class="form-control" type="date" name="fechaAsig">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -353,11 +368,16 @@
                                                     <center>
                                                     <div>
                                                         <div class="form-group label-floating">
-                                                            <input type="file" name="archivo" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
+                                                            <div class="col-md-9">
+                                                                <input type="file" name="archivoAsig" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     </center>
                                                 </fieldset>
+                                                <p class="text-center">
+                                                    <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarAsig"><i class="zmdi zmdi-floppy"></i> Subir Asignación</button>
+                                                </p>
                                             </form>
                                         </div>
                                     </div>
@@ -372,7 +392,7 @@
                     <!-- Content Row -->
                     
 
-
+                    <br>
                 </div>
                 <!-- /.container-fluid -->
 

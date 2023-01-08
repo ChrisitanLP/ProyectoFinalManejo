@@ -19,9 +19,9 @@
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
-    $codigo = "";
+    $codigoEs = "";
     foreach($r as $resu){
-        $codigo.= $resu['id'];
+        $codigoEs.= $resu['id'];
     }
 ?>
 <!DOCTYPE html>
@@ -53,7 +53,7 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo); echo $_SESSION['rol']; ?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigoEs); echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -278,11 +278,109 @@
                     </div>
                     
                     
-                    <button type='button' class='btn btn-primary' style='color: #fff; background: rgb(231, 180, 40);'>
-                        <a href='matricular.php' style='text-decoration: none; color: #fff;'>Matricular</a>
-                    </button>
-                    
+                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">
+                        <br>
+                        <h1 class="h5 mb-0 text-gray-800">Asignaturas </h1>
+                        <br>
+                        <div class="card-group">
+                            <?php 
+                                $con = conectar();
+                                if (isset($_POST['editar']))
+                               {
+                                    $id = $_POST['id'];
 
+                                    $sqlAsig = "INSERT INTO detalle_estudiantes(ID_ASI, ID_EST)values('$id', '$codigoEs')";
+                                    $consultaAsig = $con->prepare($sqlAsig);
+                                    $consultaAsig -> execute();
+                                    $lastInsertIdAsig = $con->lastInsertId();
+                                
+                                    if($lastInsertIdAsig>0){
+                                        echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
+                                        //echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
+                                    }else{
+                                        echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
+                                        //echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                                        //print_r($consultaAsig->errorInfo()); 
+                                    }
+                                }
+                            ?>
+                            <?php 
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    ";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute();
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                            <div class="col-xl-3 col-md-6 mb-4">
+                                                <div class="card border-left-primary shadow h-100 py-2">
+                                                    <div class="card-body">
+                                                        <div class="row no-gutters align-items-center">
+                                                            <div class="col mr-2">
+                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                    FISEI</div>
+                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASI'].'.</div>
+                                                                <p class="titulo">'.$resu['NOM_ASI'].'</p>
+                                                                <form method="POST" action="'.$_SERVER['PHP_SELF'].'">
+                                                                    <input type="hidden" name="id" value="'.$resu['id'].'">
+                                                                    <button name="editar" class="btn btn-primary" style="color: #fff; background: rgb(231, 180, 40);">Matricularse</button>
+                                                                </form>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                    }   
+                                    echo ($codigo);      
+                            ?>
+                        </div>
+                        <br>
+                        <h1 class="h5 mb-0 text-gray-800">Asignaturas de <?php echo $_SESSION['usuario']; ?></h1>
+                        <br>
+                        <div class="card-group">
+                            <?php 
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE id IN (
+                                                                SELECT ID_ASI
+                                                                FROM detalle_estudiantes
+                                                                WHERE ID_EST = ?
+                                                    )
+                                                    ";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($codigoEs));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                            <div class="col-xl-3 col-md-6 mb-4">
+                                                <div class="card border-left-primary shadow h-100 py-2">
+                                                    <div class="card-body">
+                                                        <div class="row no-gutters align-items-center">
+                                                            <div class="col mr-2">
+                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                    FISEI</div>
+                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASI'].'.</div>
+                                                                <p class="titulo">'.$resu['NOM_ASI'].'</p>
+                                                                <a href="asignatura.php?codpagina='.$resu['id'].'" class="card-link")">Ingresar al Curso</a>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>';
+                                    }   
+                                    echo ($codigo);      
+                            ?>
+                        </div>
+                    </div>
                     <!-- Content Row -->
 
                     
@@ -290,7 +388,7 @@
                     <!-- Content Row -->
                     
 
-
+                                </br>
                 </div>
                 <!-- /.container-fluid -->
 

@@ -293,20 +293,6 @@
                         <h1 class="h5 mb-0 text-gray-800">Asignaturas</h1>
                         <br>
                         <div class="card-group">
-                            <script>
-                                /*function codigo(id_curso){
-                                    alert(id_curso);
-                                        $.ajax({
-                                            url: "../../Conexion/ajax.php",
-                                            type: "POST",
-                                            data: {id_curso: id_curso},
-                                            success: function(data){
-                                                alert(id_curso);
-                                                window.open("asignatura.php");
-                                            }
-                                        });
-                                    }*/
-                            </script>
                             <?php 
                                     $consulta = "   SELECT *
                                                     FROM asignaturas

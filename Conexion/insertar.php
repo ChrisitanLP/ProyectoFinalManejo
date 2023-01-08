@@ -1,6 +1,9 @@
 <?php
     include("conectar.php");
     $con = conectar();
+    session_start();
+
+//************************************************************************* */
 
     $nombreD = $_POST["nombreD"];
     $apellidoD = $_POST["apellidoD"];
@@ -26,6 +29,7 @@
             print_r($consultaD->errorInfo()); 
         }
     };
+
     if(isset($_POST["enviarD"]))
     {   
         $rolD = "Docente";
@@ -43,6 +47,8 @@
             print_r($consultaD->errorInfo()); 
         }
     };
+
+//************************************************************************* */
 
     $nombreE = $_POST["nombreE"];
     $apellidoE = $_POST["apellidoE"];
@@ -68,6 +74,7 @@
             print_r($consultaE->errorInfo()); 
         }
     };
+
     if(isset($_POST["enviarE"]))
     {   
         $rolE = "Estudiante";
@@ -85,6 +92,8 @@
             print_r($consultaE->errorInfo()); 
         }
     };
+
+//************************************************************************* */
 
     $nombreU = $_POST["nombreU"];
     $apellidoU = $_POST["apellidoU"];
@@ -110,10 +119,9 @@
             print_r($consultaU->errorInfo()); 
         }
     };
+
     if(isset($_POST["enviarU"]))
     {   
-
-
         $rolU = "Invitado";
         $sqlU = "INSERT INTO login(USU_LOG, PAS_LOG, ROL_LOG, NOM_USU_LOG)values('$correoU', '$cedulaU', '$rolU', '$nombreU')";
         $consultaU = $con->prepare($sqlU);
@@ -130,6 +138,7 @@
         }
     };
 
+//************************************************************************* */
 
     $nombreC = $_POST["nombreC"];
     $codigoC = $_POST["codigoC"];
@@ -150,6 +159,8 @@
             print_r($consultaC->errorInfo()); 
         }
     };
+
+//************************************************************************* */
 
     $nombreA = $_POST["nombreA"];
     $codigoA = $_POST["codigoA"];
@@ -173,6 +184,8 @@
             print_r($consultaA->errorInfo()); 
         }
     };
+
+//************************************************************************* */
     
     $codigoAD = $_POST["codigoAD"];
     $docentesAD = $_POST["docentesAD"];
@@ -195,6 +208,8 @@
         }
     };
 
+//************************************************************************* */
+
     $codigoAE = $_POST["codigoAE"];
     $estudiantesAE = $_POST["estudiantesAE"];
     $asignaturasAE = $_POST["asignaturasAE"];
@@ -214,5 +229,46 @@
             echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             print_r($consultaAE->errorInfo()); 
         }
+    };
+
+//************************************************************************* */
+    
+    $codigoAsignatura = $_SESSION['codigoAsignatura'];
+    $codigoDocente = $_SESSION['codigoDocente'];
+    $nombreAsig = $_POST["nombreAsig"];
+    $descripcionAsig = $_POST["descripcionAsig"];
+    $fechaAsig = $_POST["fechaAsig"];
+
+    if(isset($_POST["enviarAsig"]))
+    {
+        if(is_uploaded_file($_FILES['archivoAsig']['tmp_name'])){
+
+            $ruta = "../BD/archivos/"; 
+            $nombrefinal= trim ($_FILES['archivoAsig']['name']); 
+            $rutaFinal= $ruta.$nombrefinal;  
+            $upload= $ruta.$nombrefinal;  
+
+            
+            if(move_uploaded_file($_FILES['archivoAsig']['tmp_name'], $upload)) { 
+                    
+                $nombre = $_FILES['archivoAsig']['name'];
+                $tipo = $_FILES['archivoAsig']['type'];  
+                $tamano = $_FILES['archivoAsig']['size'];
+            
+                $sqlAsig = "INSERT INTO asignacion_deberes(COD_ASI, COD_DOC, NOM_ASIG, DES_ASIG, FEC_ASIG, NOM_ARCH, RUT_ARCH, TIP_ARCH, TAM_ARCH)values('$codigoAsignatura', '$codigoDocente', '$nombreAsig', '$descripcionAsig', '$fechaAsig', '$nombrefinal', '$rutaFinal', '$tipo', '$tamano')";
+                $consultaAsig = $con->prepare($sqlAsig);
+                $consultaAsig -> execute();
+                $lastInsertIdAsig = $con->lastInsertId();
+            
+                if($lastInsertIdAsig>0){
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Docentes/asignacion.php'>";
+                    echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
+                }else{
+                    //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
+                    echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                    print_r($consultaAsig->errorInfo()); 
+                }
+            };
+        };
     };
 ?>
