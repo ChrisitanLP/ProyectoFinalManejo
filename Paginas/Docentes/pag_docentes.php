@@ -60,7 +60,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_docentes.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -73,7 +73,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_estudiantes.php">
+                <a class="nav-link" href="pag_docentes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -126,7 +126,7 @@
                                     $codigo = "";
                                     foreach($r as $resu){
                                         $codigo.='
-                                        <a class="collapse-item" href="asignatura.php" id="'.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
                                     echo ($codigo);      
                             ?>
@@ -293,6 +293,20 @@
                         <h1 class="h5 mb-0 text-gray-800">Asignaturas</h1>
                         <br>
                         <div class="card-group">
+                            <script>
+                                /*function codigo(id_curso){
+                                    alert(id_curso);
+                                        $.ajax({
+                                            url: "../../Conexion/ajax.php",
+                                            type: "POST",
+                                            data: {id_curso: id_curso},
+                                            success: function(data){
+                                                alert(id_curso);
+                                                window.open("asignatura.php");
+                                            }
+                                        });
+                                    }*/
+                            </script>
                             <?php 
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
@@ -316,7 +330,7 @@
                                                                     FISEI</div>
                                                                 <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASI'].'.</div>
                                                                 <p class="titulo">'.$resu['NOM_ASI'].'</p>
-                                                                <a href="#" class="card-link">Ingresar al Curso</a>
+                                                                <a href="asignatura.php?codpagina='.$resu['id'].'" class="card-link")">Ingresar al Curso</a>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <i class="fa fa-bookmark" aria-hidden="true"></i>

@@ -36,9 +36,4 @@
         }
     mysqli_free_result($resultado);
     mysqli_close($conexion);
-/*
-    $consulta="SELECT*FROM LOGIN where USU_LOG='$usuario' and PAS_LOG='$contraseña'";
-    $resultado=mysqli_query($conexion,$consulta);
-    $filas=mysqli_fetch_array($resultado);
-*/
 ?>

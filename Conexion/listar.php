@@ -121,7 +121,6 @@
         return $opciones;
     }
 
-
     function consultaAsignaturas(){
         $con = conectar();
         $query = "SELECT * FROM asignaturas";

@@ -22,6 +22,29 @@
     foreach($r as $resu){
         $codigo.= $resu['id'];
     }
+
+
+    if(isset($_GET['codAsignacion'])){
+        //$_SESSION['CodAsig'] = $_GET['codpagina'];
+        $codigoAsig = $_GET['codAsignacion'];
+    }else{
+        header('Location: pag_docentes.php');
+        die();
+    }
+
+    $con = conectar();
+    
+    $consulta = "   SELECT *
+                    FROM asignaturas
+                    WHERE id = ? ";
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($codigoAsig));
+    $r = $sentencia -> fetchAll();
+    $nombreA = "";
+    foreach($r as $resu){
+        $nombreA.= $resu['NOM_ASI'];
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +61,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Asignación</title>
+    <title>Asignación <?php echo $nombreA;?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -96,7 +119,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
+                        <a class="collapse-item" href="asignacion.php">Asignación</a>
                     </div>
                 </div>
             </li>
@@ -284,7 +307,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Asignación Tareas</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Asignación <?php echo $nombreA;?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>

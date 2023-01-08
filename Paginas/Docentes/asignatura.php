@@ -10,6 +10,7 @@
     }
 
     $contraseña = $_SESSION['contraseña'];
+
     $con = conectar();
     
     $consulta = "   SELECT id
@@ -22,6 +23,31 @@
     foreach($r as $resu){
         $codigo.= $resu['id'];
     }
+
+    //$codigoAsig = $_GET['codpagina'];
+    //echo $codigoAsig;
+
+    if(isset($_GET['codpagina'])){
+        //$_SESSION['CodAsig'] = $_GET['codpagina'];
+        $codigoAsig = $_GET['codpagina'];
+    }else{
+        header('Location: pag_docentes.php');
+        die();
+    }
+
+    $con = conectar();
+    
+    $consulta = "   SELECT *
+                    FROM asignaturas
+                    WHERE id = ? ";
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($codigoAsig));
+    $r = $sentencia -> fetchAll();
+    $nombreA = "";
+    foreach($r as $resu){
+        $nombreA.= $resu['NOM_ASI'];
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,9 +62,11 @@
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../../CSS/footer.css">
 
+
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Asignación</title>
+    <title><?php echo $nombreA;?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -52,7 +80,7 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo); echo $_SESSION['rol']; ?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo);  ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -60,7 +88,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_asignatura.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -73,7 +101,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_estudiantes.php">
+                <a class="nav-link" href="pag_docentes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -126,7 +154,7 @@
                                     $codigo = "";
                                     foreach($r as $resu){
                                         $codigo.='
-                                        <a class="collapse-item" href="asignatura.php" id="'.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
                                     echo ($codigo);      
                             ?>
@@ -284,62 +312,95 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Asignación Tareas</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Información</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
 
                     <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
                         <div id="myTabContent" class="tab-content">
-
                                 <div class="container-fluid">
                                     <br>
-                                    <h1 class="h4 mb-0 text-danger-800" style="color: red;">General</h1>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                            <form action="../../Conexion/insertar.php" method="POST">
-                                                <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Asignación: </label>
+                                    <section class="full-reset font-cover" style="background-image: url(../../img/font-index.jpg); border-radius: 20px;">
+                                        <div class="full-reset" style="height: 100%; padding: 60px 0;">
+                                            <h1 class="text-center titles" style="color: #fff; font-family: Arial Black;"><?php echo $nombreA;?></h1>
+                                            <p class="lead text-center">
+                                                Descripcion 
+                                            </p>
+                                        </div>
+                                    </section>
+                                </div>
+                        </div>
+                        <br>
+                        
+                        <br>
+                        <div class="card-group">           
+                            <div class="container-fluid" style="alig-content: center; alig-items: center;">
+                                <div class="card-group">           
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-danger shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                            Acciones</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Crear Asignaciónes</div>
+                                                        <p class="titulo">Si desea crear una asignacion de tareas para la asignatura</p>
+                                                        <?php
+                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Crear Asignación</strong></a>';
+                                                        ?>
                                                     </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <input id="fname" name="name" type="text" placeholder="Asignación..." class="form-control">
-                                                            </div>
-                                                        </div>
+                                                    <div class="col-auto">
+                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
                                                     </div>
-                                                    </center>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Descripción: </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-danger shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                        Acciones</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Listar Estudiantes</div>
+                                                        <p class="titulo">Se podra ver todos los estudiantes que se encuentren matriculados en la asignatura</p>
+                                                    <?php
+                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Crear Asignación</strong></a>';
+                                                        ?>
                                                     </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <textarea class="form-control" id="message" name="message" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
-                                                            </div>
-                                                        </div>
+                                                    <div class="col-auto">
+                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
                                                     </div>
-                                                    </center>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-danger shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                        Acciones</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Listar Notas</div>
+                                                        <p class="titulo">Se podra ver todos las notas de los estudiantes que se encuentren matriculados en la asignatura</p>
+                                                    <?php
+                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Crear Asignación</strong></a>';
+                                                        ?>
                                                     </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <input type="file" id="archivo">
-                                                        </div>
+                                                    <div class="col-auto">
+                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
                                                     </div>
-                                                    </center>
-                                                </fieldset>
-                                            </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
+                        <br>
                     </div>
 
                     <!-- Content Row -->
