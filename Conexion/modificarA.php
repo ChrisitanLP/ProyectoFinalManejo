@@ -419,7 +419,7 @@
                 <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal" style="background: rgb(75, 65, 65);" >Cancelar</button>
-                    <a class="btn btn-primary" href="cerrar.php" id="cerrar" style="background: rgb(138, 4, 4);">Cerrar Sesión</a>
+                    <a class="btn btn-primary" href="../cerrar.php" id="cerrar" style="background: rgb(138, 4, 4);">Cerrar Sesión</a>
                 </div>
             </div>
         </div>
