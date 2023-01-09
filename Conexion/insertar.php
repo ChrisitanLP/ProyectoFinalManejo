@@ -285,4 +285,57 @@
             };
         };
     };
+
+    //************************************************************************* */
+    
+    $codigoAsignatura = $_SESSION['codigoAsignatura'];
+    $codigoDocente = $_SESSION['codigoDocente'];
+    $descripcionAsig = $_POST["descripcionAsig"];
+
+    if(isset($_POST["enviarAsig"]))
+    { 
+                $sqlAsig = "INSERT INTO asignacion_deberes(COD_ASI, COD_DOC, NOM_ASIG, DES_ASIG, FEC_ASIG)values('$codigoAsignatura', '$codigoDocente', '$nombreAsig', '$descripcionAsig', '$fechaAsig')";
+                $consultaAsig = $con->prepare($sqlAsig);
+                $consultaAsig -> execute();
+                $lastInsertIdAsig = $con->lastInsertId();
+            
+                if($lastInsertIdAsig>0){
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Docentes/asignacion.php'>";
+                    echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
+                }else{
+                    //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
+                    echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                    print_r($consultaAsig->errorInfo()); 
+                }
+
+        if(is_uploaded_file($_FILES['archivoAsig']['tmp_name'])){
+
+            $ruta = "../BD/archivos/"; 
+            $nombrefinal= trim ($_FILES['archivoAsig']['name']); 
+            $rutaFinal= $ruta.$nombrefinal;  
+            $upload= $ruta.$nombrefinal;  
+
+            
+            if(move_uploaded_file($_FILES['archivoAsig']['tmp_name'], $upload)) { 
+                    
+                $nombre = $_FILES['archivoAsig']['name'];
+                $tipo = $_FILES['archivoAsig']['type'];  
+                $tamano = $_FILES['archivoAsig']['size'];
+            
+                $sqlAsig = "INSERT INTO asignacion_deberes(COD_ASI, COD_DOC, NOM_ASIG, DES_ASIG, FEC_ASIG, NOM_ARCH, RUT_ARCH, TIP_ARCH, TAM_ARCH)values('$codigoAsignatura', '$codigoDocente', '$nombreAsig', '$descripcionAsig', '$fechaAsig', '$nombrefinal', '$rutaFinal', '$tipo', '$tamano')";
+                $consultaAsig = $con->prepare($sqlAsig);
+                $consultaAsig -> execute();
+                $lastInsertIdAsig = $con->lastInsertId();
+            
+                if($lastInsertIdAsig>0){
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Docentes/asignacion.php'>";
+                    echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
+                }else{
+                    //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
+                    echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                    print_r($consultaAsig->errorInfo()); 
+                }
+            };
+        };
+    };
 ?>

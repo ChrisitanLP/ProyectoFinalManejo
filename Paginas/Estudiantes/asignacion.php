@@ -24,12 +24,10 @@
         $codigoEs.= $resu['id'];
     }
 
-    $_SESSION['codigoEstudiante'] = $codigoEs;
-
     if(isset($_GET['codAsignacion'])){
         $codigoAsig = $_GET['codAsignacion'];
     }else{
-        header('Location: pag_docentes.php');
+        header('Location: pag_estudiantes.php');
         die();
     }
 
@@ -101,7 +99,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_docentes.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -114,7 +112,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_docentes.php">
+                <a class="nav-link" href="pag_estudiantes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -156,20 +154,21 @@
                             <?php 
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
-                                                    WHERE DOC_ASI IN (
-                                                                    SELECT id 
-                                                                    FROM docentes
-                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
-                                                    )";
+                                                    WHERE id IN (
+                                                            SELECT ID_ASI
+                                                            FROM detalle_estudiantes
+                                                            WHERE ID_EST = ?
+                                                    )
+                                     ";
                                     $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
                                     $r = $sentencia -> fetchAll();
-                                    $codigo = "";
+                                    $codigoA = "";
                                     foreach($r as $resu){
-                                        $codigo.='
+                                        $codigoA.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
-                                    echo ($codigo);      
+                                    echo ($codigoA);      
                             ?>
                     </div>
                 </div>
@@ -371,14 +370,14 @@
                                        echo '<div>
                                                 <label class="control-label" style="color: #000; font-weight: 500;">'.$_SESSION['descripcionAsignacion'].'</label>
                                                 <br><label class="control-label" style="color: #000; font-weight: 500;">Fecha Limite: '.$fecha.'</label>
-                                                <br><label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
                                             </div>';
                                     ?>
                                     <?php 
                                         if($_SESSION['nombreArchivo'] == ''){    
-                                            echo '<p>Sin archivo</p>';
+                                            echo '<p></p>';
                                         }else{
-                                           echo '<a href="cargar.php?id='.$_SESSION['nombreArchivo'].'">'.$valor.'descargar</a>';
+                                           echo '   <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
+                                                    <a href="cargar.php?id='.$_SESSION['nombreArchivo'].'">'.$valor.'descargar</a>';
                                         };
                                     ?>
                                     <br>
@@ -394,7 +393,7 @@
                                                     <div>
                                                         <div class="form-group label-floating">
                                                             <div class="col-md-9">
-                                                                <textarea class="form-control" id="message" name="descripcionAsig" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
+                                                                <textarea class="form-control" id="message" name="informacionnAsigE" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -406,7 +405,7 @@
                                                     <div>
                                                         <div class="form-group label-floating">
                                                             <div class="col-md-9">
-                                                                <input type="file" name="archivoAsig" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
+                                                                <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
                                                             </div>
                                                         </div>
                                                     </div>

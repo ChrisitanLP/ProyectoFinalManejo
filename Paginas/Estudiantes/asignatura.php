@@ -27,7 +27,7 @@
     if(isset($_GET['codpagina'])){
         $codigoAsig = $_GET['codpagina'];
     }else{
-        header('Location: pag_docentes.php');
+        header('Location: pag_estudiantes.php');
         die();
     }
 
@@ -85,7 +85,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_asignatura.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -98,7 +98,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_docentes.php">
+                <a class="nav-link" href="pag_estudiantes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -138,22 +138,23 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
-                                    $consulta = "   SELECT *
-                                                    FROM asignaturas
-                                                    WHERE DOC_ASI IN (
-                                                                    SELECT id 
-                                                                    FROM docentes
-                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
-                                                    )";
+                                $consulta = "   SELECT *
+                                                FROM asignaturas
+                                                WHERE id IN (
+                                                            SELECT ID_ASI
+                                                            FROM detalle_estudiantes
+                                                            WHERE ID_EST = ?
+                                     )
+                                     ";
                                     $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
                                     $r = $sentencia -> fetchAll();
-                                    $codigo = "";
+                                    $codigoS = "";
                                     foreach($r as $resu){
-                                        $codigo.='
+                                        $codigoS.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
-                                    echo ($codigo);      
+                                    echo ($codigoS);      
                             ?>
                     </div>
                 </div>

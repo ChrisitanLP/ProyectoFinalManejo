@@ -23,6 +23,8 @@
     foreach($r as $resu){
         $codigoEs.= $resu['id'];
     }
+
+    $_SESSION['codigoEstudiante'] = $codigoEs;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,9 +99,25 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="cursos.php">Cursos</a>
-                        <a class="collapse-item" href="asignaturas.php">Asignatura</a>
-						<a class="collapse-item" href="asignacion.php">Asignación de Docentes</a>
+                        <?php 
+                                $consulta = "   SELECT *
+                                                FROM asignaturas
+                                                WHERE id IN (
+                                                            SELECT ID_ASI
+                                                            FROM detalle_estudiantes
+                                                            WHERE ID_EST = ?
+                                     )
+                                     ";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigoS = "";
+                                    foreach($r as $resu){
+                                        $codigoS.='
+                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                    }   
+                                    echo ($codigoS);      
+                            ?>
                     </div>
                 </div>
             </li>
@@ -109,15 +127,13 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench" style="color: #fff;"></i>
-                    <span>Plataforma Virtual</span>
+                    <span>Administración</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
-                        <a class="collapse-item" href="docentes.php">Docentes</a>
-                        <a class="collapse-item" href="estudiantes.php">Estudiantes</a>
-                        <a class="collapse-item" href="usuarios.php">Usuarios</a>
+                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
                     </div>
                 </div>
             </li>
