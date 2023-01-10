@@ -19,9 +19,9 @@
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
-    $codigo = "";
+    $codigoEs = "";
     foreach($r as $resu){
-        $codigo.= $resu['id'];
+        $codigoEs.= $resu['id'];
     }
 
     if(isset($_GET['codpagina'])){
@@ -77,7 +77,7 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo);  ?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigoAsig);  ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -370,6 +370,45 @@
                                                 </div>';
                                         }   
                                         echo ($codigo);      
+                                ?>
+                            </div>
+                            <h1 class="h5 mb-0 text-gray-800">Asignaciones Realizadas</h1>
+                            <br>
+                            <div class="card-group">
+                                <?php 
+                                        $consulta = "   SELECT *
+                                                        FROM asignacion_deberes
+                                                        WHERE COD_ASI = ? AND id IN (
+                                                                    SELECT COD_ASIG_DEB
+                                                                    FROM detalle_asignacion
+                                                                    WHERE ID_EST_ASIG = ?
+                                                        )
+                                                        ";
+                                        $sentencia = $con -> prepare($consulta);
+                                        $sentencia -> execute(array($codigoAsig, $codigoEs));
+                                        $r = $sentencia -> fetchAll();
+                                        $codigoAsi = "";
+                                        foreach($r as $resu){
+                                            $codigoAsi.='
+                                                <div class="col-xl-3 col-md-6 mb-4">
+                                                    <div class="card border-left-primary shadow h-100 py-2">
+                                                        <div class="card-body">
+                                                            <div class="row no-gutters align-items-center">
+                                                                <div class="col mr-2">
+                                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                        '.$resu['FEC_ASIG'].'</div>
+                                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
+                                                                    <p class="titulo">'.$resu['DES_ASIG'].'</p>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+                                        }   
+                                        echo ($codigoAsi);     
                                 ?>
                             </div>
                             <br>

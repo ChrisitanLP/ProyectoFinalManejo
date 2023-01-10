@@ -412,7 +412,7 @@
                                                     </center>
                                                 </fieldset>
                                                 <p class="text-center">
-                                                    <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarAsig"><i class="zmdi zmdi-floppy"></i> Subir Asignación</button>
+                                                    <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarAsigE"><i class="zmdi zmdi-floppy"></i> Subir Asignación</button>
                                                 </p>
                                             </form>
                                         </div>

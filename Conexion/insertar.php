@@ -288,52 +288,52 @@
 
     //************************************************************************* */
     
-    $codigoAsignatura = $_SESSION['codigoAsignatura'];
-    $codigoDocente = $_SESSION['codigoDocente'];
-    $descripcionAsig = $_POST["descripcionAsig"];
+    $codigoAsignacion = $_SESSION['codigoAsignacion'];
+    $codigoEstudiante = $_SESSION['codigoEstudiante'];
+    $descripcionAsigAE = $_POST["informacionnAsigE"];
 
-    if(isset($_POST["enviarAsig"]))
+    if(isset($_POST["enviarAsigE"]))
     { 
-                $sqlAsig = "INSERT INTO asignacion_deberes(COD_ASI, COD_DOC, NOM_ASIG, DES_ASIG, FEC_ASIG)values('$codigoAsignatura', '$codigoDocente', '$nombreAsig', '$descripcionAsig', '$fechaAsig')";
-                $consultaAsig = $con->prepare($sqlAsig);
-                $consultaAsig -> execute();
-                $lastInsertIdAsig = $con->lastInsertId();
+                $sqlAsigAE = "INSERT INTO detalle_asignacion(COD_ASIG_DEB, ID_EST_ASIG, DES_ASIG)values('$codigoAsignacion', '$codigoEstudiante', '$descripcionAsigAE ')";
+                $consultaAsigAE = $con->prepare($sqlAsigAE);
+                $consultaAsigAE -> execute();
+                $lastInsertIdAsigAE = $con->lastInsertId();
             
-                if($lastInsertIdAsig>0){
-                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Docentes/asignacion.php'>";
+                if($lastInsertIdAsigAE>0){
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
                     echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
                 }else{
-                    //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
                     echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
-                    print_r($consultaAsig->errorInfo()); 
+                    print_r($consultaAsigAE->errorInfo()); 
                 }
 
-        if(is_uploaded_file($_FILES['archivoAsig']['tmp_name'])){
+        if(is_uploaded_file($_FILES['archivoAsigE']['tmp_name'])){
 
-            $ruta = "../BD/archivos/"; 
-            $nombrefinal= trim ($_FILES['archivoAsig']['name']); 
-            $rutaFinal= $ruta.$nombrefinal;  
-            $upload= $ruta.$nombrefinal;  
+            $rutaAE = "../BD/archivos/"; 
+            $nombrefinalAE= trim ($_FILES['archivoAsigE']['name']); 
+            $rutaFinalAE= $rutaAE.$nombrefinalAE;  
+            $uploadAE= $rutaAE.$nombrefinalAE;  
 
             
-            if(move_uploaded_file($_FILES['archivoAsig']['tmp_name'], $upload)) { 
+            if(move_uploaded_file($_FILES['archivoAsigE']['tmp_name'], $uploadAE)) { 
                     
-                $nombre = $_FILES['archivoAsig']['name'];
-                $tipo = $_FILES['archivoAsig']['type'];  
-                $tamano = $_FILES['archivoAsig']['size'];
+                $nombreAE = $_FILES['archivoAsigE']['name'];
+                $tipoAE = $_FILES['archivoAsigE']['type'];  
+                $tamanoAE = $_FILES['archivoAsigE']['size'];
             
-                $sqlAsig = "INSERT INTO asignacion_deberes(COD_ASI, COD_DOC, NOM_ASIG, DES_ASIG, FEC_ASIG, NOM_ARCH, RUT_ARCH, TIP_ARCH, TAM_ARCH)values('$codigoAsignatura', '$codigoDocente', '$nombreAsig', '$descripcionAsig', '$fechaAsig', '$nombrefinal', '$rutaFinal', '$tipo', '$tamano')";
-                $consultaAsig = $con->prepare($sqlAsig);
-                $consultaAsig -> execute();
-                $lastInsertIdAsig = $con->lastInsertId();
+                $sqlAsigAE = "INSERT INTO detalle_asignacion(COD_ASIG_DEB, ID_EST_ASIG, DES_ASIG, NOM_ARCH, RUT_ARCH, TIP_ARCH, TAM_ARCH, NOT_ASIG)values('$codigoAsignacion', '$codigoEstudiante', '$descripcionAsigAE', '$nombrefinalAE', '$rutaFinalAE', '$tipoAE', '$tamanoAE' )";
+                $consultaAsigAE = $con->prepare($sqlAsigAE);
+                $consultaAsigAE -> execute();
+                $lastInsertIdAsigAE = $con->lastInsertId();
             
-                if($lastInsertIdAsig>0){
-                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Docentes/asignacion.php'>";
+                if($lastInsertIdAsigAE>0){
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
                     echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
                 }else{
-                    //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
                     echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
-                    print_r($consultaAsig->errorInfo()); 
+                    print_r($consultaAsigAE->errorInfo()); 
                 }
             };
         };
