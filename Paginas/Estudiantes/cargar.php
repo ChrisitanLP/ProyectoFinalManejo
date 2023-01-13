@@ -16,4 +16,6 @@ if(!empty($_GET['id'])){
     }else{
         echo 'El archivo no Existe.';
     }
+}else{
+    echo 'No hay';
 }

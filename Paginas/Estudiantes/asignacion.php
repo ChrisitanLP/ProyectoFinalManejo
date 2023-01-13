@@ -293,7 +293,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" >
+                                <a class="dropdown-item" href="editar.php" >
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
@@ -393,7 +393,7 @@
                                                     <div>
                                                         <div class="form-group label-floating">
                                                             <div class="col-md-9">
-                                                                <textarea class="form-control" id="message" name="informacionnAsigE" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
+                                                                <textarea class="form-control" id="message" name="informacionnAsig" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -405,7 +405,7 @@
                                                     <div>
                                                         <div class="form-group label-floating">
                                                             <div class="col-md-9">
-                                                                <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
+                                                                <input type="file" name="archivoAsig2" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
                                                             </div>
                                                         </div>
                                                     </div>
