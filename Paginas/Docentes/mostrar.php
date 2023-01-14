@@ -2,7 +2,7 @@
     include_once('../../Conexion/conectar.php');
     session_start();
 
-    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
+    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
         $usuario = $_SESSION['usuario'];
     }else{
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
@@ -10,57 +10,42 @@
     }
 
     $contraseña = $_SESSION['contraseña'];
-
     $con = conectar();
     
     $consulta = "   SELECT id
-                    FROM estudiantes
-                    WHERE COR_INS_EST = ? AND CED_EST = ?";
+                    FROM docentes
+                    WHERE COR_INS_DOC = ? AND CED_DOC = ?";
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
-    $codigoEs = "";
+    $codigodoc = "";
     foreach($r as $resu){
-        $codigoEs.= $resu['id'];
+        $codigodoc.= $resu['id'];
     }
 
+    $_SESSION['codigoDocente'] = $codigodoc;
+
     if(isset($_GET['codAsignacion'])){
-        $codigoAsig = $_GET['codAsignacion'];
+        //$_SESSION['CodAsig'] = $_GET['codpagina'];
+        $opcion = $_GET['codAsignacion'];
     }else{
-        header('Location: pag_estudiantes.php');
+        header('Location: pag_docentes.php');
         die();
     }
 
     $con = conectar();
     
     $consulta = "   SELECT *
-                    FROM asignacion_deberes
+                    FROM asignaturas
                     WHERE id = ? ";
     $sentencia = $con -> prepare($consulta);
-    $sentencia -> execute(array($codigoAsig));
+    $sentencia -> execute(array($_SESSION['AsignaturaCOD']));
     $r = $sentencia -> fetchAll();
-    
-    $nombreAsig = "";
-    $descripcionAsig = "";
-    $tipoArchivo = "";
-    $rutaArchivo = "";
-    $nombreArchivo = "";
-    $fecha = "";
-
+    $nombreA = "";
     foreach($r as $resu){
-        $nombreAsig.= $resu['NOM_ASIG'];
-        $descripcionAsig.= $resu['DES_ASIG']; 
-        $tipoArchivo.= $resu['TIP_ARCH'];
-        $rutaArchivo.= $resu['RUT_ARCH'];
-        $nombreArchivo.= $resu['NOM_ARCH'];
-        $fecha.= $resu['FEC_ASIG'];
+        $nombreA.= $resu['NOM_ASI'];
     }
-    $_SESSION['NombreAsignacion'] = $nombreAsig;
-    $_SESSION['codigoAsignacion'] = $codigoAsig;
-    $_SESSION['descripcionAsignacion'] = $descripcionAsig;
-    $_SESSION['tipArchivo'] = $tipoArchivo;
-    $_SESSION['rutaArchivo'] = $rutaArchivo;
-    $_SESSION['nombreArchivo'] = $nombreArchivo;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +62,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Asignación <?php echo $_SESSION['NombreAsignatura'];?></title>
+    <title>Estudiantes <?php echo $nombreA;?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -91,7 +76,7 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo $_SESSION['NombreAsignacion']; echo $_SESSION['rol']; echo $_SESSION['codigoAsignacion']; echo $_SESSION['nombreArchivo'];?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigodoc); echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -99,7 +84,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_docentes.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -112,7 +97,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_estudiantes.php">
+                <a class="nav-link" href="pag_docentes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -154,21 +139,20 @@
                             <?php 
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
-                                                    WHERE id IN (
-                                                            SELECT ID_ASI
-                                                            FROM detalle_estudiantes
-                                                            WHERE ID_EST = ?
-                                                    )
-                                     ";
+                                                    WHERE DOC_ASI IN (
+                                                                    SELECT id 
+                                                                    FROM docentes
+                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
+                                                    )";
                                     $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
+                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
                                     $r = $sentencia -> fetchAll();
-                                    $codigoA = "";
+                                    $codigo = "";
                                     foreach($r as $resu){
-                                        $codigoA.='
+                                        $codigo.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
-                                    echo ($codigoA);      
+                                    echo ($codigo);      
                             ?>
                     </div>
                 </div>
@@ -324,7 +308,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Asignación <?php echo $_SESSION['NombreAsignacion'];?></h1>
+                        <h1 class="h3 mb-0 text-gray-800">Estudiantes de <?php echo $nombreA;?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
@@ -333,96 +317,177 @@
                         <div id="myTabContent" class="tab-content">
 
                                 <div class="container-fluid">
-                                    <br>
-                                    <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">General</h1>
-                                    <br>
-                                    <?php 
-                                        $categoria= $tipoArchivo;
-                                         
-                                        $valor="";
-                                         if($categoria=='image/jpeg' || $categoria=='png'){
-                                             $valor="<img width='40' src='../../img/Logos/desconocido.png'>";
-                                         }
-                     
-                                         if($categoria=='application/pdf'){
-                                             $valor="<img  width='40' src='../../img/Logos/pdf.png'>";
-                                         }
-                     
-                                         if($categoria=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoria=='xlsm' ){
-                                             $valor="<img  width='40' src='../../img/Logos/exel.png'>";
-                                         }
-                     
-                                         if($categoria=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoria=='docx'){
-                                             $valor="<img  width='40' src='../../img/Logos/word.png'>";
-                                         }
-                                         if($categoria=='application/zip'){
-                                             $valor="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
-                                         }
-                     
-                                         if($categoria=='mp3'){
-                                             $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
-                                         }
-                     
-                                         if($valor==''){
-                                             $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
-                                         }
-
-                                       echo '<div>
-                                                <label class="control-label" style="color: #000; font-weight: 500;">'.$_SESSION['descripcionAsignacion'].'</label>
-                                                <br><label class="control-label" style="color: #000; font-weight: 500;">Fecha Limite: '.$fecha.'</label>
-                                            </div>';
-                                    ?>
-                                    <?php 
-                                        if($_SESSION['nombreArchivo'] == ''){    
-                                            echo '<p></p>';
-                                        }else{
-                                           echo '   <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
-                                                    <a href="cargar.php?id='.$_SESSION['nombreArchivo'].'">'.$valor.'descargar</a>';
-                                        };
-                                    ?>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                            <br>
-                                            <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
-                                                <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Información: </label>
-                                                    </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <textarea class="form-control" id="message" name="informacionnAsig" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </center>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
-                                                    </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <input type="file" name="archivoAsig2" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </center>
-                                                </fieldset>
-                                                <p class="text-center">
-                                                    <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarAsigE"><i class="zmdi zmdi-floppy"></i> Subir Asignación</button>
-                                                </p>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                         </div>
                     </div>
-
+                    <?php 
+                        if($opcion == 2){
+                    ?>
+                    <div class="card shadow mb-4"> <!--numero de comlumnas el 4 al final-->
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Tabla de Estudiantes</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Cedula</th>
+                                            <th>Nombre</th>
+                                            <th>Apellido</th>
+                                            <th>Correo</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Cedula</th>
+                                            <th>Nombre</th>
+                                            <th>Apellido</th>
+                                            <th>Correo</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <?php 
+                                            $consulta = "   SELECT *
+                                                            FROM estudiantes
+                                                            WHERE id IN (
+                                                                            SELECT ID_EST 
+                                                                            FROM detalle_estudiantes
+                                                                            WHERE ID_ASI = ?
+                                            )";
+                                            $sentencia = $con -> prepare($consulta);
+                                            $sentencia -> execute(array($_SESSION['AsignaturaCOD']));
+                                            $r = $sentencia -> fetchAll();
+                                            $codigo = "";
+                                            foreach($r as $resu){
+                                                $codigo.='
+                                                <tr>
+                                                    <td>'.$resu['id'].'</td>
+                                                    <td>'.$resu['CED_EST'].'</td>
+                                                    <td>'.$resu['NOM_EST'].'</td>
+                                                    <td>'.$resu['APE_EST'].'</td>
+                                                    <td>'.$resu['COR_INS_EST'].'</td>
+                                                </tr>
+                                                ';
+                                            }   
+                                            echo ($codigo);      
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                        }
+                    ?>
+                    <?php 
+                        if($opcion == 3){
+                    ?>
+                    <div class="card shadow mb-4"> <!--numero de comlumnas el 4 al final-->
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Tabla de Estudiantes</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Asignacion</th>
+                                            <th>Estudiante</th>
+                                            <th>Descripcion</th>
+                                            <th>Archivo</th>
+                                            <th>Nota</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Asignacion</th>
+                                            <th>Estudiante</th>
+                                            <th>Descripcion</th>
+                                            <th>Archivo</th>
+                                            <th>Nota</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <?php 
+                                            $consulta = "   SELECT DA.NOM_ARCH, DA.id, DA.TIP_ARCH, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
+                                                            FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
+                                                            WHERE DA.COD_ASIG_DEB = AD.id 
+                                                            AND DA.ID_EST_ASIG = E.id 
+                                                            AND AD.COD_ASI = ? AND AD.COD_DOC = ?
+                                                                             
+                                            ";
+                                            $sentencia = $con -> prepare($consulta);
+                                            $sentencia -> execute(array($_SESSION['AsignaturaCOD'], $_SESSION['codigoDocente']));
+                                            $r = $sentencia -> fetchAll();
+                                            $codigota = "";
+                                            foreach($r as $resu){
+                                                
+                                                $categoria= $resu['TIP_ARCH'];
+                                                
+                                                $valor="";
+                                                if($categoria=='image/jpeg' || $categoria=='png'){
+                                                    $valor="<img width='40' src='../../img/Logos/desconocido.png'>";
+                                                }
+                            
+                                                if($categoria=='application/pdf'){
+                                                    $valor="<img  width='40' src='../../img/Logos/pdf.png'>";
+                                                }
+                            
+                                                if($categoria=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoria=='xlsm' ){
+                                                    $valor="<img  width='40' src='../../img/Logos/exel.png'>";
+                                                }
+                            
+                                                if($categoria=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoria=='docx'){
+                                                    $valor="<img  width='40' src='../../img/Logos/word.png'>";
+                                                }
+                                                if($categoria=='application/zip' || $categoria == 'application/octet-stream'){
+                                                    $valor="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
+                                                }
+                            
+                                                if($categoria=='mp3'){
+                                                    $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                }
+                            
+                                                if($valor==''){
+                                                    $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                }
+                                
+                                                $codigota.='
+                                                <tr>
+                                                    <td>'.$resu['id'].'</td>
+                                                    <td>'.$resu['NOM_ASIG'].'</td>
+                                                    <td>'.$resu['NOM_EST'].'</td>
+                                                    <td>'.$resu['DES_ASIG_DEB'].'</td>
+                                                    <td>
+                                                        <a href="../Estudiantes/cargar.php?id='.$resu['NOM_ARCH'].'">'.$valor.'descargar</a>
+                                                    </td>
+                                                    <td>'.$resu['NOT_ASIG'].'</td>
+                                                    <td>
+                                                        <button name="editar" class="editar">Editar</button>
+                                                    </td>
+                                                </tr>
+                                                ';
+                                            }   
+                                            echo ($codigota);      
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                        }
+                    ?>
                     <!-- Content Row -->
-
+                    
                     
 
                     <!-- Content Row -->

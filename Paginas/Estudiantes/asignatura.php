@@ -19,19 +19,15 @@
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
-    $codigo = "";
+    $codigoEs = "";
     foreach($r as $resu){
-        $codigo.= $resu['id'];
+        $codigoEs.= $resu['id'];
     }
 
-    //$codigoAsig = $_GET['codpagina'];
-    //echo $codigoAsig;
-
     if(isset($_GET['codpagina'])){
-        //$_SESSION['CodAsig'] = $_GET['codpagina'];
         $codigoAsig = $_GET['codpagina'];
     }else{
-        header('Location: pag_docentes.php');
+        header('Location: pag_estudiantes.php');
         die();
     }
 
@@ -47,6 +43,7 @@
     foreach($r as $resu){
         $nombreA.= $resu['NOM_ASI'];
     }
+    $_SESSION['NombreAsignatura'] = $nombreA;
 
 ?>
 <!DOCTYPE html>
@@ -80,7 +77,7 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo);  ?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigoAsig);  ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -88,7 +85,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_asignatura.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -101,7 +98,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_docentes.php">
+                <a class="nav-link" href="pag_estudiantes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -141,22 +138,23 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
-                                    $consulta = "   SELECT *
-                                                    FROM asignaturas
-                                                    WHERE DOC_ASI IN (
-                                                                    SELECT id 
-                                                                    FROM docentes
-                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
-                                                    )";
+                                $consulta = "   SELECT *
+                                                FROM asignaturas
+                                                WHERE id IN (
+                                                            SELECT ID_ASI
+                                                            FROM detalle_estudiantes
+                                                            WHERE ID_EST = ?
+                                     )
+                                     ";
                                     $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
                                     $r = $sentencia -> fetchAll();
-                                    $codigo = "";
+                                    $codigoS = "";
                                     foreach($r as $resu){
-                                        $codigo.='
+                                        $codigoS.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
-                                    echo ($codigo);      
+                                    echo ($codigoS);      
                             ?>
                     </div>
                 </div>
@@ -281,7 +279,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" >
+                                <a class="dropdown-item" href="editar.php" >
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
@@ -361,7 +359,7 @@
                                                                         Tarea</div>
                                                                     <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
                                                                     <p class="titulo">'.$resu['DES_ASIG'].'</p>
-                                                                        <a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Ver Asignación</strong></a>
+                                                                        <a  href="asignacion.php?codAsignacion='.$resu['id'].'" ><strong>Ver Asignación</strong></a>
                                                                 </div>
                                                                 <div class="col-auto">
                                                                     <i class="fa fa-bookmark" aria-hidden="true"></i>
@@ -372,6 +370,45 @@
                                                 </div>';
                                         }   
                                         echo ($codigo);      
+                                ?>
+                            </div>
+                            <h1 class="h5 mb-0 text-gray-800">Asignaciones Realizadas</h1>
+                            <br>
+                            <div class="card-group">
+                                <?php 
+                                        $consulta = "   SELECT *
+                                                        FROM asignacion_deberes
+                                                        WHERE COD_ASI = ? AND id IN (
+                                                                    SELECT COD_ASIG_DEB
+                                                                    FROM detalle_asignacion
+                                                                    WHERE ID_EST_ASIG = ?
+                                                        )
+                                                        ";
+                                        $sentencia = $con -> prepare($consulta);
+                                        $sentencia -> execute(array($codigoAsig, $codigoEs));
+                                        $r = $sentencia -> fetchAll();
+                                        $codigoAsi = "";
+                                        foreach($r as $resu){
+                                            $codigoAsi.='
+                                                <div class="col-xl-3 col-md-6 mb-4">
+                                                    <div class="card border-left-primary shadow h-100 py-2">
+                                                        <div class="card-body">
+                                                            <div class="row no-gutters align-items-center">
+                                                                <div class="col mr-2">
+                                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                        '.$resu['FEC_ASIG'].'</div>
+                                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
+                                                                    <p class="titulo">'.$resu['DES_ASIG'].'</p>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>';
+                                        }   
+                                        echo ($codigoAsi);     
                                 ?>
                             </div>
                             <br>

@@ -77,6 +77,18 @@ CREATE TABLE `asignacion_deberes` (
   `TAM_ARCH` VARCHAR(50)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE `detalle_asignacion` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,		
+  `COD_ASIG_DEB` INT NOT NULL REFERENCES asignacion_deberes(id),
+  `ID_EST_ASIG` INT NOT NULL REFERENCES estudiantes(id),
+  `DES_ASIG_DEB` VARCHAR(600),	
+  `NOM_ARCH` VARCHAR(600),	
+  `RUT_ARCH` VARCHAR(600),	
+  `TIP_ARCH` VARCHAR(600),
+  `TAM_ARCH` VARCHAR(50),
+  `NOT_ASIG` INT
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE `detalle_estudiantes` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,		
   `ID_ASI` INT NOT NULL REFERENCES asignaturas(id),
@@ -92,3 +104,7 @@ CREATE TABLE `detalle_docentes` (
   `ID_DOC` VARCHAR(25) NOT NULL REFERENCES docentes(id)
 );
 
+SELECT DA.id, DA.NOM_ARCH, DA.TIP_ARCH, DA.DES_ASIG, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
+FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
+WHERE DA.COD_ASIG_DEB = AD.id AND DA.ID_EST_ASIG = E.id AND 
+AD.COD_ASI = ? AND AD.COD_DOC = ?

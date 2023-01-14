@@ -22,6 +22,7 @@
     foreach($r as $resu){
         $codigo.= $resu['id'];
     }
+    $_SESSION['DOCENTEcod'] = $codigo;
 ?>
 <!DOCTYPE html>
 <html lang="en">

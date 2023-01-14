@@ -47,6 +47,7 @@
     foreach($r as $resu){
         $nombreA.= $resu['NOM_ASI'];
     }
+    $_SESSION['AsignaturaCOD'] = $codigoAsig;
 
 ?>
 <!DOCTYPE html>
@@ -369,7 +370,27 @@
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Listar Estudiantes</div>
                                                         <p class="titulo">Se podra ver todos los estudiantes que se encuentren matriculados en la asignatura</p>
                                                     <?php
-                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Observar Estudiantes</strong></a>';
+                                                            echo '<a  href="mostrar.php?codAsignacion=2" ><strong>Observar Estudiantes</strong></a>';
+                                                        ?>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-danger shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                        Acciones</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Calificar Asignaciones</div>
+                                                        <p class="titulo">Se podra podra calificar todoas las asignaciones enviadas</p>
+                                                    <?php
+                                                            echo '<a  href="mostrar.php?codAsignacion=3" ><strong>Observar Notas</strong></a>';
                                                         ?>
                                                     </div>
                                                     <div class="col-auto">
@@ -389,7 +410,7 @@
                                                         <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Listar Notas</div>
                                                         <p class="titulo">Se podra ver todos las notas de los estudiantes que se encuentren matriculados en la asignatura</p>
                                                     <?php
-                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Observar Notas</strong></a>';
+                                                            echo '<a  href="asignacion.php?codAsignacion=4" ><strong>Observar Notas</strong></a>';
                                                         ?>
                                                     </div>
                                                     <div class="col-auto">
@@ -399,6 +420,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
