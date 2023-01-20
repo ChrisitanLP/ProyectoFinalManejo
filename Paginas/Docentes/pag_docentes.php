@@ -1,17 +1,24 @@
 <?php
+
+    //Se incluye la pagina conectar que trae un metodo
     include_once('../../Conexion/conectar.php');
+    $con = conectar();
+
+    //Inicia la sesion actual
     session_start();
 
+    //Se verifica que existan variables de sesion (USUARIO / ROL)
+    //Segun su rol se crean unas variables
     if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
         $usuario = $_SESSION['usuario'];
+        $contraseña = $_SESSION['contraseña'];
     }else{
+        //Se redirecciona a login.php
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }
-
-    $contraseña = $_SESSION['contraseña'];
-    $con = conectar();
     
+    //Se realiza una consulta en la tabla DOCENTES (Consigue id)
     $consulta = "   SELECT id
                     FROM docentes
                     WHERE COR_INS_DOC = ? AND CED_DOC = ?";
@@ -19,9 +26,12 @@
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
     $codigo = "";
+    //Se guarda en una variable la id del DOCENTE
     foreach($r as $resu){
         $codigo.= $resu['id'];
     }
+
+    //Se crea una variable de sesion
     $_SESSION['DOCENTEcod'] = $codigo;
 ?>
 <!DOCTYPE html>
@@ -114,6 +124,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
+                                //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
                                                     WHERE DOC_ASI IN (
@@ -125,6 +136,7 @@
                                     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
                                     $r = $sentencia -> fetchAll();
                                     $codigo = "";
+                                    //Se muestran las asignaturas como hipervinculo del menu
                                     foreach($r as $resu){
                                         $codigo.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
@@ -295,6 +307,7 @@
                         <br>
                         <div class="card-group">
                             <?php 
+                                    //Se realiza una consulta en la tabla asignaturas(Trae TODOS los datos)
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
                                                     WHERE DOC_ASI IN (
@@ -306,6 +319,9 @@
                                     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
                                     $r = $sentencia -> fetchAll();
                                     $codigo = "";
+
+                                    //Crea unas cuantas cards segun el numero de asignaturas en las que
+                                    //este el Docente
                                     foreach($r as $resu){
                                         $codigo.='
                                             <div class="col-xl-3 col-md-6 mb-4">
