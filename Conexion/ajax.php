@@ -30,4 +30,14 @@
 		//lista a todos los cursos
 		echo (consultaCursos());
 	}
+
+	if(isset($_POST['opcion']) && $_POST['opcion']==1){
+		$con = conectar();
+		$query = "UPDATE detalle_asignacion SET NOT_ASIG=? WHERE  id = ?";
+		$sentencia = $con->prepare($query);
+	
+		$sentencia->execute(array($_POST['nota'], $_POST['asignacion_id']));
+		
+		echo ("Usuario editado");
+	}
 ?>
