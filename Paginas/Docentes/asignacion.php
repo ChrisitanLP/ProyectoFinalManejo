@@ -89,7 +89,6 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigodoc); echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 

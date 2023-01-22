@@ -105,7 +105,6 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo $_SESSION['NombreAsignacion']; echo $_SESSION['rol']; echo $_SESSION['codigoAsignacion']; echo $_SESSION['nombreArchivo'];?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
