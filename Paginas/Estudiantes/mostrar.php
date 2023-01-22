@@ -32,37 +32,33 @@
         $codigoEs.= $resu['id'];
     }
 
-    //Se verifica que exista codAsignacion por metodo GET
-    if(isset($_GET['codpagina'])){
-        $codigoAsig = $_GET['codpagina'];
-        $_SESSION['AsignaturaCOD'] = $codigoAsig;
+    if(isset($_GET['codAsignacion'])){
+        //$_SESSION['CodAsig'] = $_GET['codpagina'];
+        $opcion = $_GET['codAsignacion'];
     }else{
-         //Se redirecciona a la pagina principal
         header('Location: pag_estudiantes.php');
         die();
     }
+
+    $con = conectar();
     
-    //Se realiza una consulta en la tabla asignaturas (Consigue todos los datos)
     $consulta = "   SELECT *
                     FROM asignaturas
                     WHERE id = ? ";
     $sentencia = $con -> prepare($consulta);
-    $sentencia -> execute(array($codigoAsig));
+    $sentencia -> execute(array($_SESSION['AsignaturaCOD']));
     $r = $sentencia -> fetchAll();
     $nombreA = "";
-    //Se guarda en una variable el nombre de la ASIGNATURA
     foreach($r as $resu){
         $nombreA.= $resu['NOM_ASI'];
     }
-
-    //Se crea una variable de sesion
-    $_SESSION['NombreAsignatura'] = $nombreA;
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -70,11 +66,10 @@
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../../CSS/footer.css">
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <!-- Muestra el nombre de la asignatura segun el codigo traido de la pagina principal -->
-    <title><?php echo $nombreA;?></title>
+    <title>Estudiantes <?php echo $nombreA;?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -88,7 +83,7 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigoAsig);  ?>
+<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -132,7 +127,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
+                        <a class="collapse-item" href="asignacion.php">Asignación</a>
                     </div>
                 </div>
             </li>
@@ -149,26 +144,22 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
-                                //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
-                                $consulta = "   SELECT *
-                                                FROM asignaturas
-                                                WHERE id IN (
-                                                            SELECT ID_ASI
-                                                            FROM detalle_estudiantes
-                                                            WHERE ID_EST = ?
-                                     )
-                                ";
-                                $sentencia = $con -> prepare($consulta);
-                                $sentencia -> execute(array($_SESSION['codigoEstudiante']));
-                                $r = $sentencia -> fetchAll();
-                                $codigoS = "";
-
-                                //Se muestran las asignaturas como hipervinculo del menu
-                                foreach($r as $resu){
-                                    $codigoS.='
-                                    <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
-                                }   
-                                echo ($codigoS);      
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE DOC_ASI IN (
+                                                                    SELECT id 
+                                                                    FROM docentes
+                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
+                                                    )";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                    }   
+                                    echo ($codigo);      
                             ?>
                     </div>
                 </div>
@@ -324,149 +315,104 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Información</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Estudiantes de <?php echo $nombreA;?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
 
                     <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
                         <div id="myTabContent" class="tab-content">
+
                                 <div class="container-fluid">
-                                    <br>
-                                    <section class="full-reset font-cover" style="background-image: url(../../img/font-index.jpg); border-radius: 20px;">
-                                        <div class="full-reset" style="height: 100%; padding: 60px 0;">
-                                            <h1 class="text-center titles" style="color: #fff; font-family: Arial Black;"><?php echo $nombreA;?></h1>
-                                            <p class="lead text-center">
-                                                Descripcion 
-                                            </p>
-                                        </div>
-                                    </section>
+                                    
                                 </div>
                         </div>
-                        <br><br>
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                            <h1 class="h4 mb-0 text-gray-800"> Acciones Generales</h1>
-                        </div>
-                        <br>
-                        <div class="container-fluid" style="background: #fff; border-radius: 20px;">
-                            <br>
-                            <h1 class="h5 mb-0 text-gray-800">Asignaciones </h1>
-                            <br>
-                            <div class="card-group">
-                                <?php
-                                   
-                                             //Se realiza una consulta en la tabla asignacion_deberes (Trae TODOS los datos)
-                                            $consulta = "   SELECT *
-                                                            FROM asignacion_deberes
-                                                            WHERE COD_ASI = ? 
-                                            ";
-                                            $sentencia = $con -> prepare($consulta);
-                                            $sentencia -> execute(array($codigoAsig));
-                                            $r = $sentencia -> fetchAll();
-                                            $codigo = "";
-
-                                            //Crea unas cuantas cards segun el numero de asignaturas en las que
-                                            //este matriculado el estudiante
-                                            foreach($r as $resu){
-                                                $codigo.='
-                                                <div class="col-xl-3 col-md-6 mb-4">
-                                                    <div class="card border-left-primary shadow h-100 py-2">
-                                                        <div class="card-body">
-                                                            <div class="row no-gutters align-items-center">
-                                                                <div class="col mr-2">
-                                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                        Tarea</div>
-                                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
-                                                                    <p class="titulo">'.$resu['DES_ASIG'].'</p>
-                                                                        <a  href="asignacion.php?codAsignacion='.$resu['id'].'" ><strong>Ver Asignación</strong></a>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>';
-                                            }   
-                                            echo ($codigo);    
-                                ?>
-                            </div>
-                            <h1 class="h5 mb-0 text-gray-800">Asignaciones Realizadas</h1>
-                            <br>
-                            <div class="card-group">
-                                <?php 
-                                    //Se realiza una consulta en la tabla asignacion_deberes (Trae TODOS los datos)
-                                    $consulta = "   SELECT *
-                                                    FROM asignacion_deberes
-                                                    WHERE COD_ASI = ? AND id IN (
-                                                                SELECT COD_ASIG_DEB
-                                                                FROM detalle_asignacion
-                                                                WHERE ID_EST_ASIG = ?
-                                                    )";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($codigoAsig, $codigoEs));
-                                    $r = $sentencia -> fetchAll();
-                                    $codigoAsi = "";
-
-                                    //Se muestran varias cards segun el numero de asignaciones realizadas
-                                    foreach($r as $resu){
-                                        $codigoAsi.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-primary shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    '.$resu['FEC_ASIG'].'</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
-                                                                <p class="titulo">'.$resu['DES_ASIG'].'</p>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigoAsi);     
-                                ?>
-                            </div>
-                            <br>
-                            <h1 class="h5 mb-0 text-gray-800">Acciones</h1>
-                            <br>
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                        <div class="card border-left-danger shadow h-100 py-2">
-                                            <div class="card-body">
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col mr-2">
-                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                        Acciones</div>
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Listar Notas</div>
-                                                        <p class="titulo">Se podra ver las calificaciones de las asignacion realizadas</p>
-                                                    <?php
-                                                            echo '<a  href="mostrar.php?codAsignacion=3" ><strong>Observar Notas</strong></a>';
-                                                        ?>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                        </div>
-                        <br>
                     </div>
+                    <?php 
+                        if($opcion == 3){
+                    ?>
+                    <div class="card shadow mb-4"> <!--numero de comlumnas el 4 al final-->
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Tabla de Calificaciónes</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Asignacion</th>
+                                            <th>Nota</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <?php
+                                            $consulta = "   SELECT  DA.id, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
+                                            FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
+                                            WHERE DA.COD_ASIG_DEB = AD.id 
+                                            AND DA.ID_EST_ASIG = E.id 
+                                            AND AD.COD_ASI = ? AND DA.ID_EST_ASIG = ?            
+                                            ";
+
+                                            $sentencia = $con -> prepare($consulta);
+                                            $sentencia -> execute(array($_SESSION['AsignaturaCOD'], $codigoEs));
+                                            $r = $sentencia -> fetchAll();
+                                            $codigota = "";
+                                            $array = 0;
+                                            $acum = 0;
+                                            foreach($r as $resu){
+                                                $acum ++;
+                                                $array = $array + $resu['NOT_ASIG'];
+                                            }  
+                                            $codigota.='
+                                                <tr>
+                                                    <th colspan = "2">Total</td>
+                                                    <td>'.(number_format($array/$acum, 2)).'</td>
+                                                </tr>
+                                            '; 
+                                            echo ($codigota);      
+                                        ?>
+                                    </tfoot>
+                                    <tbody>
+                                        <?php 
+                                            $consulta = "   SELECT  DA.id, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
+                                            FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
+                                            WHERE DA.COD_ASIG_DEB = AD.id 
+                                            AND DA.ID_EST_ASIG = E.id 
+                                            AND AD.COD_ASI = ? AND DA.ID_EST_ASIG = ?            
+                                            ";
+
+                                            $sentencia = $con -> prepare($consulta);
+                                            $sentencia -> execute(array($_SESSION['AsignaturaCOD'], $codigoEs));
+                                            $r = $sentencia -> fetchAll();
+                                            $codigota = "";
+                                            foreach($r as $resu){
+                                                $codigota.='
+                                                <tr>
+                                                    <td>'.$resu['id'].'</td>
+                                                    <td>'.$resu['NOM_ASIG'].'</td>
+                                                    <td>'.$resu['NOT_ASIG'].'</td>
+                                                </tr>
+                                                ';
+                                            }   
+                                            echo ($codigota);      
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                        }
+                    ?>
+                    <!-- Content Row -->
+                    
+                    
+
+                    <!-- Content Row -->
+                    
+
                     <br>
-                    <!-- Content Row -->
-
-                    
-
-                    <!-- Content Row -->
-                    
-
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -569,7 +515,71 @@
     <!-- Page level custom scripts -->
     <script src="../../JS/demo/chart-area-demo.js"></script>
     <script src="../../JS/demo/chart-pie-demo.js"></script>
+    <script>
+        $(document).ready(function(){
+            var asignacion_id="";
+            var opcion;
 
+            // puedo acceder a las class de otras clases
+            $(".editar").click(function(){
+                fila= $(this).closest("tr");//captura la fila
+                asignacion_id=fila.find('td:eq(0)').text();//que busque la columna con la posicion
+                nota=fila.find('td:eq(5)').text();
+                $("#nota").val(nota);
+                $("#modalCrud").modal('show');
+            });
+
+            //control del submit
+            $("#formUsuarios").submit(function(e){ //variable cualquiera que coloco
+                e.preventDefault(); //evita que el formulario mande todo hacia el servidor
+                nota= $("#nota").val();
+                opcion=1;
+                $.ajax({
+                    url: "../../Conexion/ajax.php",
+                    type: "POST",
+                    data: {
+                        asignacion_id: asignacion_id,
+                        nota: nota,
+                        opcion: opcion
+                    },
+                    success: function(resultado){
+                    location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="modal fade" id="modalCrud" tabindex="" role="dialog" arial-labelledby="ejemplo" aria-hidden="true">
+        <!--arial-labelledby="ejemplo" definir o delimitar el area  -->
+        <div class="modal-dialog" role="document"> <!--document, digo que este modal va a tener incrustado un documento-->
+            <div class="modal-content">   <!--dar color al contenedor  -->
+                <div class="modal-header">
+                    <h2>Asignar Calificación</h2>
+                    <!--data-dismiss="modal" que al cerrar quite los modals -->
+                    <button type="button" class="close" data-dismiss="modal"
+                    arial-label="Close">X</button>
+                </div>
+                <form id="formUsuarios">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!-- solucion del inge -->
+                                    <label class="col-form-label">Nota</label>
+                                    <input type="text" id="nota" name="nota" class="form-control">
+                                    <!-- mi solucion -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" type="button">Cancelar</button>
+                        <button class="btn" type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>                  
 </body>
 
 </html>
