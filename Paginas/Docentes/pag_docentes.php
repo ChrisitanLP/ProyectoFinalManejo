@@ -31,8 +31,23 @@
         $codigo.= $resu['id'];
     }
 
+     //Se realiza una consulta en la tabla ESTUDIANTES (Consigue id)
+     $consulta = "   SELECT RUT_ARCH
+                    FROM docentes
+                    WHERE COR_INS_DOC = ? AND CED_DOC = ?";
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+    $r = $sentencia -> fetchAll();
+    $rutaDo = "";
+
+    //Se guarda en una variable la id del ESTUDIANTE
+    foreach($r as $resu){
+        $rutaDo.= $resu['RUT_ARCH'];
+    }
+
     //Se crea una variable de sesion
     $_SESSION['DOCENTEcod'] = $codigo;
+    $_SESSION['rutaPerfil'] = $rutaDo;
 ?>
 <!DOCTYPE html>
 <html lang="en">
