@@ -235,11 +235,11 @@
                                                     $NOM_EST=trim($_POST['NOM_EST']);
                                                     $APE_EST=trim($_POST['APE_EST']);
                                                     $DIR_EST=trim($_POST['DIR_EST']);
-                                                   
+                                                    $CEL_EST=trim($_POST['CEL_EST']);
                                                     $TEL_EST=trim($_POST['TEL_EST']);
                                                     $FEC_NAC_EST = trim($_POST['FEC_NAC_EST']);
 
-                                                    $consulta = "UPDATE estudiantes SET `NOM_EST`= :NOM_EST, `APE_EST` = :APE_EST, `DIR_EST` = :DIR_EST, `TEL_EST` = :TEL_EST, `FEC_NAC_EST` = :FEC_NAC_EST WHERE `id` = :id";
+                                                    $consulta = "UPDATE estudiantes SET `NOM_EST`= :NOM_EST, `APE_EST` = :APE_EST, `DIR_EST` = :DIR_EST, `CEL_EST` = :CEL_EST, `TEL_EST` = :TEL_EST, `FEC_NAC_EST` = :FEC_NAC_EST WHERE `id` = :id";
                                                     
                                                     $sql = $con->prepare($consulta);
                                                     
@@ -247,7 +247,7 @@
                                                     $sql->bindParam(':NOM_EST',$NOM_EST,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':APE_EST',$APE_EST,PDO::PARAM_STR, 25);
                                                     $sql->bindParam(':DIR_EST',$DIR_EST,PDO::PARAM_STR,25);
-                                                   
+                                                    $sql->bindParam(':CEL_EST',$CEL_EST,PDO::PARAM_STR,25);
                                                     $sql->bindParam(':TEL_EST',$TEL_EST,PDO::PARAM_STR,25);
                                                     $sql->bindParam(':FEC_NAC_EST',$FEC_NAC_EST,PDO::PARAM_STR);
                                                     $sql->bindParam(':id',$id,PDO::PARAM_INT);
@@ -302,7 +302,11 @@
                                                                 <input value="<?php echo $obj->FEC_NAC_EST;?>" name="FEC_NAC_EST" type="text" class="form-control" placeholder="Fecha Nacimiento...">
                                                             </div>
                                                         </div>
-                                                        <div class="form-row">  
+                                                        <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                                <label for="CEL_EST">Celular</label>
+                                                                <input value="<?php echo $obj->CEL_EST;?>" name="CEL_EST" type="text" class="form-control" placeholder="Telefono...">
+                                                            </div>  
                                                             <div class="form-group col-md-6">
                                                                 <label for="TEL_EST">Telefono</label>
                                                                 <input value="<?php echo $obj->TEL_EST;?>" name="TEL_EST" type="text" class="form-control" placeholder="Telefono...">
@@ -325,6 +329,7 @@
                                                                     <th class="text-center">Apellido</th>
                                                                     <th class="text-center">Dirección</th>
                                                                     <th class="text-center">Email</th>
+                                                                    <th class="text-center">Celular</th>
                                                                     <th class="text-center">Telefono</th>
                                                                     <th class="text-center">Nacimiento</th>
                                                                     <th class="text-center">Modificar</th>
@@ -338,6 +343,7 @@
                                                                     <th class="text-center">Apellido</th>
                                                                     <th class="text-center">Dirección</th>
                                                                     <th class="text-center">Email</th>
+                                                                    <th class="text-center">Celular</th>
                                                                     <th class="text-center">Telefono</th>
                                                                     <th class="text-center">Nacimiento</th>
                                                                     <th class="text-center">Modificar</th>
@@ -364,6 +370,7 @@
                                                                                     <td>".$result -> APE_EST."</td>
                                                                                     <td>".$result -> DIR_EST."</td>
                                                                                     <td>".$result -> COR_INS_EST."</td>
+                                                                                    <td>".$result -> CEL_EST."</td>
                                                                                     <td>".$result -> TEL_EST."</td>
                                                                                     <td>".$result -> FEC_NAC_EST."</td>
                                                                                     <td>

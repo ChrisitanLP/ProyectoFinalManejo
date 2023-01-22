@@ -280,7 +280,7 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                                        <form action="../../Conexion/insertar.php" method="POST">
+                                                        <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
                                                             <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Estudiante</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Cedula: </label>
@@ -303,12 +303,23 @@
                                                                 <input class="form-control" type="text" name="correoE">
                                                             </div>
                                                             <div class="form-group label-floating">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Celular: </label>
+                                                                <input class="form-control" type="text" name="celularE">
+                                                            </div>
+                                                            <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Telefono: </label>
                                                                 <input class="form-control" type="text" name="telefonoE">
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Fecha Nacimiento: </label>
                                                                 <input class="form-control" type="date" name="fechaE">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Perfil</label>
+                                                                <div>
+                                                                    <input type="text" readonly="" class="form-control" placeholder="Browse...">
+                                                                    <input type="file" name="perfilE" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
+                                                                </div>
                                                             </div>
                                                             <p class="text-center">
                                                                 <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarE"><i class="zmdi zmdi-floppy"></i> Guardar</button>
@@ -329,6 +340,7 @@
                                                             <th class="text-center">Apellido</th>
                                                             <th class="text-center">Dirección</th>
                                                             <th class="text-center">Email</th>
+                                                            <th class="text-center">Celular</th>
                                                             <th class="text-center">Telefono</th>
                                                             <th class="text-center">Nacimiento</th>
                                                         </tr>
@@ -340,6 +352,7 @@
                                                             <th class="text-center">Apellido</th>
                                                             <th class="text-center">Dirección</th>
                                                             <th class="text-center">Email</th>
+                                                            <th class="text-center">Celular</th>
                                                             <th class="text-center">Telefono</th>
                                                             <th class="text-center">Nacimiento</th>
                                                         </tr>
