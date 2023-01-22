@@ -252,7 +252,7 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                                        <form action="../../Conexion/insertar.php" method="POST">
+                                                        <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
                                                             <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Docente</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Cedula: </label>
@@ -281,6 +281,13 @@
                                                             <div class="form-group">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Fecha Nacimiento: </label>
                                                                 <input class="form-control" type="date" name="fechaD">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Perfil</label>
+                                                                <div>
+                                                                    <input type="text" readonly="" class="form-control" placeholder="Browse...">
+                                                                    <input type="file" name="perfilD" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
+                                                                </div>
                                                             </div>
                                                             <p class="text-center">
                                                                 <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarD"><i class="zmdi zmdi-floppy"></i> Guardar</button>
@@ -315,7 +322,6 @@
                                                             <th class="text-center">Email</th>
                                                             <th class="text-center">Telefono</th>
                                                             <th class="text-center">Nacimiento</th>
-                                                           
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
