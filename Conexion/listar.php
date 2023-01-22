@@ -52,6 +52,7 @@
                         <td>'.$listado['APE_EST'].'</td>
                         <td>'.$listado['DIR_EST'].'</td>
                         <td>'.$listado['COR_INS_EST'].'</td>
+                        <td>'.$listado['CEL_EST'].'</td>
                         <td>'.$listado['TEL_EST'].'</td>
                         <td>'.$listado['FEC_NAC_EST'].'</td>
                         

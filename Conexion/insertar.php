@@ -72,29 +72,46 @@
     $cedulaE = $_POST["cedulaE"];
     $direccionE = $_POST["direccionE"];
     $correoE = $_POST["correoE"];
+    $celularE = $_POST["celularE"];
     $telefonoE = $_POST["telefonoE"];
     $fechaE = $_POST["fechaE"];
 
     //Se verifica que si existe enviarE por metodo POST entonces realice una consulta
     if(isset($_POST["enviarE"]))
     {
-        //Se crea una insercion de datos en la tabla ESTUDIANTES
-        $sqlE = "INSERT INTO estudiantes(CED_EST, NOM_EST, APE_EST, DIR_EST, COR_INS_EST, TEL_EST, FEC_NAC_EST)values('$cedulaE', '$nombreE', '$apellidoE', '$direccionE', '$correoE', '$telefonoE', '$fechaE')";
-        $consultaE = $con->prepare($sqlE);
-        $consultaE -> execute();
-        $lastInsertIdE = $con->lastInsertId();
-        
-        if($lastInsertIdE>0){
+        if(is_uploaded_file($_FILES['perfilE']['tmp_name'])){
 
-            //Se redirige a la pagina principal de envio
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
-            echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreE  </div>";
-        }else{
+            $ruta = "../BD/archivos/"; 
+            $nombrefinal= trim ($_FILES['perfilE']['name']); 
+            $rutaFinal= $ruta.$nombrefinal;  
+            $upload= $ruta.$nombrefinal;  
+    
+            //Se verifica que existe el archivo
+            if(move_uploaded_file($_FILES['perfilE']['tmp_name'], $upload)) { 
+                    
+                $nombre = $_FILES['perfilE']['name'];
+                $tipo = $_FILES['perfilE']['type'];  
+                $tamano = $_FILES['perfilE']['size'];
 
-            //Se redirige a la pagina principal de envio
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
-            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
-            print_r($consultaE->errorInfo()); 
+                //Se crea una insercion de datos en la tabla ESTUDIANTES
+                $sqlE = "INSERT INTO estudiantes(CED_EST, NOM_EST, APE_EST, DIR_EST, COR_INS_EST, CEL_EST, TEL_EST, FEC_NAC_EST, NOM_ARCH, RUT_ARCH, TIP_ARCH, TAM_ARCH)values('$cedulaE', '$nombreE', '$apellidoE', '$direccionE', '$correoE', '$celularE', '$telefonoE', '$fechaE', '$nombrefinal', '$rutaFinal', '$tipo', '$tamano')";
+                $consultaE = $con->prepare($sqlE);
+                $consultaE -> execute();
+                $lastInsertIdE = $con->lastInsertId();
+                
+                if($lastInsertIdE>0){
+
+                    //Se redirige a la pagina principal de envio
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
+                    echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreE  </div>";
+                }else{
+
+                    //Se redirige a la pagina principal de envio
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
+                    echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                    print_r($consultaE->errorInfo()); 
+                }
+            }
         }
     };
 
