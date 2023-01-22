@@ -382,6 +382,7 @@
                     <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
                         <div id="myTabContent" class="tab-content">
                                 <div class="container-fluid">
+                                    <br>
                                     <div>
                                         <label class="control-label" style="color: #000; font-weight: 500;">Editar foto Perfil: </label>
                                     </div>
