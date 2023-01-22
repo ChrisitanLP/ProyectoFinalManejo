@@ -1,38 +1,46 @@
 <?php
+
+    //Se incluye la pagina conectar que trae un metodo
     include_once('../../Conexion/conectar.php');
+    $con = conectar();
+
+    //Inicia la sesion actual
     session_start();
 
+    //Se verifica que existan variables de sesion (USUARIO / ROL)
+    //Segun su rol se crean unas variables
     if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
         $usuario = $_SESSION['usuario'];
+        $contraseña = $_SESSION['contraseña'];
     }else{
-        header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
+        //Se redirecciona a login.php
+        header('Location: ../../login.php');
         die() ;
     }
 
-    $contraseña = $_SESSION['contraseña'];
-
-    $con = conectar();
-    
+    //Se realiza una consulta en la tabla ESTUDIANTES (Consigue id)
     $consulta = "   SELECT id
                     FROM estudiantes
                     WHERE COR_INS_EST = ? AND CED_EST = ?";
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
+    //Se guarda en una variable la id del ESTUDIANTE
     $codigoEs = "";
     foreach($r as $resu){
         $codigoEs.= $resu['id'];
     }
 
+    //Se verifica que exista codAsignacion por metodo GET
     if(isset($_GET['codAsignacion'])){
         $codigoAsig = $_GET['codAsignacion'];
     }else{
+        //Se redirecciona a la pagina principal
         header('Location: pag_estudiantes.php');
         die();
     }
-
-    $con = conectar();
     
+    //Se realiza una consulta en la tabla asignacion_deberes (Consigue todos los datos)
     $consulta = "   SELECT *
                     FROM asignacion_deberes
                     WHERE id = ? ";
@@ -40,6 +48,7 @@
     $sentencia -> execute(array($codigoAsig));
     $r = $sentencia -> fetchAll();
     
+    //Se crean varias variables
     $nombreAsig = "";
     $descripcionAsig = "";
     $tipoArchivo = "";
@@ -48,6 +57,8 @@
     $fecha = "";
 
     foreach($r as $resu){
+
+        //Se guarda los datos traifos de la tabla en las variables creadas
         $nombreAsig.= $resu['NOM_ASIG'];
         $descripcionAsig.= $resu['DES_ASIG']; 
         $tipoArchivo.= $resu['TIP_ARCH'];
@@ -55,6 +66,8 @@
         $nombreArchivo.= $resu['NOM_ARCH'];
         $fecha.= $resu['FEC_ASIG'];
     }
+
+    //Se crean variales de sesion
     $_SESSION['NombreAsignacion'] = $nombreAsig;
     $_SESSION['codigoAsignacion'] = $codigoAsig;
     $_SESSION['descripcionAsignacion'] = $descripcionAsig;
@@ -77,6 +90,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
+     <!-- Muestra el nombre de la asignatura segun el codigo traido de la pagina principal -->
     <title>Asignación <?php echo $_SESSION['NombreAsignatura'];?></title>
 
     <!-- Custom fonts for this template-->
@@ -152,6 +166,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
+                                    //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
                                                     WHERE id IN (
@@ -163,6 +178,8 @@
                                     $sentencia = $con -> prepare($consulta);
                                     $sentencia -> execute(array($_SESSION['codigoEstudiante']));
                                     $r = $sentencia -> fetchAll();
+
+                                    //Se muestran las asignaturas como hipervinculo del menu
                                     $codigoA = "";
                                     foreach($r as $resu){
                                         $codigoA.='
@@ -332,14 +349,21 @@
                     <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
                         <div id="myTabContent" class="tab-content">
 
+                                <!-- Se crea un contenedor que posee toda la informacion relevante de la pagina -->
                                 <div class="container-fluid">
                                     <br>
                                     <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">General</h1>
                                     <br>
+                                    <!-- Bloque de codigo que muestra una imagen segun el tipo de archivo
+                                        Permite la descarga del archivo
+                                    -->
                                     <?php 
+                                        //Se crea una variable que posee el tipo de archivo
                                         $categoria= $tipoArchivo;
                                          
                                         $valor="";
+
+                                        //Segun el tipo de archivo muestra una imagen
                                          if($categoria=='image/jpeg' || $categoria=='png'){
                                              $valor="<img width='40' src='../../img/Logos/desconocido.png'>";
                                          }
@@ -366,13 +390,16 @@
                                          if($valor==''){
                                              $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
                                          }
-
-                                       echo '<div>
+                                        
+                                         //Se muestra la descripcion de la asignacion 
+                                        echo '<div>
                                                 <label class="control-label" style="color: #000; font-weight: 500;">'.$_SESSION['descripcionAsignacion'].'</label>
                                                 <br><label class="control-label" style="color: #000; font-weight: 500;">Fecha Limite: '.$fecha.'</label>
                                             </div>';
                                     ?>
                                     <?php 
+
+                                        //Si no existe un archivo en la asignacion, no se muestra esta seccion
                                         if($_SESSION['nombreArchivo'] == ''){    
                                             echo '<p></p>';
                                         }else{
@@ -384,6 +411,7 @@
                                     <div class="row">
                                         <div class="col-xs-12 col-md-10 col-md-offset-1">
                                             <br>
+                                            <!-- (Formulario) Permite el envio de la asignacion a insertar.php metodo POST -->
                                             <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
                                                 <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
                                                     <div>

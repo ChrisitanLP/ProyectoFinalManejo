@@ -1,4 +1,6 @@
 <?php
+
+    //Se crea un metodo que permite crear una conexion a la BD
     function conectar(){
 
         $servidor = "localhost";

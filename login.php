@@ -1,4 +1,5 @@
 <?php
+    //Inicia la sesion actual
     session_start(); 
 ?>
 <!DOCTYPE html>
@@ -23,8 +24,12 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="login">
-
                     <h1>Login</h1>
+
+                    <!--    El formulario de logueo
+                            Envia la informacion a la pagina validar.php por el metodo POST
+                    -->
+
                     <form action="Conexion/validar.php" method="post">
                         <div class="form-group">
                             <input type="text" class="form-control form-control-user" id="usuario" name="usuario" aria-describedby="emailHelp" placeholder="Ingrese Usuario">
@@ -40,6 +45,8 @@
                             <label class="form-check-label" for="exampleCheck1">Recordar Contraseña</label>
                         </div>
                         <br>
+
+                        <!-- Permite el envio de datos  -->
                         <button type="submit" class="btn btn-lg btn-block btn-success" id="ingresar" name="Ingresar">Enviar</button>
                     </form>
                 </div>

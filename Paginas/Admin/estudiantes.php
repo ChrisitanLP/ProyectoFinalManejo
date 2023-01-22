@@ -1,10 +1,17 @@
 <?php 
+
+    //Se incluye la pagina conectar que trae un metodo
     include_once('../../Conexion/conectar.php');
+
+    //Inicia la sesion actual
     session_start();
     
+    //Se verifica que existan variables de sesion (USUARIO / ROL)
+    //Segun su rol se crean unas variables
     if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Administrador"){
         $usuario = $_SESSION['usuario'];
     }else{
+        //Se redirecciona a login.php
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }

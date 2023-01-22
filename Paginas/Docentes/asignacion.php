@@ -1,17 +1,24 @@
 <?php
+
+    //Se incluye la pagina conectar que trae un metodo
     include_once('../../Conexion/conectar.php');
+    $con = conectar();
+
+    //Inicia la sesion actual
     session_start();
 
+    //Se verifica que existan variables de sesion (USUARIO / ROL)
+    //Segun su rol se crean unas variables
     if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
         $usuario = $_SESSION['usuario'];
+        $contraseña = $_SESSION['contraseña'];
     }else{
+        //Se redirecciona a login.php
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }
-
-    $contraseña = $_SESSION['contraseña'];
-    $con = conectar();
     
+    //Se realiza una consulta en la tabla DOCENTES (Consigue id)
     $consulta = "   SELECT id
                     FROM docentes
                     WHERE COR_INS_DOC = ? AND CED_DOC = ?";
@@ -19,22 +26,22 @@
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
     $codigodoc = "";
+    //Se guarda en una variable la id del ESTUDIANTE
     foreach($r as $resu){
         $codigodoc.= $resu['id'];
     }
 
-    $_SESSION['codigoDocente'] = $codigodoc;
-
+    //Se verifica que exista codAsignacion por metodo GET
     if(isset($_GET['codAsignacion'])){
         //$_SESSION['CodAsig'] = $_GET['codpagina'];
         $codigoAsig = $_GET['codAsignacion'];
     }else{
+        //Se redirecciona a la pagina principal
         header('Location: pag_docentes.php');
         die();
     }
 
-    $con = conectar();
-    
+    //Se realiza una consulta en la tabla asignaturas (Consigue todos los datos)
     $consulta = "   SELECT *
                     FROM asignaturas
                     WHERE id = ? ";
@@ -42,10 +49,13 @@
     $sentencia -> execute(array($codigoAsig));
     $r = $sentencia -> fetchAll();
     $nombreA = "";
+    //Se guarda en una variable el nombre de la ASIGNATURA
     foreach($r as $resu){
         $nombreA.= $resu['NOM_ASI'];
     }
 
+    //Se crean variables de sesion
+    $_SESSION['codigoDocente'] = $codigodoc;
     $_SESSION['codigoAsignatura'] = $codigoAsig;
 
 ?>
@@ -64,6 +74,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
+     <!-- Muestra el nombre de la asignatura segun el codigo traido de la pagina principal -->
     <title>Asignación <?php echo $nombreA;?></title>
 
     <!-- Custom fonts for this template-->
@@ -139,6 +150,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
+                                    //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
                                                     WHERE DOC_ASI IN (
@@ -150,6 +162,8 @@
                                     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
                                     $r = $sentencia -> fetchAll();
                                     $codigo = "";
+
+                                    //Se muestran las asignaturas como hipervinculo del menu
                                     foreach($r as $resu){
                                         $codigo.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
@@ -317,13 +331,16 @@
 
                     <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
                         <div id="myTabContent" class="tab-content">
-
+                                
+                                 <!-- Se crea un contenedor que posee toda la informacion relevante de la pagina -->
                                 <div class="container-fluid">
                                     <br>
                                     <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">General</h1>
                                     <br>
                                     <div class="row">
                                         <div class="col-xs-12 col-md-10 col-md-offset-1">
+
+                                            <!-- (Formulario) Permite el envio de la asignacion a insertar.php metodo POST -->
                                             <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
                                                 <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
                                                     <div>
