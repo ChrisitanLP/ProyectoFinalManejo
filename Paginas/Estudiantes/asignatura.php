@@ -26,6 +26,7 @@
 
     if(isset($_GET['codpagina'])){
         $codigoAsig = $_GET['codpagina'];
+        $_SESSION['AsignaturaCOD'] = $codigoAsig;
     }else{
         header('Location: pag_estudiantes.php');
         die();
@@ -45,6 +46,7 @@
     }
     $_SESSION['NombreAsignatura'] = $nombreA;
 
+    $_SESSION['AsignaturaCOD']
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +79,6 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigoAsig);  ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -273,8 +274,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" ><?php echo $usuario; ?></span>
-                                <img class="img-profile rounded-circle"
-                                    src="../../img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="../<?php echo $_SESSION['rutaPerfil'];?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -411,6 +411,28 @@
                                         echo ($codigoAsi);     
                                 ?>
                             </div>
+                            <h1 class="h5 mb-0 text-gray-800">Acciones</h1>
+                            <br>
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-danger shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                        Acciones</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Ver Calificaciones</div>
+                                                        <p class="titulo">Se podra visualizar las notas obtenidas en las asignaciones</p>
+                                                    <?php
+                                                            echo '<a  href="mostrar.php?codAsignacion=3" ><strong>Observar Notas</strong></a>';
+                                                        ?>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                             <br>
                         </div>
                         <br>
