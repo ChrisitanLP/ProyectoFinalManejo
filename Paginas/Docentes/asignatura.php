@@ -90,7 +90,6 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo);  ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 

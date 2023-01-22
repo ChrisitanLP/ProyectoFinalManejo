@@ -37,7 +37,6 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario'] ; echo $_SESSION['rol'] ; echo $_SESSION['contraseña'];?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
