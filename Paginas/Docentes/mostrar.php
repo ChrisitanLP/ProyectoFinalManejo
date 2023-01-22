@@ -465,24 +465,43 @@
                                                 }
                             
                                                 if($valor==''){
-                                                    $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                    $valor="";
                                                 }
-                                
-                                                $codigota.='
-                                                <tr>
-                                                    <td>'.$resu['id'].'</td>
-                                                    <td>'.$resu['NOM_ASIG'].'</td>
-                                                    <td>'.$resu['NOM_EST'].'</td>
-                                                    <td>'.$resu['DES_ASIG_DEB'].'</td>
-                                                    <td>
-                                                        <a href="../Estudiantes/cargar.php?id='.$resu['NOM_ARCH'].'">'.$valor.'descargar</a>
-                                                    </td>
-                                                    <td>'.$resu['NOT_ASIG'].'</td>
-                                                    <td>
-                                                        <button name="editar" class="editar">Calificar</button>
-                                                    </td>
-                                                </tr>
-                                                ';
+
+                                                if ($resu['NOM_ARCH'] == ''){
+                                                    $codigota.='
+                                                    <tr>
+                                                        <td>'.$resu['id'].'</td>
+                                                        <td>'.$resu['NOM_ASIG'].'</td>
+                                                        <td>'.$resu['NOM_EST'].'</td>
+                                                        <td>'.$resu['DES_ASIG_DEB'].'</td>
+                                                        <td>
+                                                            '.$resu['NOM_ARCH'].'
+                                                        </td>
+                                                        <td>'.$resu['NOT_ASIG'].'</td>
+                                                        <td>
+                                                            <button name="editar" class="editar">Calificar</button>
+                                                        </td>
+                                                    </tr>
+                                                    ';
+                                                }
+                                                else{
+                                                    $codigota.='
+                                                    <tr>
+                                                        <td>'.$resu['id'].'</td>
+                                                        <td>'.$resu['NOM_ASIG'].'</td>
+                                                        <td>'.$resu['NOM_EST'].'</td>
+                                                        <td>'.$resu['DES_ASIG_DEB'].'</td>
+                                                        <td>
+                                                            <a href="../Estudiantes/cargar.php?id='.$resu['NOM_ARCH'].'">'.$valor.'descargar</a>
+                                                        </td>
+                                                        <td>'.$resu['NOT_ASIG'].'</td>
+                                                        <td>
+                                                            <button name="editar" class="editar">Calificar</button>
+                                                        </td>
+                                                    </tr>
+                                                    ';
+                                                }
                                             }   
                                             echo ($codigota);      
                                         ?>

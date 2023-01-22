@@ -35,6 +35,7 @@
     //Se verifica que exista codAsignacion por metodo GET
     if(isset($_GET['codpagina'])){
         $codigoAsig = $_GET['codpagina'];
+        $_SESSION['AsignaturaCOD'] = $codigoAsig;
     }else{
          //Se redirecciona a la pagina principal
         header('Location: pag_estudiantes.php');
@@ -352,42 +353,42 @@
                             <h1 class="h5 mb-0 text-gray-800">Asignaciones </h1>
                             <br>
                             <div class="card-group">
-                                <?php 
+                                <?php
+                                   
+                                             //Se realiza una consulta en la tabla asignacion_deberes (Trae TODOS los datos)
+                                            $consulta = "   SELECT *
+                                                            FROM asignacion_deberes
+                                                            WHERE COD_ASI = ? 
+                                            ";
+                                            $sentencia = $con -> prepare($consulta);
+                                            $sentencia -> execute(array($codigoAsig));
+                                            $r = $sentencia -> fetchAll();
+                                            $codigo = "";
 
-                                    //Se realiza una consulta en la tabla asignacion_deberes (Trae TODOS los datos)
-                                    $consulta = "   SELECT *
-                                                    FROM asignacion_deberes
-                                                    WHERE COD_ASI = ?
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($codigoAsig));
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-
-                                    //Crea unas cuantas cards segun el numero de asignaturas en las que
-                                    //este matriculado el estudiante
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-primary shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    Tarea</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
-                                                                <p class="titulo">'.$resu['DES_ASIG'].'</p>
-                                                                    <a  href="asignacion.php?codAsignacion='.$resu['id'].'" ><strong>Ver Asignación</strong></a>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                            //Crea unas cuantas cards segun el numero de asignaturas en las que
+                                            //este matriculado el estudiante
+                                            foreach($r as $resu){
+                                                $codigo.='
+                                                <div class="col-xl-3 col-md-6 mb-4">
+                                                    <div class="card border-left-primary shadow h-100 py-2">
+                                                        <div class="card-body">
+                                                            <div class="row no-gutters align-items-center">
+                                                                <div class="col mr-2">
+                                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                        Tarea</div>
+                                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
+                                                                    <p class="titulo">'.$resu['DES_ASIG'].'</p>
+                                                                        <a  href="asignacion.php?codAsignacion='.$resu['id'].'" ><strong>Ver Asignación</strong></a>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
+                                                </div>';
+                                            }   
+                                            echo ($codigo);    
                                 ?>
                             </div>
                             <h1 class="h5 mb-0 text-gray-800">Asignaciones Realizadas</h1>
@@ -432,6 +433,28 @@
                                 ?>
                             </div>
                             <br>
+                            <h1 class="h5 mb-0 text-gray-800">Acciones</h1>
+                            <br>
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-danger shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                        Acciones</div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Listar Notas</div>
+                                                        <p class="titulo">Se podra ver las calificaciones de las asignacion realizadas</p>
+                                                    <?php
+                                                            echo '<a  href="mostrar.php?codAsignacion=3" ><strong>Observar Notas</strong></a>';
+                                                        ?>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                         </div>
                         <br>
                     </div>
