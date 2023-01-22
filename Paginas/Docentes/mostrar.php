@@ -479,7 +479,7 @@
                                                     </td>
                                                     <td>'.$resu['NOT_ASIG'].'</td>
                                                     <td>
-                                                        <button name="editar" class="editar">Editar</button>
+                                                        <button name="editar" class="editar">Calificar</button>
                                                     </td>
                                                 </tr>
                                                 ';
@@ -604,7 +604,71 @@
     <!-- Page level custom scripts -->
     <script src="../../JS/demo/chart-area-demo.js"></script>
     <script src="../../JS/demo/chart-pie-demo.js"></script>
+    <script>
+        $(document).ready(function(){
+            var asignacion_id="";
+            var opcion;
 
+            // puedo acceder a las class de otras clases
+            $(".editar").click(function(){
+                fila= $(this).closest("tr");//captura la fila
+                asignacion_id=fila.find('td:eq(0)').text();//que busque la columna con la posicion
+                nota=fila.find('td:eq(5)').text();
+                $("#nota").val(nota);
+                $("#modalCrud").modal('show');
+            });
+
+            //control del submit
+            $("#formUsuarios").submit(function(e){ //variable cualquiera que coloco
+                e.preventDefault(); //evita que el formulario mande todo hacia el servidor
+                nota= $("#nota").val();
+                opcion=1;
+                $.ajax({
+                    url: "../../Conexion/ajax.php",
+                    type: "POST",
+                    data: {
+                        asignacion_id: asignacion_id,
+                        nota: nota,
+                        opcion: opcion
+                    },
+                    success: function(resultado){
+                    location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="modal fade" id="modalCrud" tabindex="" role="dialog" arial-labelledby="ejemplo" aria-hidden="true">
+        <!--arial-labelledby="ejemplo" definir o delimitar el area  -->
+        <div class="modal-dialog" role="document"> <!--document, digo que este modal va a tener incrustado un documento-->
+            <div class="modal-content">   <!--dar color al contenedor  -->
+                <div class="modal-header">
+                    <h2>Asignar Calificación</h2>
+                    <!--data-dismiss="modal" que al cerrar quite los modals -->
+                    <button type="button" class="close" data-dismiss="modal"
+                    arial-label="Close">X</button>
+                </div>
+                <form id="formUsuarios">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!-- solucion del inge -->
+                                    <label class="col-form-label">Nota</label>
+                                    <input type="text" id="nota" name="nota" class="form-control">
+                                    <!-- mi solucion -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" type="button">Cancelar</button>
+                        <button class="btn" type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>                  
 </body>
 
 </html>
