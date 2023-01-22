@@ -21,22 +21,38 @@
     //Se verifica que si existe enviarD por metodo POST entonces realice una consulta
     if(isset($_POST["enviarD"]))
     {
-        //Se crea una insercion de datos en la tabla DOCENTES
-        $sqlD = "INSERT INTO docentes(CED_DOC, NOM_DOC, APE_DOC, DIR_DOC, COR_INS_DOC, TEL_DOC, FEC_NAC_DOC)values('$cedulaD', '$nombreD', '$apellidoD', '$direccionD', '$correoD', '$telefonoD', '$fechaD')";
-        $consultaD = $con->prepare($sqlD);
-        $consultaD -> execute();
-        $lastInsertIdD = $con->lastInsertId();
-        
-        if($lastInsertIdD>0){
+        if(is_uploaded_file($_FILES['perfilD']['tmp_name'])){
 
-            //Se redirige a la pagina principal de envio
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/docentes.php'>";
-            echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreD  </div>";
-        }else{
-            //Se redirige a la pagina principal de envio
-            echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/docentes.php'>";
-            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
-            print_r($consultaD->errorInfo()); 
+            $ruta = "../BD/archivos/"; 
+            $nombrefinal= trim ($_FILES['perfilD']['name']); 
+            $rutaFinal= $ruta.$nombrefinal;  
+            $upload= $ruta.$nombrefinal;  
+    
+            //Se verifica que existe el archivo
+            if(move_uploaded_file($_FILES['perfilD']['tmp_name'], $upload)) { 
+                    
+                $nombre = $_FILES['perfilD']['name'];
+                $tipo = $_FILES['perfilD']['type'];  
+                $tamano = $_FILES['perfilD']['size'];
+
+                //Se crea una insercion de datos en la tabla DOCENTES
+                $sqlD = "INSERT INTO docentes(CED_DOC, NOM_DOC, APE_DOC, DIR_DOC, COR_INS_DOC, TEL_DOC, FEC_NAC_DOC, NOM_ARCH, RUT_ARCH, TIP_ARCH, TAM_ARCH)values('$cedulaD', '$nombreD', '$apellidoD', '$direccionD', '$correoD', '$telefonoD', '$fechaD', '$nombrefinal', '$rutaFinal', '$tipo', '$tamano')";
+                $consultaD = $con->prepare($sqlD);
+                $consultaD -> execute();
+                $lastInsertIdD = $con->lastInsertId();
+                
+                if($lastInsertIdD>0){
+
+                    //Se redirige a la pagina principal de envio
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/docentes.php'>";
+                    echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreD  </div>";
+                }else{
+                    //Se redirige a la pagina principal de envio
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/docentes.php'>";
+                    echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                    print_r($consultaD->errorInfo()); 
+                }
+            }
         }
     };
 
