@@ -22,7 +22,6 @@
     $consulta = "   SELECT id
                     FROM estudiantes
                     WHERE COR_INS_EST = ? AND CED_EST = ?";
-
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
@@ -33,8 +32,26 @@
         $codigoEs.= $resu['id'];
     }
 
-    //Se crea una variable de sesion
-    $_SESSION['codigoEstudiante'] = $codigoEs;
+    if(isset($_GET['codAsignacion'])){
+        //$_SESSION['CodAsig'] = $_GET['codpagina'];
+        $opcion = $_GET['codAsignacion'];
+    }else{
+        header('Location: pag_estudiantes.php');
+        die();
+    }
+
+    $con = conectar();
+    
+    $consulta = "   SELECT *
+                    FROM asignaturas
+                    WHERE id = ? ";
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($_SESSION['AsignaturaCOD']));
+    $r = $sentencia -> fetchAll();
+    $nombreA = "";
+    foreach($r as $resu){
+        $nombreA.= $resu['NOM_ASI'];
+    }
 
 ?>
 <!DOCTYPE html>
@@ -52,7 +69,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Pagina Principal (Estudiantes)</title>
+    <title>Estudiantes <?php echo $nombreA;?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -104,32 +121,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
-                    <span>Asignaturas</span>
+                    <span>Administración</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
-                        <?php 
-                            //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
-                                $consulta = "   SELECT *
-                                                FROM asignaturas
-                                                WHERE id IN (
-                                                            SELECT ID_ASI
-                                                            FROM detalle_estudiantes
-                                                            WHERE ID_EST = ?
-                                     )
-                                     ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
-                                    $r = $sentencia -> fetchAll();
-                                    $codigoS = "";
-                                    //Se muestran las asignaturas como hipervinculo del menu
-                                    foreach($r as $resu){
-                                        $codigoS.='
-                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
-                                    }   
-                                    echo ($codigoS);      
-                            ?>
+                        <a class="collapse-item" href="asignacion.php">Asignación</a>
                     </div>
                 </div>
             </li>
@@ -139,13 +136,30 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench" style="color: #fff;"></i>
-                    <span>Administración</span>
+                    <span>Asignaturas</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
-                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
+                            <?php 
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE DOC_ASI IN (
+                                                                    SELECT id 
+                                                                    FROM docentes
+                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
+                                                    )";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                    }   
+                                    echo ($codigo);      
+                            ?>
                     </div>
                 </div>
             </li>
@@ -269,7 +283,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="perfil.php" >
+                                <a class="dropdown-item" href="editar.php" >
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
@@ -300,130 +314,104 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Información <?php echo $_SESSION['rol']; ?></h1>
+                        <h1 class="h3 mb-0 text-gray-800">Estudiantes de <?php echo $nombreA;?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
-                    
-                    
-                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">
-                        <br>
-                        <h1 class="h5 mb-0 text-gray-800">Asignaturas </h1>
-                        <br>
-                        <div class="card-group">
-                            <?php 
-                                $con = conectar();
-                                if (isset($_POST['editar']))
-                               {
-                                    $id = $_POST['id'];
 
-                                    $sqlAsig = "INSERT INTO detalle_estudiantes(ID_ASI, ID_EST)values('$id', '$codigoEs')";
-                                    $consultaAsig = $con->prepare($sqlAsig);
-                                    $consultaAsig -> execute();
-                                    $lastInsertIdAsig = $con->lastInsertId();
-                                
-                                    if($lastInsertIdAsig>0){
-                                        echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
-                                        //echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
-                                    }else{
-                                        echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
-                                        //echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
-                                        //print_r($consultaAsig->errorInfo()); 
-                                    }
-                                }
-                            ?>
-                            <?php 
-                                //Se realiza una consulta en la tabla asignaturas(Trae TODOS los datos)
-                                    $consulta = "   SELECT *
-                                                    FROM asignaturas
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute();
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
+                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
+                        <div id="myTabContent" class="tab-content">
 
-                                    //Crea unas cuantas cards segun el numero de asignaturas existen
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-primary shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    FISEI</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASI'].'.</div>
-                                                                <p class="titulo">'.$resu['NOM_ASI'].'</p>
-                                                                <form method="POST" action="'.$_SERVER['PHP_SELF'].'">
-                                                                    <input type="hidden" name="id" value="'.$resu['id'].'">
-                                                                    <button name="editar" class="btn btn-primary" style="color: #fff; background: rgb(231, 180, 40);">Matricularse</button>
-                                                                </form>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
-                        </div>
-                        <br>
-                        <h1 class="h5 mb-0 text-gray-800">Asignaturas de <?php echo $_SESSION['usuario']; ?></h1>
-                        <br>
-                        <div class="card-group">
-                            <?php 
-                                //Se realiza una consulta en la tabla asignaturas(Trae TODOS los datos)
-                                    $consulta = "   SELECT *
-                                                    FROM asignaturas
-                                                    WHERE id IN (
-                                                                SELECT ID_ASI
-                                                                FROM detalle_estudiantes
-                                                                WHERE ID_EST = ?
-                                                    )
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($codigoEs));
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-
-                                    //Crea unas cuantas cards segun el numero de asignaturas en las que
-                                    //este matriculado el estudiante
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-primary shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    FISEI</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASI'].'.</div>
-                                                                <p class="titulo">'.$resu['NOM_ASI'].'</p>
-                                                                <a href="asignatura.php?codpagina='.$resu['id'].'" class="card-link")">Ingresar al Curso</a>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
+                                <div class="container-fluid">
+                                    
+                                </div>
                         </div>
                     </div>
-                    <!-- Content Row -->
+                    <?php 
+                        if($opcion == 3){
+                    ?>
+                    <div class="card shadow mb-4"> <!--numero de comlumnas el 4 al final-->
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Tabla de Calificaciónes</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Asignacion</th>
+                                            <th>Nota</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <?php
+                                            $consulta = "   SELECT  DA.id, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
+                                            FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
+                                            WHERE DA.COD_ASIG_DEB = AD.id 
+                                            AND DA.ID_EST_ASIG = E.id 
+                                            AND AD.COD_ASI = ? AND DA.ID_EST_ASIG = ?            
+                                            ";
 
+                                            $sentencia = $con -> prepare($consulta);
+                                            $sentencia -> execute(array($_SESSION['AsignaturaCOD'], $codigoEs));
+                                            $r = $sentencia -> fetchAll();
+                                            $codigota = "";
+                                            $array = 0;
+                                            $acum = 0;
+                                            foreach($r as $resu){
+                                                $acum ++;
+                                                $array = $array + $resu['NOT_ASIG'];
+                                            }  
+                                            $codigota.='
+                                                <tr>
+                                                    <th colspan = "2">Total</td>
+                                                    <td>'.(number_format($array/$acum, 2)).'</td>
+                                                </tr>
+                                            '; 
+                                            echo ($codigota);      
+                                        ?>
+                                    </tfoot>
+                                    <tbody>
+                                        <?php 
+                                            $consulta = "   SELECT  DA.id, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
+                                            FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
+                                            WHERE DA.COD_ASIG_DEB = AD.id 
+                                            AND DA.ID_EST_ASIG = E.id 
+                                            AND AD.COD_ASI = ? AND DA.ID_EST_ASIG = ?            
+                                            ";
+
+                                            $sentencia = $con -> prepare($consulta);
+                                            $sentencia -> execute(array($_SESSION['AsignaturaCOD'], $codigoEs));
+                                            $r = $sentencia -> fetchAll();
+                                            $codigota = "";
+                                            foreach($r as $resu){
+                                                $codigota.='
+                                                <tr>
+                                                    <td>'.$resu['id'].'</td>
+                                                    <td>'.$resu['NOM_ASIG'].'</td>
+                                                    <td>'.$resu['NOT_ASIG'].'</td>
+                                                </tr>
+                                                ';
+                                            }   
+                                            echo ($codigota);      
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                        }
+                    ?>
+                    <!-- Content Row -->
+                    
                     
 
                     <!-- Content Row -->
                     
 
-                                </br>
+                    <br>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -526,7 +514,71 @@
     <!-- Page level custom scripts -->
     <script src="../../JS/demo/chart-area-demo.js"></script>
     <script src="../../JS/demo/chart-pie-demo.js"></script>
+    <script>
+        $(document).ready(function(){
+            var asignacion_id="";
+            var opcion;
 
+            // puedo acceder a las class de otras clases
+            $(".editar").click(function(){
+                fila= $(this).closest("tr");//captura la fila
+                asignacion_id=fila.find('td:eq(0)').text();//que busque la columna con la posicion
+                nota=fila.find('td:eq(5)').text();
+                $("#nota").val(nota);
+                $("#modalCrud").modal('show');
+            });
+
+            //control del submit
+            $("#formUsuarios").submit(function(e){ //variable cualquiera que coloco
+                e.preventDefault(); //evita que el formulario mande todo hacia el servidor
+                nota= $("#nota").val();
+                opcion=1;
+                $.ajax({
+                    url: "../../Conexion/ajax.php",
+                    type: "POST",
+                    data: {
+                        asignacion_id: asignacion_id,
+                        nota: nota,
+                        opcion: opcion
+                    },
+                    success: function(resultado){
+                    location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="modal fade" id="modalCrud" tabindex="" role="dialog" arial-labelledby="ejemplo" aria-hidden="true">
+        <!--arial-labelledby="ejemplo" definir o delimitar el area  -->
+        <div class="modal-dialog" role="document"> <!--document, digo que este modal va a tener incrustado un documento-->
+            <div class="modal-content">   <!--dar color al contenedor  -->
+                <div class="modal-header">
+                    <h2>Asignar Calificación</h2>
+                    <!--data-dismiss="modal" que al cerrar quite los modals -->
+                    <button type="button" class="close" data-dismiss="modal"
+                    arial-label="Close">X</button>
+                </div>
+                <form id="formUsuarios">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!-- solucion del inge -->
+                                    <label class="col-form-label">Nota</label>
+                                    <input type="text" id="nota" name="nota" class="form-control">
+                                    <!-- mi solucion -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" type="button">Cancelar</button>
+                        <button class="btn" type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>                  
 </body>
 
 </html>

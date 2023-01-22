@@ -1,41 +1,31 @@
 <?php
-
-    //Se incluye la pagina conectar que trae un metodo
     include_once('../../Conexion/conectar.php');
-    $con = conectar();
-
-    //Inicia la sesion actual
     session_start();
 
-    //Se verifica que existan variables de sesion (USUARIO / ROL)
-    //Segun su rol se crean unas variables
     if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
         $usuario = $_SESSION['usuario'];
-        $contraseña = $_SESSION['contraseña'];
     }else{
-        //Se redirecciona a login.php
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }
+
+    $contraseña = $_SESSION['contraseña'];
+
+    $con = conectar();
     
-    //Se realiza una consulta en la tabla ESTUDIANTES (Consigue id)
     $consulta = "   SELECT id
                     FROM estudiantes
                     WHERE COR_INS_EST = ? AND CED_EST = ?";
-
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
     $codigoEs = "";
-
-     //Se guarda en una variable la id del ESTUDIANTE
     foreach($r as $resu){
         $codigoEs.= $resu['id'];
     }
 
-    //Se crea una variable de sesion
-    $_SESSION['codigoEstudiante'] = $codigoEs;
 
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +42,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Pagina Principal (Estudiantes)</title>
+    <title>Perfil</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -104,32 +94,12 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
-                    <span>Asignaturas</span>
+                    <span>Administración</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
-                        <?php 
-                            //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
-                                $consulta = "   SELECT *
-                                                FROM asignaturas
-                                                WHERE id IN (
-                                                            SELECT ID_ASI
-                                                            FROM detalle_estudiantes
-                                                            WHERE ID_EST = ?
-                                     )
-                                     ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
-                                    $r = $sentencia -> fetchAll();
-                                    $codigoS = "";
-                                    //Se muestran las asignaturas como hipervinculo del menu
-                                    foreach($r as $resu){
-                                        $codigoS.='
-                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
-                                    }   
-                                    echo ($codigoS);      
-                            ?>
+                        <a class="collapse-item" href="asignacion.php">Asignación</a>
                     </div>
                 </div>
             </li>
@@ -139,13 +109,31 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench" style="color: #fff;"></i>
-                    <span>Administración</span>
+                    <span>Asignaturas</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
-                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
+                            <?php 
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE id IN (
+                                                            SELECT ID_ASI
+                                                            FROM detalle_estudiantes
+                                                            WHERE ID_EST = ?
+                                                    )
+                                     ";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
+                                    $r = $sentencia -> fetchAll();
+                                    $codigoA = "";
+                                    foreach($r as $resu){
+                                        $codigoA.='
+                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                    }   
+                                    echo ($codigoA);      
+                            ?>
                     </div>
                 </div>
             </li>
@@ -269,7 +257,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="perfil.php" >
+                                <a class="dropdown-item" href="#" >
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
@@ -300,122 +288,121 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Información <?php echo $_SESSION['rol']; ?></h1>
+                        <h1 class="h3 mb-0 text-gray-800">Cambiar foto de perfil </h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
-                    
-                    
-                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">
-                        <br>
-                        <h1 class="h5 mb-0 text-gray-800">Asignaturas </h1>
-                        <br>
-                        <div class="card-group">
-                            <?php 
-                                $con = conectar();
-                                if (isset($_POST['editar']))
-                               {
-                                    $id = $_POST['id'];
 
-                                    $sqlAsig = "INSERT INTO detalle_estudiantes(ID_ASI, ID_EST)values('$id', '$codigoEs')";
-                                    $consultaAsig = $con->prepare($sqlAsig);
-                                    $consultaAsig -> execute();
-                                    $lastInsertIdAsig = $con->lastInsertId();
-                                
-                                    if($lastInsertIdAsig>0){
-                                        echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
-                                        //echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
-                                    }else{
-                                        echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
-                                        //echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
-                                        //print_r($consultaAsig->errorInfo()); 
-                                    }
-                                }
-                            ?>
-                            <?php 
-                                //Se realiza una consulta en la tabla asignaturas(Trae TODOS los datos)
-                                    $consulta = "   SELECT *
-                                                    FROM asignaturas
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute();
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
+                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
+                        <div id="myTabContent" class="tab-content">
 
-                                    //Crea unas cuantas cards segun el numero de asignaturas existen
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-primary shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    FISEI</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASI'].'.</div>
-                                                                <p class="titulo">'.$resu['NOM_ASI'].'</p>
-                                                                <form method="POST" action="'.$_SERVER['PHP_SELF'].'">
-                                                                    <input type="hidden" name="id" value="'.$resu['id'].'">
-                                                                    <button name="editar" class="btn btn-primary" style="color: #fff; background: rgb(231, 180, 40);">Matricularse</button>
-                                                                </form>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                <div class="container-fluid">
+                                    <?php 
+                                        /*$categoria= $tipoArchivo;
+                                         
+                                        $valor="";
+                                         if($categoria=='image/jpeg' || $categoria=='png'){
+                                             $valor="<img width='40' src='../../img/Logos/desconocido.png'>";
+                                         }
+                     
+                                         if($categoria=='application/pdf'){
+                                             $valor="<img  width='40' src='../../img/Logos/pdf.png'>";
+                                         }
+                     
+                                         if($categoria=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoria=='xlsm' ){
+                                             $valor="<img  width='40' src='../../img/Logos/exel.png'>";
+                                         }
+                     
+                                         if($categoria=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoria=='docx'){
+                                             $valor="<img  width='40' src='../../img/Logos/word.png'>";
+                                         }
+                                         if($categoria=='application/zip'){
+                                             $valor="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
+                                         }
+                     
+                                         if($categoria=='mp3'){
+                                             $valor="<img  width='40' src='../../img/Logos/desconocido.pnInformacióng'>";
+                                         }
+                     
+                                         if($valor==''){
+                                             $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                         }
+                                    */?>
+                                    <?php 
+                                        /*if($_SESSION['nombreArchivo'] == ''){    
+                                            echo '<p></p>';
+                                        }else{
+                                           echo '   <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
+                                                    <a href="cargar.php?id='.$_SESSION['nombreArchivo'].'">'.$valor.'descargar</a>';
+                                        };*/
+                                    ?>
+                                    <br>
+                                    <!--<div class="row">
+                                        <div class="col-xs-12 col-md-10 col-md-offset-1">
+                                            <br>
+                                            <div><?php 
+                                                 /*$result = $con->query("SELECT RUT_ARCH FROM fotos WHERE ID = 1");
+    
+                                                 if($result->rowCount() > 0){
+                                                    $imgData = $result->fetch(PDO::FETCH_ASSOC);
+
+                                                     
+                                                     //Render image
+                                                     header("Content-type: image/jpg"); 
+                                                     echo $imgData['image']; 
+                                                 }else{
+                                                     echo 'Image not found...';
+                                                 }*/
+                                    ?></div>-->
+                                            <div>
+                                                    <label class="control-label" style="color: #000; font-weight: 500;">Tomar foto: </label>
+                                                    </div>
+                                                    <center>
+                                                        <!--<div>
+                                                            <?php
+                                                                /*$query="SELECT * FROM fotos";
+                                                                $resultados=$consulta->query($query);
+                                                                while($row=$resultados->fecth_assoc()){?>
+                                                                    <img src="data:image/jpg;base64,<?php echo base64_encode
+                                                                    ($row['screenshot (15).jpg']); ?>">
+                                                            <?php    
+                                                            }*/
+                                                            ?>
+                                                           
+                                                        </div>-->
+                                                    <div>
+                                                        <div class="form-group label-floating">
+                                                            <div class="col-md-9">
+                                                            <button id="abrirfoto">Tomar foto</button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
-                        </div>
-                        <br>
-                        <h1 class="h5 mb-0 text-gray-800">Asignaturas de <?php echo $_SESSION['usuario']; ?></h1>
-                        <br>
-                        <div class="card-group">
-                            <?php 
-                                //Se realiza una consulta en la tabla asignaturas(Trae TODOS los datos)
-                                    $consulta = "   SELECT *
-                                                    FROM asignaturas
-                                                    WHERE id IN (
-                                                                SELECT ID_ASI
-                                                                FROM detalle_estudiantes
-                                                                WHERE ID_EST = ?
-                                                    )
-                                                    ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($codigoEs));
-                                    $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-
-                                    //Crea unas cuantas cards segun el numero de asignaturas en las que
-                                    //este matriculado el estudiante
-                                    foreach($r as $resu){
-                                        $codigo.='
-                                            <div class="col-xl-3 col-md-6 mb-4">
-                                                <div class="card border-left-primary shadow h-100 py-2">
-                                                    <div class="card-body">
-                                                        <div class="row no-gutters align-items-center">
-                                                            <div class="col mr-2">
-                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                    FISEI</div>
-                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASI'].'.</div>
-                                                                <p class="titulo">'.$resu['NOM_ASI'].'</p>
-                                                                <a href="asignatura.php?codpagina='.$resu['id'].'" class="card-link")">Ingresar al Curso</a>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                    </center>
+                                            <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
+                                                <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
+                                                    <div>
+                                                        <label class="control-label" style="color: #000; font-weight: 500;">Subir foto: </label>
+                                                    </div>
+                                                    <center>
+                                                    <div>
+                                                        <div class="form-group label-floating">
+                                                            <div class="col-md-9">
+                                                                <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png" />
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>';
-                                    }   
-                                    echo ($codigo);      
-                            ?>
+                                                    </center>
+                                                </fieldset>
+                                                <p class="text-center">
+                                                    <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarFoto"><i class="zmdi zmdi-floppy"></i> Subir Asignación</button>
+                                                </p>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
                     </div>
+
                     <!-- Content Row -->
 
                     
@@ -423,11 +410,50 @@
                     <!-- Content Row -->
                     
 
-                                </br>
+                    <br>
                 </div>
                 <!-- /.container-fluid -->
 
             </div>
+            <div class="modal fade" id="modalCRUD_DEBER" tabindex="-1" role="dialog"
+                                    aria-labelledby="ejemplo" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class ="modal-header">
+                                                    Tomar foto
+                                                    <button type="button" class="close"
+                                                    data-dismiss="modal" aria-label="Close">X</button>
+                                                </div>
+                                                <form id="formUsuarios">
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                 
+                                                                    <video src="" id="video" autoplay="true" height="480" width="640"></video>
+                                                                    <canvas id="canvas" height="480" width="640"></canvas>
+                                                                
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn" type="button" id="subirfoto">Abrir camara</button>
+                                                        <button class="btn" type="button" id="tomarfoto">Tomar foto</button>
+                                                        <a href="perfil.php"><button class="btn" type="button" id="guardarfoto">Guardar foto</button></a>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <script src="camara.js"></script>
+                                    <script>
+                                    $('#abrirfoto').click(function(){
+                                    $('#modalCRUD_DEBER').modal();
+                                    });
+                                </script>
             <!-- End of Main Content -->
 
             <!-- Footer -->

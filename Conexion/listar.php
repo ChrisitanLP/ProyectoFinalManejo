@@ -1,14 +1,21 @@
 <?php
+
+    //Se incluye la pagina conectar que trae un metodo
     include_once("conectar.php");
 
-    function listarDocentes(){
-        $con = conectar();
+//************************************************************************* */
 
+    //Se crea un metodo que permite listar a todos los DOCENTES
+    function listarDocentes(){
+
+        //Se realiza una consulta en la tabla de DOCENTES
+        $con = conectar();
         $query = "SELECT * FROM docentes";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute();
         $r = $sentencia -> fetchAll();
         
+        //Lista los DOCENTES en estructura de tabla
         $filas = "";
         foreach($r as $listado){
             $filas.='<tr>
@@ -24,13 +31,19 @@
         return $filas;
     }
 
+//************************************************************************* */
+
+    //Se crea un metodo que permite listar a todos los ESTUDIANTES
     function listarEstudiantes(){
+
+        //Se realiza una consulta en la tabla de ESTUDIANTES
         $con = conectar();
         $query = "SELECT * FROM estudiantes";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute();
         $r = $sentencia -> fetchAll();
         
+        //Lista los ESTUDIANTES en estructura de tabla
         $filas = "";
         foreach($r as $listado){
             $filas.='<tr>
@@ -47,13 +60,19 @@
         return $filas;
     }
 
+//************************************************************************* */
+
+    //Se crea un metodo que permite listar a todos los USUARIOS
     function listarUsuarios(){
+
+        //Se realiza una consulta en la tabla de USUARIOS
         $con = conectar();
         $query = "SELECT * FROM usuarios";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute();
         $r = $sentencia -> fetchAll();
         
+        //Lista los USUARIOS en estructura de tabla
         $filas = "";
         foreach($r as $listado){
             $filas.='<tr>
@@ -70,13 +89,19 @@
         return $filas;
     }
 
+//************************************************************************* */
+
+    //Se crea un metodo que permite listar a todos los CURSOS
     function listarCursos(){
+
+        //Se realiza una consulta en la tabla de CURSOS
         $con = conectar();
         $query = "SELECT * FROM cursos";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute();
         $r = $sentencia -> fetchAll();
         
+        //Lista los CURSOS en estructura de tabla
         $filas = "";
         foreach($r as $listado){
             $filas.='<tr>
@@ -87,13 +112,19 @@
         return $filas;
     }
 
+//************************************************************************* */
+
+    //Se crea un metodo que permite listar a todos los ASIGNATURAS
     function listarAsignaturas(){
+
+        //Se realiza una consulta en la tabla de ASIGNATURAS
         $con = conectar();
         $query = "SELECT * FROM asignaturas";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute();
         $r = $sentencia -> fetchAll();
         
+        //Lista las ASIGNATURAS en estructura de tabla
         $filas = "";
         foreach($r as $listado){
             $filas.='<tr>
@@ -107,13 +138,19 @@
         return $filas;
     }
 
+//************************************************************************* */
+
+    //Se crea un metodo que permite consultar (ID/ NOMBRE) todos los CURSOS
     function consultaCursos(){
+
+        //Se realiza una consulta en la tabla de CURSOS
         $con = conectar();
         $query = "SELECT * FROM cursos";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute();
         $r = $sentencia -> fetchAll();
 
+        //Lista los Cursos como OPTION de un SELECT
         $opciones = "";
         foreach($r as $p){
            $opciones.= '<option value='.$p['id'].'>'.$p['NOM_CUR'].'</option>';
@@ -121,13 +158,19 @@
         return $opciones;
     }
 
+//************************************************************************* */
+
+    //Se crea un metodo que permite consultar (ID/ NOMBRE) todas las ASIGNATURAS
     function consultaAsignaturas(){
+
+        //Se realiza una consulta en la tabla de ASIGNATURAS
         $con = conectar();
         $query = "SELECT * FROM asignaturas";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute();
         $r = $sentencia -> fetchAll();
 
+        //Lista las ASIGNATURAS como OPTION de un SELECT
         $opciones = "";
         foreach($r as $p){
            $opciones.= '<option value='.$p['id'].'>'.$p['NOM_ASI'].'</option>';
@@ -135,14 +178,19 @@
         return $opciones;
     }
 
-    function consultaDocentes(){
-        $con = conectar();
+//************************************************************************* */
 
+    //Se crea un metodo que permite consultar (ID/ NOMBRE) todos los DOCENTES
+    function consultaDocentes(){
+
+        //Se realiza una consulta en la tabla de DOCENTES
+        $con = conectar();
         $query = "SELECT * FROM docentes";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute();
         $r = $sentencia -> fetchAll();
 
+        //Lista los DOCENTES como OPTION de un SELECT
         $opciones = "";
         foreach($r as $p){
            $opciones.= '<option value='.$p['id'].'>'.$p['NOM_DOC'].'</option>';
@@ -150,14 +198,19 @@
         return $opciones;
     }
 
-    function consultaEstudiantes(){
-        $con = conectar();
+//************************************************************************* */
 
+    //Se crea un metodo que permite consultar (ID/ NOMBRE) todos los ESTUDIANTES
+    function consultaEstudiantes(){
+
+        //Se realiza una consulta en la tabla de ESTUDIANTES
+        $con = conectar();
         $query = "SELECT * FROM estudiantes";
         $sentencia = $con -> prepare($query);
         $sentencia -> execute();
         $r = $sentencia -> fetchAll();
 
+        //Lista los ESTUDIANTES como OPTION de un SELECT
         $opciones = "";
         foreach($r as $p){
            $opciones.= '<option value='.$p['id'].'>'.$p['NOM_EST'].'</option>';

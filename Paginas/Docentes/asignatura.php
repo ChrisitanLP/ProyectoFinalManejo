@@ -1,18 +1,25 @@
 <?php
+
+    //Se incluye la pagina conectar que trae un metodo
     include_once('../../Conexion/conectar.php');
+    $con = conectar();
+
+    //Inicia la sesion actual
     session_start();
 
+    //Se verifica que existan variables de sesion (USUARIO / ROL)
+    //Segun su rol se crean unas variables
     if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
         $usuario = $_SESSION['usuario'];
     }else{
+        //Se redirecciona a login.php
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }
 
     $contraseña = $_SESSION['contraseña'];
-
-    $con = conectar();
     
+     //Se realiza una consulta en la tabla DOCENTES (Consigue id)
     $consulta = "   SELECT id
                     FROM docentes
                     WHERE COR_INS_DOC = ? AND CED_DOC = ?";
@@ -20,23 +27,21 @@
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
     $codigo = "";
+    //Se guarda en una variable la id del DOCENTE
     foreach($r as $resu){
         $codigo.= $resu['id'];
     }
 
-    //$codigoAsig = $_GET['codpagina'];
-    //echo $codigoAsig;
-
+    //Se verifica que exista codAsignacion por metodo GET
     if(isset($_GET['codpagina'])){
-        //$_SESSION['CodAsig'] = $_GET['codpagina'];
         $codigoAsig = $_GET['codpagina'];
     }else{
+         //Se redirecciona a la pagina principal
         header('Location: pag_docentes.php');
         die();
     }
-
-    $con = conectar();
     
+    //Se realiza una consulta en la tabla asignaturas (Consigue todos los datos)
     $consulta = "   SELECT *
                     FROM asignaturas
                     WHERE id = ? ";
@@ -44,9 +49,12 @@
     $sentencia -> execute(array($codigoAsig));
     $r = $sentencia -> fetchAll();
     $nombreA = "";
+    //Se guarda en una variable el nombre de la ASIGNATURA
     foreach($r as $resu){
         $nombreA.= $resu['NOM_ASI'];
     }
+
+    //Se crea una variable de sesion
     $_SESSION['AsignaturaCOD'] = $codigoAsig;
 
 ?>
@@ -67,6 +75,7 @@
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
+    <!-- Muestra el nombre de la asignatura segun el codigo traido de la pagina principal -->
     <title><?php echo $nombreA;?></title>
 
     <!-- Custom fonts for this template-->
@@ -81,7 +90,6 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigo);  ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -142,6 +150,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
+                                    //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
                                                     WHERE DOC_ASI IN (
@@ -153,6 +162,8 @@
                                     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
                                     $r = $sentencia -> fetchAll();
                                     $codigo = "";
+
+                                    //Se muestran las asignaturas como hipervinculo del menu
                                     foreach($r as $resu){
                                         $codigo.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
@@ -337,6 +348,8 @@
                             <h1 class="h4 mb-0 text-gray-800"> Acciones Generales</h1>
                         </div>
                         <br>
+                        
+                        <!-- Grupo de cards que engloban las acciones generales que puede realizar el docente -->
                         <div class="card-group">           
                             <div class="container-fluid" style="alig-content: center; alig-items: center;">
                                 <div class="card-group">           
