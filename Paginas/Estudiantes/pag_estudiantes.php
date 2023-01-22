@@ -1,17 +1,24 @@
 <?php
+
+    //Se incluye la pagina conectar que trae un metodo
     include_once('../../Conexion/conectar.php');
+    $con = conectar();
+
+    //Inicia la sesion actual
     session_start();
 
+    //Se verifica que existan variables de sesion (USUARIO / ROL)
+    //Segun su rol se crean unas variables
     if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
         $usuario = $_SESSION['usuario'];
+        $contraseña = $_SESSION['contraseña'];
     }else{
+        //Se redirecciona a login.php
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }
-
-    $contraseña = $_SESSION['contraseña'];
-    $con = conectar();
     
+    //Se realiza una consulta en la tabla ESTUDIANTES (Consigue id)
     $consulta = "   SELECT id
                     FROM estudiantes
                     WHERE COR_INS_EST = ? AND CED_EST = ?";
@@ -20,11 +27,30 @@
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
     $codigoEs = "";
+
+     //Se guarda en una variable la id del ESTUDIANTE
     foreach($r as $resu){
         $codigoEs.= $resu['id'];
     }
+    //Se realiza una consulta en la tabla ESTUDIANTES (Consigue id)
+    $consulta = "   SELECT RUT_ARCH
+                    FROM estudiantes
+                    WHERE COR_INS_EST = ? AND CED_EST = ?";
 
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+    $r = $sentencia -> fetchAll();
+    $rutaEs = "";
+
+     //Se guarda en una variable la id del ESTUDIANTE
+    foreach($r as $resu){
+        $rutaEs.= $resu['RUT_ARCH'];
+    }
+
+    //Se crea una variable de sesion
     $_SESSION['codigoEstudiante'] = $codigoEs;
+    $_SESSION['rutaPerfil'] = $rutaEs;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +81,6 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo ($codigoEs); echo $_SESSION['rol']; ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -100,6 +125,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
                         <?php 
+                            //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
                                 $consulta = "   SELECT *
                                                 FROM asignaturas
                                                 WHERE id IN (
@@ -112,6 +138,7 @@
                                     $sentencia -> execute(array($_SESSION['codigoEstudiante']));
                                     $r = $sentencia -> fetchAll();
                                     $codigoS = "";
+                                    //Se muestran las asignaturas como hipervinculo del menu
                                     foreach($r as $resu){
                                         $codigoS.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
@@ -251,13 +278,12 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" ><?php echo $usuario; ?></span>
-                                <img class="img-profile rounded-circle"
-                                    src="../../img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="../<?php echo $_SESSION['rutaPerfil'];?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="editar.php" >
+                                <a class="dropdown-item" href="perfil.php" >
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
@@ -321,6 +347,7 @@
                                 }
                             ?>
                             <?php 
+                                //Se realiza una consulta en la tabla asignaturas(Trae TODOS los datos)
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
                                                     ";
@@ -328,6 +355,8 @@
                                     $sentencia -> execute();
                                     $r = $sentencia -> fetchAll();
                                     $codigo = "";
+
+                                    //Crea unas cuantas cards segun el numero de asignaturas existen
                                     foreach($r as $resu){
                                         $codigo.='
                                             <div class="col-xl-3 col-md-6 mb-4">
@@ -360,6 +389,7 @@
                         <br>
                         <div class="card-group">
                             <?php 
+                                //Se realiza una consulta en la tabla asignaturas(Trae TODOS los datos)
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
                                                     WHERE id IN (
@@ -372,6 +402,9 @@
                                     $sentencia -> execute(array($codigoEs));
                                     $r = $sentencia -> fetchAll();
                                     $codigo = "";
+
+                                    //Crea unas cuantas cards segun el numero de asignaturas en las que
+                                    //este matriculado el estudiante
                                     foreach($r as $resu){
                                         $codigo.='
                                             <div class="col-xl-3 col-md-6 mb-4">
