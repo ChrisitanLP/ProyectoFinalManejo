@@ -66,7 +66,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_docentes.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -79,7 +79,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_estudiantes.php">
+                <a class="nav-link" href="pag_docentes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
