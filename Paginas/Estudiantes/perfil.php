@@ -12,20 +12,23 @@
         $usuario = $_SESSION['usuario'];
         $contraseña = $_SESSION['contraseña'];
     }else{
+        //Se redirecciona a login.php
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }
     
+    //Se realiza una consulta en la tabla DOCENTES (Consigue id)
     $consulta = "   SELECT id
                     FROM estudiantes
                     WHERE COR_INS_EST = ? AND CED_EST = ?";
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
-    $codigoEs = "";
+    $codigo = "";
+    //Se guarda en una variable la id del DOCENTE
     foreach($r as $resu){
-        $codigoEs.= $resu['id'];
-    }   
+        $codigo.= $resu['id'];
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,8 +44,9 @@
     <link rel="stylesheet" type="text/css" href="../../CSS/footer.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="../../JS/JqueryLib.js"></script>
 
-    <title>Perfil</title>
+    <title>Perfil <?php $usuario?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -90,19 +94,6 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
-                    <span>Administración</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="asignacion.php">Asignación</a>
-                    </div>
-                </div>
-            </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -291,135 +282,213 @@
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
-                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
-                        <div id="myTabContent" class="tab-content">
-                                <div class="container-fluid">
-                                    <br>
-                                    <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">...</h1>
-                                    <?php
-                                        $consulta = "   SELECT *
-                                                        FROM estudiantes
-                                                        WHERE COR_INS_EST = ? AND CED_EST = ?";
-                                        $sentencia = $con -> prepare($consulta);
-                                        $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
-                                        $r = $sentencia -> fetchAll();
-                                        $codigoEs = "";
-                                        foreach($r as $resu){
-                                            $codigoEs.='     
-                                                <div class="container py-5">
-                                                    <div class="row">
-                                                        <div class="col-lg-4">
-                                                            <div class="card mb-4">
-                                                                <div class="card-body text-center">
-                                                                    <img src="../'.$resu['RUT_ARCH'].'" alt="avatar"
-                                                                    class="rounded-circle img-fluid" style="width: 150px;">
-                                                                    <h5 class="my-3">'.$resu['NOM_EST'].' '.$resu['APE_EST'].'</h5>
-                                                                    <p class="text-muted mb-1">'.$_SESSION['rol'].'</p>
-                                                                    <p class="text-muted mb-4">'.$resu['DIR_EST'].'</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <div class="col-lg-8">
-                                                        <div class="card mb-4">
-                                                            <div class="card-body">
-                                                                <div class="row">
-                                                                    <div class="col-sm-3">
-                                                                        <p class="mb-0">Nombre Completo</p>
-                                                                    </div>
-                                                                    <div class="col-sm-9">
-                                                                        <p class="text-muted mb-0">'.$resu['NOM_EST'].' '.$resu['APE_EST'].'</p>
-                                                                    </div>
-                                                                </div>
-                                                                <hr>
-                                                                <div class="row">
-                                                                    <div class="col-sm-3">
-                                                                        <p class="mb-0">Correo Electrónico</p>
-                                                                    </div>
-                                                                    <div class="col-sm-9">
-                                                                        <p class="text-muted mb-0">'.$resu['COR_INS_EST'].'</p>
-                                                                    </div>
-                                                                </div>
-                                                                <hr>
-                                                                <div class="row">
-                                                                    <div class="col-sm-3">
-                                                                        <p class="mb-0">Celular</p>
-                                                                    </div>
-                                                                    <div class="col-sm-9">
-                                                                        <p class="text-muted mb-0">'.$resu['CEL_EST'].'</p>
-                                                                    </div>
-                                                                </div>
-                                                                <hr>
-                                                                <div class="row">
-                                                                    <div class="col-sm-3">
-                                                                        <p class="mb-0">Telefono</p>
-                                                                    </div>
-                                                                    <div class="col-sm-9">
-                                                                        <p class="text-muted mb-0">'.$resu['TEL_EST'].'</p>
-                                                                    </div>
-                                                                </div>
-                                                                <hr>
-                                                                <div class="row">
-                                                                    <div class="col-sm-3">
-                                                                        <p class="mb-0">Dirección</p>
-                                                                    </div>
-                                                                    <div class="col-sm-9">
-                                                                        <p class="text-muted mb-0">'.$resu['DIR_EST'].'</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ';
-                                        }
-                                        echo $codigoEs;
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <br>
-                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
-                        <div id="myTabContent" class="tab-content">
-                                <div class="container-fluid">
-                                    <br>
-                                    <div>
-                                        <label class="control-label" style="color: #000; font-weight: 500;">Editar foto Perfil: </label>
-                                    </div>
-                                    <center>
-                                        <div>
-                                            <div class="form-group label-floating">
-                                                <div class="col-md-9">
-                                                    <button id="abrirfoto">Tomar foto</button>
-                                                </div>
+                    <?php
+                        $con = conectar();
+                        if(isset($_POST['actualizar']))
+                        {
+                            $id=trim($_POST['id']);
+                            $DIR_EST=trim($_POST['DIR_EST']);                                            
+                            $TEL_EST=trim($_POST['TEL_EST']);
+                            $CEL_EST=trim($_POST['CEL_EST']);
+
+                            $consulta = "UPDATE estudiantes SET `DIR_EST` = :DIR_EST, `TEL_EST` = :TEL_EST, `CEL_EST` = :CEL_EST WHERE `id` = :id";
+                                                    
+                            $sql = $con->prepare($consulta);
+                                            
+                            $sql->bindParam(':DIR_EST',$DIR_EST,PDO::PARAM_STR,25);
+                            $sql->bindParam(':TEL_EST',$TEL_EST,PDO::PARAM_STR,25);
+                            $sql->bindParam(':CEL_EST',$CEL_EST,PDO::PARAM_STR,25);
+
+                            $sql->bindParam(':id',$id,PDO::PARAM_INT);
+
+                            $sql->execute();
+
+                            if($sql->rowCount() > 0)
+                            {
+                                $count = $sql -> rowCount();
+                                echo "<div class='content alert alert-primary' > 
+                                Datos Actualizados  </div>";
+                            }
+                            else{
+                                //echo "<div class='content alert alert-danger'> No se pudo actulizar el registro  </div>";
+                                //print_r($sql->errorInfo()); 
+                            }
+                        }
+                    ?>
+                    <div class="row">
+                        <?php 
+                            $con = conectar();
+                            if (isset($_POST['editar']))
+                            {
+                                $id = $_POST['id'];
+                                $sql= "SELECT * FROM estudiantes WHERE id = :id"; 
+                                $stmt = $con->prepare($sql);
+                                $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
+                                $stmt->execute();
+                                $obj = $stmt->fetchObject();
+                                                    
+                        ?>  
+                            <div class="container-fluid"  style="background: #fff; border-radius: 20px;">
+                                <br>
+                                <h1 class="h5 mb-0 text-gray-800">Datos</h1>
+                                <br>
+                                <div class="col-12 col-md-12"> 
+                                    <form role="form" method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                                        <input value="<?php echo $obj->id;?>" name="id" type="hidden">
+                                        <div class="form-row">  
+                                            <div class="form-group col-md-6">
+                                                <label for="DIR_EST">Dirección</label>
+                                                <input value="<?php echo $obj->DIR_EST;?>" name="DIR_EST" type="text" class="form-control" placeholder="Dirección...">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="TEL_EST">Telefono</label>
+                                                <input value="<?php echo $obj->TEL_EST;?>" name="TEL_EST" type="text" class="form-control" placeholder="Telefono...">
                                             </div>
                                         </div>
-                                    </center>
-                                    <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
-                                        <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
-                                            <div>
-                                                <label class="control-label" style="color: #000; font-weight: 500;">Subir foto: </label>
+                                        <div class="form-row">  
+                                            <div class="form-group col-md-6">
+                                                <label for="CEL_EST">Dirección</label>
+                                                <input value="<?php echo $obj->CEL_EST;?>" name="CEL_EST" type="text" class="form-control" placeholder="Dirección...">
                                             </div>
-                                            <center>
-                                                <div>
-                                                    <div class="form-group label-floating">
-                                                        <div class="col-md-9">
-                                                            <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png" />
+                                        </div>
+                                        <div class="form-group">
+                                            <button name="actualizar" type="submit" class="btn btn-primary  btn-block" style="color: #fff;">Actualizar Registro</button>
+                                        </div>
+                                    </form>
+                                </div> 
+                            </div> 
+                            <br>
+                        <?php }?>  
+                        <br>
+                        <script>
+                            function show() 
+                            {
+                                document.getElementById("info").style.visibility = "visible";
+                            }
+                        </script>
+                        <div class="container-fluid"  style="background: #fff; border-radius: 20px;">  
+                            <br>
+                            <h1 class="h5 mb-0 text-gray-800">Información</h1>
+                            <br>                  
+                            <?php
+                                $con = conectar();
+
+                                $sql = "SELECT * FROM estudiantes  WHERE COR_INS_EST = ? AND CED_EST = ?"; 
+                                $query = $con -> prepare($sql); 
+                                $query -> execute(array($_SESSION['usuario'], $_SESSION['contraseña'])); 
+                                $results = $query -> fetchAll(PDO::FETCH_OBJ); 
+                                foreach($results as $result) 
+                                { 
+                                    echo '
+                                        <div class="container py-5">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="card mb-4">
+                                                        <div class="card-body text-center">
+                                                            <img src="../'.$result -> RUT_ARCH.'" alt="avatar"
+                                                            class="rounded-circle img-fluid" style="width: 150px;">
+                                                            <h5 class="my-3">'.$result -> NOM_EST.' '.$result -> APE_EST.'</h5>
+                                                            <p class="text-muted mb-1">'.$_SESSION['rol'].'</p>
+                                                            <p class="text-muted mb-4">'.$result -> DIR_EST.'</p>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </center>
-                                        </fieldset>
+                                                <div class="col-lg-8">
+                                                    <div class="card mb-4">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <p class="mb-0">Nombre Completo</p>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <p class="text-muted mb-0">'.$result -> NOM_EST.' '.$result -> APE_EST.'</p>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <p class="mb-0">Correo Electrónico</p>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <p class="text-muted mb-0">'.$result -> COR_INS_EST.'</p>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <p class="mb-0">Telefono</p>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <p class="text-muted mb-0">'.$result -> TEL_EST.'</p>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <p class="mb-0">Celular</p>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <p class="text-muted mb-0">'.$result -> CEL_EST.'</p>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <p class="mb-0">Dirección</p>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <p class="text-muted mb-0">'.$result -> DIR_EST.'</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <button id="abrirfoto" type="button" class="btn btn-primary" style="color: #fff; background: rgb(138, 4, 4);">Tomar foto</button>
+                                                <br>
+                                                <form method="POST" action="'.$_SERVER['PHP_SELF'].'">
+                                                    <input type="hidden" name="id" value="'.$result -> id.'">
+                                                    <button name="editar" class="btn btn-primary" style="color: #fff; background: rgb(138, 4, 4);">Editar Datos</button>
+                                                </form>
+                                                <br>
+                                                <button type="button" onclick="show()" class="btn btn-primary" style="color: #fff; background: rgb(138, 4, 4);">Editar Foto</button>
+                                            </div>
+                                        </div>';
+                                }   
+                            ?>
+                                    <div class="input-group" id="info" style="visibility:hidden">
                                         <p class="text-center">
-                                            <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarFoto"><i class="zmdi zmdi-floppy"></i> Subir Foto</button>
+                                            <div class="container-fluid"  style="background: #fff; border-radius: 20px;">
+                                                <div class="col-12 col-md-12"> 
+                                                    <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
+                                                        <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
+                                                            <div>
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Subir foto: </label>
+                                                            </div>
+                                                            <center>
+                                                                <div>
+                                                                    <div class="form-group label-floating">
+                                                                        <div class="col-md-9">
+                                                                            <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </center>
+                                                        </fieldset>
+                                                        <p class="text-center">
+                                                            <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4);" name="enviarFoto"><i class="zmdi zmdi-floppy"></i> Subir Foto</button>
+                                                        </p>
+                                                    </form>
+                                                </div> 
+                                            </div> 
                                         </p>
-                                    </form>
-                                </div>
-                            </div>
+                                    </div>
+                            <br>
                         </div>
                     </div>
-                </div>
-
                     <!-- Content Row -->
 
                     
@@ -432,47 +501,94 @@
                 <!-- /.container-fluid -->
 
             </div>
-            <div class="modal fade" id="modalCRUD_DEBER" tabindex="-1" role="dialog"
-                                    aria-labelledby="ejemplo" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class ="modal-header">
-                                                    Tomar foto
-                                                    <button type="button" class="close"
-                                                    data-dismiss="modal" aria-label="Close">X</button>
-                                                </div>
-                                                <form id="formUsuarios">
-                                                    <div class="modal-body">
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <div class="form-group">
-                                                                 
-                                                                    <video src="" id="video" autoplay="true" height="480" width="640"></video>
-                                                                    <canvas id="canvas" height="480" width="640"></canvas>
-                                                                
+            <div class="modal fade" id="modalCRUD_DEBER" tabindex="-10" role="dialog" aria-labelledby="ejemplo" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: rgb(104, 6, 6); color: #fff;">
+                            <h5 class="modal-title" id="exampleModalLabel">Tomar Foto</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color: #fff;">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <form id="formUsuarios">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">                             
+                                            <center><video src="" id="video" autoplay="true" height="480" width="640" style="margin-left: 15%;"></video></center>
+                                            <center><canvas id="canvas" height="480" width="640"  style="margin-left: 15%;"></canvas></center>                  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn" type="button" id="subirfoto">Abrir camara</button>
+                                <button class="btn" type="button" id="tomarfoto">Tomar foto</button>
+                                <a href="perfil.php"><button class="btn" type="button" id="guardarfoto">Guardar foto</button></a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalCRUD_foto" tabindex="-10" role="dialog" aria-labelledby="ejemplo" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: rgb(104, 6, 6); color: #fff;">
+                            <h5 class="modal-title" id="exampleModalLabel">Tomar Foto</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color: #fff;">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <form id="formUsuarios">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">                             
+                                            <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
+                                                <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
+                                                    <div>
+                                                        <label class="control-label" style="color: #000; font-weight: 500;">Subir foto: </label>
+                                                    </div>
+                                                    <center>
+                                                        <div>
+                                                            <div class="form-group label-floating">
+                                                                <div class="col-md-9">
+                                                                    <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png" />
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn" type="button" id="subirfoto">Abrir camara</button>
-                                                        <button class="btn" type="button" id="tomarfoto">Tomar foto</button>
-                                                        <a href="perfil.php"><button class="btn" type="button" id="guardarfoto">Guardar foto</button></a>
-                                                    </div>
-                                                </form>
-                                            </div>
-
+                                                        
+                                                    </center>
+                                                </fieldset>
+                                                <p class="text-center">
+                                                    <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarFoto"><i class="zmdi zmdi-floppy"></i> Subir Foto</button>
+                                                </p>
+                                            </form>                  
                                         </div>
-
                                     </div>
-                                    <script src="camara.js"></script>
-                                    <script>
-                                    $('#abrirfoto').click(function(){
-                                    $('#modalCRUD_DEBER').modal();
-                                    });
-                                </script>
-            <!-- End of Main Content -->
-
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <script src="camara.js"></script>
+            <script>
+                $(document).ready(function(){
+                    var opcion;
+                    $('#abrirfoto').click(function(){
+                        $('#modalCRUD_DEBER').modal('show');
+                    });
+                    $('#abrireditor').click(function(){
+                        $('#modalCRUD_foto').modal('show');
+                    });
+                });  
+            </script> 
+            
             <!-- Footer -->
             <section>
               <footer>
