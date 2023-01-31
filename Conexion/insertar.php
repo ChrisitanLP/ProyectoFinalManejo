@@ -365,4 +365,38 @@
                 }
         };
     };
+    if(isset($_POST["enviarFoto"]))
+    { 
+
+        if(is_uploaded_file($_FILES['archivoAsigE']['tmp_name'])){
+
+            $ruta = "../BD/archivos/"; 
+            $nombrefinal= trim ($_FILES['archivoAsigE']['name']); 
+            $rutaFinal= $ruta.$nombrefinal;  
+            $upload= $ruta.$nombrefinal;  
+
+            
+            if(move_uploaded_file($_FILES['archivoAsigE']['tmp_name'], $upload)) { 
+                    
+                $nombre = $_FILES['archivoAsigE']['name'];
+                $tipo = $_FILES['archivoAsigE']['type'];  
+                $tamano = $_FILES['archivoAsigE']['size'];
+            
+                //$sqlAsig = "INSERT INTO fotos(CED_EST_PER,NOM_ARCH, RUT_ARCH, TIP_ARCH, TAM_ARCH)values('$cedulaE', '$nombre', '$rutaFinal', '$tipo', '$tamano')";
+                $sqlAsig = "UPDATE estudiantes SET  NOM_ARCH='$nombre', RUT_ARCH='$rutaFinal', TIP_ARCH='$tipo', TAM_ARCH='$tamano' where CED_EST=?";
+                $consultaAsig = $con->prepare($sqlAsig);
+                $consultaAsig -> execute(array($_SESSION['contraseña']));
+                $lastInsertIdAsig = $con->lastInsertId();
+            
+                if($lastInsertIdAsig>0){
+                   echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                    echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es 2: $nombreU  </div>";
+                }else{
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                    echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                    print_r($consultaAsig->errorInfo()); 
+                }
+            };
+        };
+    };
 ?>
