@@ -1,7 +1,11 @@
 <?php
+	//session_start();
 
 	//Se incluye la pagina listar que trae metodos de consulta
     include_once("listar.php");
+
+	include_once("conectar.php");
+	$con = conectar();
 
 	//Se traen archivos por metodo ajax
     if (isset($_GET['action_type']) && $_GET['action_type'] == 'docente') {
