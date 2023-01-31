@@ -19,7 +19,7 @@
     $_SESSION['usuario'] = $usuario;
 
     //Se crea una consulta SQL que trae todos os datos de la tabla LOGIN
-    $consulta="SELECT*FROM LOGIN where USU_LOG='$usuario' and PAS_LOG='$contraseña'";
+    $consulta="SELECT * FROM login where USU_LOG='$usuario' and PAS_LOG='$contraseña'";
     $resultado=mysqli_query($conexion,$consulta);
     $filas=mysqli_fetch_array($resultado);
 
@@ -50,8 +50,12 @@
                 if($filas['ROL_LOG']=="Estudiante"){ 
                     header("location:../Paginas/Estudiantes/pag_estudiantes.php");
                 }else{
-                    //Si no existe un rol, se redirige al login
-                    header("location:../login.php"); 
+                    if($filas['ROL_LOG']=="Invitado"){ 
+                        header("location:../Paginas/Invitados/pag_invitados.php");
+                    }else{
+                        //Si no existe un rol, se redirige al login
+                        header("location:../login.php");
+                    } 
                 }
             }
     mysqli_free_result($resultado);

@@ -1,5 +1,4 @@
 <?php
-
     //Se incluye la pagina conectar que trae un metodo
     include_once('../../Conexion/conectar.php');
     $con = conectar();
@@ -9,54 +8,24 @@
 
     //Se verifica que existan variables de sesion (USUARIO / ROL)
     //Segun su rol se crean unas variables
-    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
+    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Invitado"){
         $usuario = $_SESSION['usuario'];
+        $contraseña = $_SESSION['contraseña'];
     }else{
-        //Se redirecciona a login.php
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }
-
-    $contraseña = $_SESSION['contraseña'];
     
-     //Se realiza una consulta en la tabla DOCENTES (Consigue id)
     $consulta = "   SELECT id
-                    FROM docentes
-                    WHERE COR_INS_DOC = ? AND CED_DOC = ?";
+                    FROM estudiantes
+                    WHERE COR_INS_USU = ? AND CED_USU = ?";
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
-    $codigo = "";
-    //Se guarda en una variable la id del DOCENTE
+    $codigoEs = "";
     foreach($r as $resu){
-        $codigo.= $resu['id'];
-    }
-
-    //Se verifica que exista codAsignacion por metodo GET
-    if(isset($_GET['codpagina'])){
-        $codigoAsig = $_GET['codpagina'];
-    }else{
-         //Se redirecciona a la pagina principal
-        header('Location: pag_docentes.php');
-        die();
-    }
-    
-    //Se realiza una consulta en la tabla asignaturas (Consigue todos los datos)
-    $consulta = "   SELECT *
-                    FROM asignaturas
-                    WHERE id = ? ";
-    $sentencia = $con -> prepare($consulta);
-    $sentencia -> execute(array($codigoAsig));
-    $r = $sentencia -> fetchAll();
-    $nombreA = "";
-    //Se guarda en una variable el nombre de la ASIGNATURA
-    foreach($r as $resu){
-        $nombreA.= $resu['NOM_ASI'];
-    }
-
-    //Se crea una variable de sesion
-    $_SESSION['AsignaturaCOD'] = $codigoAsig;
-
+        $codigoEs.= $resu['id'];
+    }   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,12 +40,9 @@
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../../CSS/footer.css">
 
-
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <!-- Muestra el nombre de la asignatura segun el codigo traido de la pagina principal -->
-    <title><?php echo $nombreA;?></title>
+    <title>Perfil</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -97,7 +63,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_asignatura.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_invitados.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -110,7 +76,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_docentes.php">
+                <a class="nav-link" href="pag_invitados.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -124,19 +90,6 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
-                    <span>Administración</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
-                    </div>
-                </div>
-            </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -150,25 +103,16 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
-                                    //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
-                                    $consulta = "   SELECT *
-                                                    FROM asignaturas
-                                                    WHERE DOC_ASI IN (
-                                                                    SELECT id 
-                                                                    FROM docentes
-                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
-                                                    )";
+                                    $consulta = "   SELECT * FROM asignaturas";
                                     $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                    $sentencia -> execute();
                                     $r = $sentencia -> fetchAll();
-                                    $codigo = "";
-
-                                    //Se muestran las asignaturas como hipervinculo del menu
+                                    $codigoA = "";
                                     foreach($r as $resu){
-                                        $codigo.='
+                                        $codigoA.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
-                                    echo ($codigo);      
+                                    echo ($codigoA);      
                             ?>
                     </div>
                 </div>
@@ -287,7 +231,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" ><?php echo $usuario; ?></span>
-                                <img class="img-profile rounded-circle" src="../<?php echo $_SESSION['rutaPerfil'];?>">
+                                <img class="img-profile rounded-circle" src="../../img/undraw_profile_2.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -323,101 +267,92 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Información</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Editar Perfil </h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
-
                     <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
                         <div id="myTabContent" class="tab-content">
                                 <div class="container-fluid">
                                     <br>
-                                    <section class="full-reset font-cover" style="background-image: url(../../img/font-index.jpg); border-radius: 20px;">
-                                        <div class="full-reset" style="height: 100%; padding: 60px 0;">
-                                            <h1 class="text-center titles" style="color: #fff; font-family: Arial Black;"><?php echo $nombreA;?></h1>
-                                            <p class="lead text-center">
-                                                Descripcion 
-                                            </p>
-                                        </div>
-                                    </section>
+                                    <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">Información</h1>
+                                    <?php
+                                        $consulta = "   SELECT *
+                                                        FROM usuarios
+                                                        WHERE COR_INS_USU = ? AND CED_USU = ?";
+                                        $sentencia = $con -> prepare($consulta);
+                                        $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+                                        $r = $sentencia -> fetchAll();
+                                        $codigoEs = "";
+                                        foreach($r as $resu){
+                                            $codigoEs.='     
+                                                <div class="container py-5">
+                                                    <div class="row">
+                                                        <div class="col-lg-4">
+                                                            <div class="card mb-4">
+                                                                <div class="card-body text-center">
+                                                                    <img src="../../img/undraw_profile_2.svg" alt="avatar"
+                                                                    class="rounded-circle img-fluid" style="width: 150px;">
+                                                                    <h5 class="my-3">'.$resu['NOM_USU'].' '.$resu['APE_USU'].'</h5>
+                                                                    <p class="text-muted mb-1">'.$_SESSION['rol'].'</p>
+                                                                    <p class="text-muted mb-4">'.$resu['DIR_USU'].'</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <div class="col-lg-8">
+                                                        <div class="card mb-4">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <p class="mb-0">Nombre Completo</p>
+                                                                    </div>
+                                                                    <div class="col-sm-9">
+                                                                        <p class="text-muted mb-0">'.$resu['NOM_USU'].' '.$resu['APE_USU'].'</p>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <p class="mb-0">Correo Electrónico</p>
+                                                                    </div>
+                                                                    <div class="col-sm-9">
+                                                                        <p class="text-muted mb-0">'.$resu['COR_INS_USU'].'</p>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <p class="mb-0">Telefono</p>
+                                                                    </div>
+                                                                    <div class="col-sm-9">
+                                                                        <p class="text-muted mb-0">'.$resu['TEL_USU'].'</p>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row">
+                                                                    <div class="col-sm-3">
+                                                                        <p class="mb-0">Dirección</p>
+                                                                    </div>
+                                                                    <div class="col-sm-9">
+                                                                        <p class="text-muted mb-0">'.$resu['DIR_USU'].'</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ';
+                                        }
+                                        echo $codigoEs;
+                                    ?>
                                 </div>
+                            
                         </div>
-                        <br><br>
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                            <h1 class="h4 mb-0 text-gray-800"> Acciones Generales</h1>
-                        </div>
-                        <br>
-                        
-                        <!-- Grupo de cards que engloban las acciones generales que puede realizar el docente -->
-                        <div class="card-group">           
-                            <div class="container-fluid" style="alig-content: center; alig-items: center;">
-                                <div class="card-group">           
-                                    <div class="col-xl-3 col-md-6 mb-4">
-                                        <div class="card border-left-danger shadow h-100 py-2">
-                                            <div class="card-body">
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col mr-2">
-                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                            Acciones</div>
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Crear Asignaciónes</div>
-                                                        <p class="titulo">Si desea crear una asignacion de tareas para la asignatura</p>
-                                                        <?php
-                                                            echo '<a  href="asignacion.php?codAsignacion='.$codigoAsig.'" ><strong>Crear Asignación</strong></a>';
-                                                        ?>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-md-6 mb-4">
-                                        <div class="card border-left-danger shadow h-100 py-2">
-                                            <div class="card-body">
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col mr-2">
-                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                        Acciones</div>
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Listar Estudiantes</div>
-                                                        <p class="titulo">Se podra ver todos los estudiantes que se encuentren matriculados en la asignatura</p>
-                                                    <?php
-                                                            echo '<a  href="mostrar.php?codAsignacion=2" ><strong>Observar Estudiantes</strong></a>';
-                                                        ?>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-md-6 mb-4">
-                                        <div class="card border-left-danger shadow h-100 py-2">
-                                            <div class="card-body">
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col mr-2">
-                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                        Acciones</div>
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Calificar Asignaciones</div>
-                                                        <p class="titulo">Se podra podra calificar todoas las asignaciones enviadas</p>
-                                                    <?php
-                                                            echo '<a  href="mostrar.php?codAsignacion=3" ><strong>Observar Notas</strong></a>';
-                                                        ?>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
                     </div>
                     <br>
+                                    
+                </div>
+
                     <!-- Content Row -->
 
                     
@@ -425,11 +360,50 @@
                     <!-- Content Row -->
                     
 
-
+                    <br>
                 </div>
                 <!-- /.container-fluid -->
 
             </div>
+            <div class="modal fade" id="modalCRUD_DEBER" tabindex="-1" role="dialog"
+                                    aria-labelledby="ejemplo" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class ="modal-header">
+                                                    Tomar foto
+                                                    <button type="button" class="close"
+                                                    data-dismiss="modal" aria-label="Close">X</button>
+                                                </div>
+                                                <form id="formUsuarios">
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                 
+                                                                    <video src="" id="video" autoplay="true" height="480" width="640"></video>
+                                                                    <canvas id="canvas" height="480" width="640"></canvas>
+                                                                
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn" type="button" id="subirfoto">Abrir camara</button>
+                                                        <button class="btn" type="button" id="tomarfoto">Tomar foto</button>
+                                                        <a href="perfil.php"><button class="btn" type="button" id="guardarfoto">Guardar foto</button></a>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <script src="camara.js"></script>
+                                    <script>
+                                    $('#abrirfoto').click(function(){
+                                    $('#modalCRUD_DEBER').modal();
+                                    });
+                                </script>
             <!-- End of Main Content -->
 
             <!-- Footer -->
