@@ -367,6 +367,12 @@
                             <br>
                         <?php }?>  
                         <br>
+                        <script>
+                            function show() 
+                            {
+                                document.getElementById("info").style.visibility = "visible";
+                            }
+                        </script>
                         <div class="container-fluid"  style="background: #fff; border-radius: 20px;">  
                             <br>
                             <h1 class="h5 mb-0 text-gray-800">Información</h1>
@@ -436,16 +442,47 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div>
-                                                <button id="abrirfoto" type="button" class="btn btn-outline-warning">Tomar foto</button>
+                                            <div class="input-group">
+                                                <button id="abrirfoto" type="button" class="btn btn-primary" style="color: #fff; background: rgb(138, 4, 4);">Tomar foto</button>
+                                                <br>
                                                 <form method="POST" action="'.$_SERVER['PHP_SELF'].'">
                                                     <input type="hidden" name="id" value="'.$result -> id.'">
-                                                    <button name="editar" class="btn btn-primary" style="color: #fff; background: rgb(231, 180, 40);">Editar</button>
+                                                    <button name="editar" class="btn btn-primary" style="color: #fff; background: rgb(138, 4, 4);">Editar Datos</button>
                                                 </form>
+                                                <br>
+                                                <button type="button" onclick="show()" class="btn btn-primary" style="color: #fff; background: rgb(138, 4, 4);">Editar Foto</button>
                                             </div>
                                         </div>';
                                 }   
                             ?>
+                                    <div class="input-group" id="info" style="visibility:hidden">
+                                        <p class="text-center">
+                                            <div class="container-fluid"  style="background: #fff; border-radius: 20px;">
+                                                <div class="col-12 col-md-12"> 
+                                                    <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
+                                                        <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
+                                                            <div>
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Subir foto: </label>
+                                                            </div>
+                                                            <center>
+                                                                <div>
+                                                                    <div class="form-group label-floating">
+                                                                        <div class="col-md-9">
+                                                                            <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </center>
+                                                        </fieldset>
+                                                        <p class="text-center">
+                                                            <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4);" name="enviarFotoD"><i class="zmdi zmdi-floppy"></i> Subir Foto</button>
+                                                        </p>
+                                                    </form>
+                                                </div> 
+                                            </div> 
+                                        </p>
+                                    </div>
+                            <br>
                         </div>
                     </div>
                     <!-- Content Row -->
@@ -489,12 +526,61 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalCRUD_foto" tabindex="-10" role="dialog" aria-labelledby="ejemplo" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background: rgb(104, 6, 6); color: #fff;">
+                            <h5 class="modal-title" id="exampleModalLabel">Tomar Foto</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color: #fff;">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <form id="formUsuarios">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">                             
+                                            <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
+                                                <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
+                                                    <div>
+                                                        <label class="control-label" style="color: #000; font-weight: 500;">Subir foto: </label>
+                                                    </div>
+                                                    <center>
+                                                        <div>
+                                                            <div class="form-group label-floating">
+                                                                <div class="col-md-9">
+                                                                    <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </center>
+                                                </fieldset>
+                                                <p class="text-center">
+                                                    <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarFoto"><i class="zmdi zmdi-floppy"></i> Subir Foto</button>
+                                                </p>
+                                            </form>                  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <script src="camara.js"></script>
             <script>
                 $(document).ready(function(){
                     var opcion;
                     $('#abrirfoto').click(function(){
                         $('#modalCRUD_DEBER').modal('show');
+                    });
+                    $('#abrireditor').click(function(){
+                        $('#modalCRUD_foto').modal('show');
                     });
                 });  
             </script> 
