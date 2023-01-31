@@ -362,13 +362,23 @@
                                                 $acum ++;
                                                 $array = $array + $resu['NOT_ASIG'];
                                             }  
-                                            $codigota.='
+                                            if(!($array == 'nan')){ 
+                                                $codigota.='
+                                                    <tr>
+                                                        <th colspan = "2">Total</td>
+                                                        <td>'.(number_format($array/$acum, 2)).'</td>
+                                                    </tr>
+                                                ';
+                                                echo ($codigota);
+                                            }else{
+                                                echo '
                                                 <tr>
-                                                    <th colspan = "2">Total</td>
-                                                    <td>'.(number_format($array/$acum, 2)).'</td>
+                                                    <th>ID</th>
+                                                    <th>Asignacion</th>
+                                                    <th>Nota</th>
                                                 </tr>
-                                            '; 
-                                            echo ($codigota);      
+                                                ';
+                                            }      
                                         ?>
                                     </tfoot>
                                     <tbody>
