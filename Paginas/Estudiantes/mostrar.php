@@ -350,13 +350,15 @@
                                                 ';
                                                 echo ($codigota);
                                             }else{
-                                                echo '
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th>Asignacion</th>
-                                                    <th>Nota</th>
-                                                </tr>
-                                                ';
+                                                if(($array == 0)){ 
+                                                    $codigota.='
+                                                        <tr>
+                                                            <th colspan = "2">Total</td>
+                                                            <td>'.(number_format($array)).'</td>
+                                                        </tr>
+                                                    ';
+                                                    echo ($codigota);
+                                                }
                                             }      
                                         ?>
                                     </tfoot>

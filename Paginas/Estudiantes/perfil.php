@@ -341,8 +341,8 @@
                                         </div>
                                         <div class="form-row">  
                                             <div class="form-group col-md-6">
-                                                <label for="CEL_EST">Dirección</label>
-                                                <input value="<?php echo $obj->CEL_EST;?>" name="CEL_EST" type="text" class="form-control" placeholder="Dirección...">
+                                                <label for="CEL_EST">Celular</label>
+                                                <input value="<?php echo $obj->CEL_EST;?>" name="CEL_EST" type="text" class="form-control" placeholder="Celular...">
                                             </div>
                                         </div>
                                         <div class="form-group">
