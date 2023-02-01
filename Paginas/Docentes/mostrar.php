@@ -274,14 +274,6 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -646,11 +638,11 @@
         <!--arial-labelledby="ejemplo" definir o delimitar el area  -->
         <div class="modal-dialog" role="document"> <!--document, digo que este modal va a tener incrustado un documento-->
             <div class="modal-content">   <!--dar color al contenedor  -->
-                <div class="modal-header">
-                    <h2>Asignar Calificación</h2>
-                    <!--data-dismiss="modal" que al cerrar quite los modals -->
-                    <button type="button" class="close" data-dismiss="modal"
-                    arial-label="Close">X</button>
+                <div class="modal-header" style="background: rgb(104, 6, 6); color: #fff;">
+                <h5 class="modal-title" id="exampleModalLabel">Asignar Calificación</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color: #fff;">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
                 <form id="formUsuarios">
                     <div class="modal-body">
@@ -666,8 +658,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn" type="button">Cancelar</button>
-                        <button class="btn" type="submit">Guardar</button>
+                        <button class="btn btn-secondary" type="button" style="background: rgb(75, 65, 65);">Cancelar</button>
+                        <button class="btn btn-secondary" type="submit" style="background: rgb(138, 4, 4);">Guardar</button>
                     </div>
                 </form>
             </div>

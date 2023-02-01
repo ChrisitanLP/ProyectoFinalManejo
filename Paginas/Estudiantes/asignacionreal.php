@@ -312,99 +312,247 @@
                                     <br>
                                     <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">General</h1>
                                     <br>
-                                    <?php 
-                                        $categoria= $tipoArchivo;
-                                         
-                                        $valor="";
-                                         if($categoria=='image/jpeg' || $categoria=='png'){
-                                             $valor="<img width='40' src='../../img/Logos/desconocido.png'>";
-                                         }
-                     
-                                         if($categoria=='application/pdf'){
-                                             $valor="<img  width='40' src='../../img/Logos/pdf.png'>";
-                                         }
-                     
-                                         if($categoria=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoria=='xlsm' ){
-                                             $valor="<img  width='40' src='../../img/Logos/exel.png'>";
-                                         }
-                     
-                                         if($categoria=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoria=='docx'){
-                                             $valor="<img  width='40' src='../../img/Logos/word.png'>";
-                                         }
-                                         if($categoria=='application/zip'){
-                                             $valor="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
-                                         }
-                     
-                                         if($categoria=='mp3'){
-                                             $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
-                                         }
-                     
-                                         if($valor==''){
-                                             $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
-                                         }
+                                    <div class="col-lg-8">
+                                        <div class="card mb-4">
+                                            <div class="card-body">
+                                                <?php 
+                                                    $categoria= $tipoArchivo;
+                                                    
+                                                    $valor="";
+                                                    if($categoria=='image/jpeg' || $categoria=='png'){
+                                                        $valor="<img width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                
+                                                    if($categoria=='application/pdf'){
+                                                        $valor="<img  width='40' src='../../img/Logos/pdf.png'>";
+                                                    }
+                                
+                                                    if($categoria=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoria=='xlsm' ){
+                                                        $valor="<img  width='40' src='../../img/Logos/exel.png'>";
+                                                    }
+                                
+                                                    if($categoria=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoria=='docx'){
+                                                        $valor="<img  width='40' src='../../img/Logos/word.png'>";
+                                                    }
+                                                    if($categoria=='application/zip'){
+                                                        $valor="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
+                                                    }
+                                
+                                                    if($categoria=='mp3'){
+                                                        $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                
+                                                    if($valor==''){
+                                                        $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
 
-                                       echo '<div>
-                                                <label class="control-label" style="color: #000; font-weight: 500;">'.$_SESSION['descripcionAsignacion'].'</label>
-                                                <br><label class="control-label" style="color: #000; font-weight: 500;">Fecha Limite: '.$fecha.'</label>
-                                            </div>';
-                                    ?>
-                                    <?php 
-                                        if($_SESSION['nombreArchivo'] == ''){    
-                                            echo '<p></p>';
-                                        }else{
-                                           echo '   <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
-                                                    <a href="cargar.php?id='.$_SESSION['nombreArchivo'].'">'.$valor.'descargar</a>';
-                                        };
-                                    ?>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                            <br>
-                                            <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
-                                                <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Información: </label>
-                                                    </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <textarea class="form-control" id="message" name="informacionnAsig" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
+                                                echo '  <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Descripción</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0"></p>'.$_SESSION['descripcionAsignacion'].'</p>
+                                                            </div>
+                                                        </div>  
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Fecha Limite</p>
+                                                            </div>
+                                                            <div class="col-sm-9">  
+                                                                <p class="text-muted mb-0">Fecha Limite: '.$fecha.'</p>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    </center>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
-                                                    </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <input type="file" name="archivoAsig2" title="seleccionar fichero" id="importData" accept=".xls, .xlsx, .pdf, .doc, .zip, .rar" />
+                                                        <hr>';
+                                                ?>
+                                                <?php 
+                                                    if($_SESSION['nombreArchivo'] == ''){    
+                                                        echo '<p></p>';
+                                                    }else{
+                                                    echo '   
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Archivo</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">
+                                                                    <a href="cargar.php?id='.$_SESSION['nombreArchivo'].'">'.$valor.'descargar</a>
+                                                                </p>
                                                             </div>
                                                         </div>
+                                                        <hr>';
+                                                    };
+                                                ?>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Estado</p>
+                                                            </div>
+                                                            <div class="col-sm-9" style="background: #C8F5AF;">
+                                                                <p class="text-muted mb-0" style="color: #000;">Enviado</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <?php
+                                                            $consulta = "      SELECT *
+                                                                                FROM detalle_asignacion
+                                                                                WHERE COD_ASIG_DEB = ? AND ID_EST_ASIG = ?
+                                                            ";
+                                                            $sentencia = $con -> prepare($consulta);
+                                                            $sentencia -> execute(array($_SESSION['codigoAsignacion'], $codigoEs));
+                                                            $r = $sentencia -> fetchAll();
+                                                            $tipoArchivoR = "";
+                                                            $nombreAr = "";
+                                                            foreach($r as $resu){
+                                                                $tipoArchivoR = $resu['TIP_ARCH'];
+                                                                $nombreAr = $resu['NOM_ARCH'];
+                                                                echo ' 
+                                                        <div class="row">
+                                                            <div class="col-sm-12" style="background: #F3F5F2;">
+                                                                <p class="text-center">...</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Informacion Enviada</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">'.$resu['DES_ASIG_DEB'].'</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>';
+                                                            }  
+                                                        ?>
+                                                <?php 
+                                                    $categoriaR= $tipoArchivoR;
+                                                    
+                                                    $valorR="";
+                                                    if($categoriaR=='image/jpeg' || $categoriaR=='png'){
+                                                        $valorR="<img width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                
+                                                    if($categoriaR=='application/pdf'){
+                                                        $valorR="<img  width='40' src='../../img/Logos/pdf.png'>";
+                                                    }
+                                
+                                                    if($categoriaR=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoriaR=='xlsm' ){
+                                                        $valorR="<img  width='40' src='../../img/Logos/exel.png'>";
+                                                    }
+                                
+                                                    if($categoriaR=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoriaR=='docx'){
+                                                        $valorR="<img  width='40' src='../../img/Logos/word.png'>";
+                                                    }
+                                                    if($categoriaR=='application/zip'){
+                                                        $valorR="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
+                                                    }
+                                
+                                                    if($categoriaR=='mp3'){
+                                                        $valorR="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                
+                                                    if($valorR==''){
+                                                        $valorR="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                                ?>
+                                                <?php 
+                                                    if($nombreAr == ''){    
+                                                        echo '<p></p>';
+                                                    }else{
+                                                    echo '   
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Archivo</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">
+                                                                    <a href="cargar.php?id='.$nombreAr.'">'.$valorR.'descargar</a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>';
+                                                    };
+                                                ?>
                                                     </div>
-                                                    </center>
-                                                </fieldset>
-                                                <p class="text-center">
-                                                    <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarAsigE" id="subirAsig"><i class="zmdi zmdi-floppy"></i> Subir Asignación</button>
-                                                </p>
-                                            </form>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <center>
+                                        <button type="button" onclick="show()" class="btn btn-primary" style="color: #fff; background: rgb(138, 4, 4);">Modificar Envio</button>
+                                    </center>
+                                    <br>
                                 </div>
-                        </div>
-                    </div>
+                                <br>
+                                <script>
+                                    function show() 
+                                    {
+                                        document.getElementById("info").style.visibility = "visible";
+                                    }
+                                </script>
+                                <?php
+                                     $consulta = "      SELECT *
+                                                        FROM detalle_asignacion
+                                                        WHERE COD_ASIG_DEB = ? AND ID_EST_ASIG = ?
+                                    ";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['codigoAsignacion'], $codigoEs));
+                                    $r = $sentencia -> fetchAll();
+                                    $descripcion = "";
+                                    foreach($r as $resu){
+                                        $descripcion = $resu['DES_ASIG_DEB'];
+                                    }  
+                                    //echo $descripcion; 
+                                ?>
+                                <div class="input-group" id="info" style="visibility:hidden">
+                                    <p class="text-center">
+                                        <div class="container-fluid"  style="background: #fff; border-radius: 20px;">
+                                            <div class="col-12 col-md-12"> 
+                                                <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
+                                                    <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
+                                                        <div>
+                                                            <label class="control-label" style="color: #000; font-weight: 500;">Información: </label>
+                                                        </div>
+                                                        <center>
+                                                        <?php 
+                                                            //if($_SESSION['nombreArchivo'] == ''){    
+                                                                //echo '<p></p>';
+                                                            //}else{
+                                                            echo '
+                                                                <div>
+                                                                    <div class="form-group label-floating">
+                                                                        <div class="col-md-9">
+                                                                            <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>';
+                                                            //};
+                                                        ?>
+                                                            <div>
+                                                                <div class="form-group label-floating">
+                                                                    <div class="col-md-9">
+                                                                    <input class="form-control" id="message" name="informacionnAsig" value="<?php echo $descripcion; ?>"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </center>
+                                                    </fieldset>
+                                                    <p class="text-center">
+                                                        <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4);" name="modificar"><i class="zmdi zmdi-floppy"></i> Modificar </button>
+                                                    </p>
+                                                </form>
+                                            </div> 
+                                        </div> 
+                                    </p>
+                                </div>
+                                <br>
+                        
+                    
 
                     <!-- Content Row -->
 
                     
 
                     <!-- Content Row -->
-                    
-
-                    <br>
                 </div>
                 <!-- /.container-fluid -->
 

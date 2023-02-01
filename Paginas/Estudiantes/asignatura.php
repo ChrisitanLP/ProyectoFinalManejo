@@ -266,17 +266,9 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="editar.php" >
+                                <a class="dropdown-item" href="perfil.php" >
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
-                                </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -365,7 +357,9 @@
                                 <?php 
                                         $consulta = "   SELECT *
                                                         FROM asignacion_deberes
-                                                        WHERE COD_ASI = ? AND id IN (
+                                                        WHERE COD_ASI = ?
+                                                        AND EST_ASIG <> 'N' 
+                                                        AND id IN (
                                                                     SELECT COD_ASIG_DEB
                                                                     FROM detalle_asignacion
                                                                     WHERE ID_EST_ASIG = ?
@@ -386,6 +380,7 @@
                                                                         '.$resu['FEC_ASIG'].'</div>
                                                                     <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
                                                                     <p class="titulo">'.$resu['DES_ASIG'].'</p>
+                                                                    <a  href="asignacionreal.php?codAsignacion='.$resu['id'].'" ><strong>Ver Asignación</strong></a>
                                                                 </div>
                                                                 <div class="col-auto">
                                                                     <i class="fa fa-bookmark" aria-hidden="true"></i>

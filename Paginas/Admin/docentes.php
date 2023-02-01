@@ -213,18 +213,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
-                                    Perfil
-                                </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
-                                </a>
+                                
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -286,7 +275,7 @@
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Perfil</label>
                                                                 <div>
                                                                     <input type="text" readonly="" class="form-control" placeholder="Browse...">
-                                                                    <input type="file" name="perfilD" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
+                                                                    <input type="file" name="perfilD" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png, .jfif, .svg" />
                                                                 </div>
                                                             </div>
                                                             <p class="text-center">
