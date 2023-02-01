@@ -31,8 +31,23 @@
         $codigo.= $resu['id'];
     }
 
+     //Se realiza una consulta en la tabla ESTUDIANTES (Consigue id)
+     $consulta = "   SELECT RUT_ARCH
+                    FROM docentes
+                    WHERE COR_INS_DOC = ? AND CED_DOC = ?";
+    $sentencia = $con -> prepare($consulta);
+    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
+    $r = $sentencia -> fetchAll();
+    $rutaDo = "";
+
+    //Se guarda en una variable la id del ESTUDIANTE
+    foreach($r as $resu){
+        $rutaDo.= $resu['RUT_ARCH'];
+    }
+
     //Se crea una variable de sesion
     $_SESSION['DOCENTEcod'] = $codigo;
+    $_SESSION['rutaPerfil'] = $rutaDo;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,20 +112,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
-                    <span>Administración</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="asignacion.php">Asignación Tareas</a>
-                    </div>
-                </div>
-            </li>
-
+            
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -259,23 +261,14 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" ><?php echo $usuario; ?></span>
-                                <img class="img-profile rounded-circle"
-                                    src="../../img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="../<?php echo $_SESSION['rutaPerfil'];?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" >
+                                <a class="dropdown-item" href="perfil.php" >
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
-                                </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">

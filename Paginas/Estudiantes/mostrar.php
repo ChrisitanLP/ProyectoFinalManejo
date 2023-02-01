@@ -117,20 +117,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
-                    <span>Administración</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="asignacion.php">Asignación</a>
-                    </div>
-                </div>
-            </li>
-
+        
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -286,14 +273,6 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -340,16 +319,17 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Asignacion</th>
+                                            <th>Estado Envio</th>
                                             <th>Nota</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <?php
                                             $consulta = "   SELECT  DA.id, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
-                                            FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
-                                            WHERE DA.COD_ASIG_DEB = AD.id 
-                                            AND DA.ID_EST_ASIG = E.id 
-                                            AND AD.COD_ASI = ? AND DA.ID_EST_ASIG = ?            
+                                                            FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
+                                                            WHERE DA.COD_ASIG_DEB = AD.id 
+                                                            AND DA.ID_EST_ASIG = E.id 
+                                                            AND AD.COD_ASI = ? AND DA.ID_EST_ASIG = ?            
                                             ";
 
                                             $sentencia = $con -> prepare($consulta);
@@ -362,18 +342,30 @@
                                                 $acum ++;
                                                 $array = $array + $resu['NOT_ASIG'];
                                             }  
-                                            $codigota.='
-                                                <tr>
-                                                    <th colspan = "2">Total</td>
-                                                    <td>'.(number_format($array/$acum, 2)).'</td>
-                                                </tr>
-                                            '; 
-                                            echo ($codigota);      
+                                            if(!($array == 'nan')){ 
+                                                $codigota.='
+                                                    <tr>
+                                                        <th colspan = "3">Total</td>
+                                                        <td>'.(number_format($array/$acum, 2)).'</td>
+                                                    </tr>
+                                                ';
+                                                echo ($codigota);
+                                            }else{
+                                                if(($array == 0)){ 
+                                                    $codigota.='
+                                                        <tr>
+                                                            <th colspan = "3">Total</td>
+                                                            <td>'.(number_format($array)).'</td>
+                                                        </tr>
+                                                    ';
+                                                    echo ($codigota);
+                                                }
+                                            }      
                                         ?>
                                     </tfoot>
                                     <tbody>
                                         <?php 
-                                            $consulta = "   SELECT  DA.id, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
+                                            $consulta = "   SELECT  DA.id, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG, DA.ESTADO
                                             FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
                                             WHERE DA.COD_ASIG_DEB = AD.id 
                                             AND DA.ID_EST_ASIG = E.id 
@@ -389,6 +381,7 @@
                                                 <tr>
                                                     <td>'.$resu['id'].'</td>
                                                     <td>'.$resu['NOM_ASIG'].'</td>
+                                                    <td>'.$resu['ESTADO'].'</td>
                                                     <td>'.$resu['NOT_ASIG'].'</td>
                                                 </tr>
                                                 ';

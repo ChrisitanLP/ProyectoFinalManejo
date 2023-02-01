@@ -213,18 +213,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
-                                    Perfil
-                                </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
-                                </a>
+                                
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -252,7 +241,7 @@
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                                        <form action="../../Conexion/insertar.php" method="POST">
+                                                        <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
                                                             <fieldset style="font-size: 20px; color: #000; font-weight: 500;">Información del Docente</fieldset>
                                                             <div class="form-group label-floating">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Cedula: </label>
@@ -281,6 +270,13 @@
                                                             <div class="form-group">
                                                                 <label class="control-label" style="color: #000; font-weight: 500;">Fecha Nacimiento: </label>
                                                                 <input class="form-control" type="date" name="fechaD">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" style="color: #000; font-weight: 500;">Perfil</label>
+                                                                <div>
+                                                                    <input type="text" readonly="" class="form-control" placeholder="Browse...">
+                                                                    <input type="file" name="perfilD" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png, .jfif, .svg" />
+                                                                </div>
                                                             </div>
                                                             <p class="text-center">
                                                                 <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4);" name="enviarD"><i class="zmdi zmdi-floppy"></i> Guardar</button>
@@ -315,7 +311,6 @@
                                                             <th class="text-center">Email</th>
                                                             <th class="text-center">Telefono</th>
                                                             <th class="text-center">Nacimiento</th>
-                                                           
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
