@@ -273,14 +273,6 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -311,26 +303,40 @@
                         <h1 class="h5 mb-0 text-gray-800">Asignaturas </h1>
                         <br>
                         <div class="card-group">
-                            <?php 
-                                $con = conectar();
-                                if (isset($_POST['editar']))
-                               {
-                                    $id = $_POST['id'];
-
+                        <script>
+                            $(document).ready(function(){
+                                var alertMessage = document.getElementById('myHiddenInput').value;
+                                alert(alertMessage);
+                            });
+                        </script>
+                        <?php
+                            $con = conectar();
+                            if (isset($_POST['editar'])) {
+                                $id = $_POST['id'];
+                                $verificar = "SELECT ID_EST FROM detalle_estudiantes where ID_ASI=? AND ID_EST=?";
+                                $resultadovalidar = $con->prepare($verificar);
+                                $resultadovalidar->execute(array($id,$codigoEs));
+                                $res = $resultadovalidar->fetch();
+                                if($res['ID_EST']==$codigoEs){
+                                    echo'  <input type="hidden" id="myHiddenInput" value="'.$_SESSION['usuario'].' ya se encuentra matriculad@ en la Asignatura" />
+                                        ';
+                                    
+                                }else{
                                     $sqlAsig = "INSERT INTO detalle_estudiantes(ID_ASI, ID_EST)values('$id', '$codigoEs')";
                                     $consultaAsig = $con->prepare($sqlAsig);
-                                    $consultaAsig -> execute();
+                                    $consultaAsig->execute();
                                     $lastInsertIdAsig = $con->lastInsertId();
-                                
-                                    if($lastInsertIdAsig>0){
+
+                                    if ($lastInsertIdAsig > 0) {
                                         echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
                                         //echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
-                                    }else{
+                                    } else {
                                         echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
                                         //echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
                                         //print_r($consultaAsig->errorInfo()); 
                                     }
                                 }
+                            }
                             ?>
                             <?php 
                                 //Se realiza una consulta en la tabla asignaturas(Trae TODOS los datos)
@@ -417,8 +423,6 @@
                         </div>
                     </div>
                     <!-- Content Row -->
-
-                    
 
                     <!-- Content Row -->
                     

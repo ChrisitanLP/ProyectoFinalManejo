@@ -24,9 +24,8 @@
         $codigoEs.= $resu['id'];
     }
 
-    if(isset($_GET['codpagina'])){
-        $codigoAsig = $_GET['codpagina'];
-        $_SESSION['AsignaturaCOD'] = $codigoAsig;
+    if(isset($_GET['codAsignacion'])){
+        $codigoAsig = $_GET['codAsignacion'];
     }else{
         header('Location: pag_estudiantes.php');
         die();
@@ -35,18 +34,33 @@
     $con = conectar();
     
     $consulta = "   SELECT *
-                    FROM asignaturas
+                    FROM asignacion_deberes
                     WHERE id = ? ";
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($codigoAsig));
     $r = $sentencia -> fetchAll();
-    $nombreA = "";
-    foreach($r as $resu){
-        $nombreA.= $resu['NOM_ASI'];
-    }
-    $_SESSION['NombreAsignatura'] = $nombreA;
+    
+    $nombreAsig = "";
+    $descripcionAsig = "";
+    $tipoArchivo = "";
+    $rutaArchivo = "";
+    $nombreArchivo = "";
+    $fecha = "";
 
-    $_SESSION['AsignaturaCOD']
+    foreach($r as $resu){
+        $nombreAsig.= $resu['NOM_ASIG'];
+        $descripcionAsig.= $resu['DES_ASIG']; 
+        $tipoArchivo.= $resu['TIP_ARCH'];
+        $rutaArchivo.= $resu['RUT_ARCH'];
+        $nombreArchivo.= $resu['NOM_ARCH'];
+        $fecha.= $resu['FEC_ASIG'];
+    }
+    $_SESSION['NombreAsignacion'] = $nombreAsig;
+    $_SESSION['codigoAsignacion'] = $codigoAsig;
+    $_SESSION['descripcionAsignacion'] = $descripcionAsig;
+    $_SESSION['tipArchivo'] = $tipoArchivo;
+    $_SESSION['rutaArchivo'] = $rutaArchivo;
+    $_SESSION['nombreArchivo'] = $nombreArchivo;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,11 +75,9 @@
     <link rel="stylesheet" type="text/css" href="../../CSS/stylePaginas.css">
     <link rel="stylesheet" type="text/css" href="../../CSS/footer.css">
 
-
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title><?php echo $nombreA;?></title>
+    <title>Asignación <?php echo $_SESSION['NombreAsignatura'];?></title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -126,23 +138,23 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
-                                $consulta = "   SELECT *
-                                                FROM asignaturas
-                                                WHERE id IN (
+                                    $consulta = "   SELECT *
+                                                    FROM asignaturas
+                                                    WHERE id IN (
                                                             SELECT ID_ASI
                                                             FROM detalle_estudiantes
                                                             WHERE ID_EST = ?
-                                     )
+                                                    )
                                      ";
                                     $sentencia = $con -> prepare($consulta);
                                     $sentencia -> execute(array($_SESSION['codigoEstudiante']));
                                     $r = $sentencia -> fetchAll();
-                                    $codigoS = "";
+                                    $codigoA = "";
                                     foreach($r as $resu){
-                                        $codigoS.='
+                                        $codigoA.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
-                                    echo ($codigoS);      
+                                    echo ($codigoA);      
                             ?>
                     </div>
                 </div>
@@ -289,152 +301,258 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Información</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Asignación <?php echo $_SESSION['NombreAsignacion'];?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
-
                     <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
                         <div id="myTabContent" class="tab-content">
+
                                 <div class="container-fluid">
                                     <br>
-                                    <section class="full-reset font-cover" style="background-image: url(../../img/font-index.jpg); border-radius: 20px;">
-                                        <div class="full-reset" style="height: 100%; padding: 60px 0;">
-                                            <h1 class="text-center titles" style="color: #fff; font-family: Arial Black;"><?php echo $nombreA;?></h1>
-                                            <p class="lead text-center">
-                                                Descripcion 
-                                            </p>
-                                        </div>
-                                    </section>
-                                </div>
-                        </div>
-                        <br><br>
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                            <h1 class="h4 mb-0 text-gray-800"> Acciones Generales</h1>
-                        </div>
-                        <br>
-                        <div class="container-fluid" style="background: #fff; border-radius: 20px;">
-                            <br>
-                            <h1 class="h5 mb-0 text-gray-800">Asignaciones </h1>
-                            <br>
-                            <div class="card-group">
-                                <?php 
-                                        $vacio = "";
-                                        $consulta = "   SELECT *
-                                                        FROM asignacion_deberes
-                                                        WHERE COD_ASI = ? 
-                                                        AND id IN (
-                                                                SELECT COD_ASIG_DEB
-                                                                FROM detalle_asignacion
-                                                                WHERE ESTADO = 'Sin Enviar'
-                                                                AND ID_EST_ASIG = ?
-                                                        )
-                                                        ";
-                                        $sentencia = $con -> prepare($consulta);
-                                        $sentencia -> execute(array($codigoAsig, $codigoEs));
-                                        $r = $sentencia -> fetchAll();
-                                        $codigo = "";
-                                        foreach($r as $resu){
-                                            $codigo.='
-                                                <div class="col-xl-3 col-md-6 mb-4">
-                                                    <div class="card border-left-primary shadow h-100 py-2">
-                                                        <div class="card-body">
-                                                            <div class="row no-gutters align-items-center">
-                                                                <div class="col mr-2">
-                                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                        Tarea</div>
-                                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
-                                                                    <p class="titulo">'.$resu['DES_ASIG'].'</p>
-                                                                        <a  href="asignacion.php?codAsignacion='.$resu['id'].'" ><strong>Ver Asignación</strong></a>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>';
-                                        }   
-                                        echo ($codigo);      
-                                ?>
-                            </div>
-                            <h1 class="h5 mb-0 text-gray-800">Asignaciones Realizadas</h1>
-                            <br>
-                            <div class="card-group">
-                                <?php 
-                                        $consulta = "   SELECT *
-                                                        FROM asignacion_deberes
-                                                        WHERE COD_ASI = ? 
-                                                        AND id IN (
-                                                                    SELECT COD_ASIG_DEB
-                                                                    FROM detalle_asignacion
-                                                                    WHERE ESTADO = 'Enviado'
-                                                                    AND ID_EST_ASIG = ?
-                                                        )
-                                                        ";
-                                        $sentencia = $con -> prepare($consulta);
-                                        $sentencia -> execute(array($codigoAsig, $codigoEs));
-                                        $r = $sentencia -> fetchAll();
-                                        $codigoAsi = "";
-                                        foreach($r as $resu){
-                                            $codigoAsi.='
-                                                <div class="col-xl-3 col-md-6 mb-4">
-                                                    <div class="card border-left-primary shadow h-100 py-2">
-                                                        <div class="card-body">
-                                                            <div class="row no-gutters align-items-center">
-                                                                <div class="col mr-2">
-                                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                                        '.$resu['FEC_ASIG'].'</div>
-                                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASIG'].'.</div>
-                                                                    <p class="titulo">'.$resu['DES_ASIG'].'</p>
-                                                                    <a  href="asignacionreal.php?codAsignacion='.$resu['id'].'" ><strong>Ver Asignación</strong></a>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <i class="fa fa-bookmark" aria-hidden="true"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>';
-                                        }   
-                                        echo ($codigoAsi);     
-                                ?>
-                            </div>
-                            <h1 class="h5 mb-0 text-gray-800">Acciones</h1>
-                            <br>
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                        <div class="card border-left-danger shadow h-100 py-2">
+                                    <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">General</h1>
+                                    <br>
+                                    <div class="col-lg-8">
+                                        <div class="card mb-4">
                                             <div class="card-body">
-                                                <div class="row no-gutters align-items-center">
-                                                    <div class="col mr-2">
-                                                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                        Acciones</div>
-                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">Ver Calificaciones</div>
-                                                        <p class="titulo">Se podra visualizar las notas obtenidas en las asignaciones</p>
-                                                    <?php
-                                                            echo '<a  href="mostrar.php?codAsignacion=3" ><strong>Observar Notas</strong></a>';
+                                                <?php 
+                                                    $categoria= $tipoArchivo;
+                                                    
+                                                    $valor="";
+                                                    if($categoria=='image/jpeg' || $categoria=='png'){
+                                                        $valor="<img width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                
+                                                    if($categoria=='application/pdf'){
+                                                        $valor="<img  width='40' src='../../img/Logos/pdf.png'>";
+                                                    }
+                                
+                                                    if($categoria=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoria=='xlsm' ){
+                                                        $valor="<img  width='40' src='../../img/Logos/exel.png'>";
+                                                    }
+                                
+                                                    if($categoria=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoria=='docx'){
+                                                        $valor="<img  width='40' src='../../img/Logos/word.png'>";
+                                                    }
+                                                    if($categoria=='application/zip'){
+                                                        $valor="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
+                                                    }
+                                
+                                                    if($categoria=='mp3'){
+                                                        $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                
+                                                    if($valor==''){
+                                                        $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+
+                                                echo '  <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Descripción</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0"></p>'.$_SESSION['descripcionAsignacion'].'</p>
+                                                            </div>
+                                                        </div>  
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Fecha Limite</p>
+                                                            </div>
+                                                            <div class="col-sm-9">  
+                                                                <p class="text-muted mb-0">Fecha Limite: '.$fecha.'</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>';
+                                                ?>
+                                                <?php 
+                                                    if($_SESSION['nombreArchivo'] == ''){    
+                                                        echo '<p></p>';
+                                                    }else{
+                                                    echo '   
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Archivo</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">
+                                                                    <a href="cargar.php?id='.$_SESSION['nombreArchivo'].'">'.$valor.'descargar</a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>';
+                                                    };
+                                                ?>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Estado</p>
+                                                            </div>
+                                                            <div class="col-sm-9" style="background: #C8F5AF;">
+                                                                <p class="text-muted mb-0" style="color: #000;">Enviado</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <?php
+                                                            $consulta = "      SELECT *
+                                                                                FROM detalle_asignacion
+                                                                                WHERE COD_ASIG_DEB = ? AND ID_EST_ASIG = ?
+                                                            ";
+                                                            $sentencia = $con -> prepare($consulta);
+                                                            $sentencia -> execute(array($_SESSION['codigoAsignacion'], $codigoEs));
+                                                            $r = $sentencia -> fetchAll();
+                                                            $tipoArchivoR = "";
+                                                            $nombreAr = "";
+                                                            foreach($r as $resu){
+                                                                $tipoArchivoR = $resu['TIP_ARCH'];
+                                                                $nombreAr = $resu['NOM_ARCH'];
+                                                                echo ' 
+                                                        <div class="row">
+                                                            <div class="col-sm-12" style="background: #F3F5F2;">
+                                                                <p class="text-center">...</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Informacion Enviada</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">'.$resu['DES_ASIG_DEB'].'</p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>';
+                                                            }  
                                                         ?>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                <?php 
+                                                    $categoriaR= $tipoArchivoR;
+                                                    
+                                                    $valorR="";
+                                                    if($categoriaR=='image/jpeg' || $categoriaR=='png'){
+                                                        $valorR="<img width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                
+                                                    if($categoriaR=='application/pdf'){
+                                                        $valorR="<img  width='40' src='../../img/Logos/pdf.png'>";
+                                                    }
+                                
+                                                    if($categoriaR=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoriaR=='xlsm' ){
+                                                        $valorR="<img  width='40' src='../../img/Logos/exel.png'>";
+                                                    }
+                                
+                                                    if($categoriaR=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoriaR=='docx'){
+                                                        $valorR="<img  width='40' src='../../img/Logos/word.png'>";
+                                                    }
+                                                    if($categoriaR=='application/zip'){
+                                                        $valorR="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
+                                                    }
+                                
+                                                    if($categoriaR=='mp3'){
+                                                        $valorR="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                
+                                                    if($valorR==''){
+                                                        $valorR="<img  width='40' src='../../img/Logos/desconocido.png'>";
+                                                    }
+                                                ?>
+                                                <?php 
+                                                    if($nombreAr == ''){    
+                                                        echo '<p></p>';
+                                                    }else{
+                                                    echo '   
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <p class="mb-0">Archivo</p>
+                                                            </div>
+                                                            <div class="col-sm-9">
+                                                                <p class="text-muted mb-0">
+                                                                    <a href="cargar.php?id='.$nombreAr.'">'.$valorR.'descargar</a>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <hr>';
+                                                    };
+                                                ?>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                            <br>
-                        </div>
-                        <br>
-                    </div>
-                    <br>
+                                    <center>
+                                        <button type="button" onclick="show()" class="btn btn-primary" style="color: #fff; background: rgb(138, 4, 4);">Modificar Envio</button>
+                                    </center>
+                                    <br>
+                                </div>
+                                <br>
+                                <script>
+                                    function show() 
+                                    {
+                                        document.getElementById("info").style.visibility = "visible";
+                                    }
+                                </script>
+                                <?php
+                                     $consulta = "      SELECT *
+                                                        FROM detalle_asignacion
+                                                        WHERE COD_ASIG_DEB = ? AND ID_EST_ASIG = ?
+                                    ";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute(array($_SESSION['codigoAsignacion'], $codigoEs));
+                                    $r = $sentencia -> fetchAll();
+                                    $descripcion = "";
+                                    foreach($r as $resu){
+                                        $descripcion = $resu['DES_ASIG_DEB'];
+                                    }  
+                                    //echo $descripcion; 
+                                ?>
+                                <div class="input-group" id="info" style="visibility:hidden">
+                                    <p class="text-center">
+                                        <div class="container-fluid"  style="background: #fff; border-radius: 20px;">
+                                            <div class="col-12 col-md-12"> 
+                                                <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
+                                                    <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
+                                                        <div>
+                                                            <label class="control-label" style="color: #000; font-weight: 500;">Información: </label>
+                                                        </div>
+                                                        <center>
+                                                        <?php 
+                                                            //if($_SESSION['nombreArchivo'] == ''){    
+                                                                //echo '<p></p>';
+                                                            //}else{
+                                                            echo '
+                                                                <div>
+                                                                    <div class="form-group label-floating">
+                                                                        <div class="col-md-9">
+                                                                            <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>';
+                                                            //};
+                                                        ?>
+                                                            <div>
+                                                                <div class="form-group label-floating">
+                                                                    <div class="col-md-9">
+                                                                    <input class="form-control" id="message" name="informacionnAsig" value="<?php echo $descripcion; ?>"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </center>
+                                                    </fieldset>
+                                                    <p class="text-center">
+                                                        <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4);" name="modificar"><i class="zmdi zmdi-floppy"></i> Modificar </button>
+                                                    </p>
+                                                </form>
+                                            </div> 
+                                        </div> 
+                                    </p>
+                                </div>
+                                <br>
+                        
+                    
+
                     <!-- Content Row -->
 
                     
 
                     <!-- Content Row -->
-                    
-
-
                 </div>
                 <!-- /.container-fluid -->
 

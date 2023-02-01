@@ -251,14 +251,6 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -292,14 +284,19 @@
                             $DIR_EST=trim($_POST['DIR_EST']);                                            
                             $TEL_EST=trim($_POST['TEL_EST']);
                             $CEL_EST=trim($_POST['CEL_EST']);
+                            $NOM_EST=trim($_POST['NOM_EST']);
+                            $APE_EST=trim($_POST['APE_EST']);
 
-                            $consulta = "UPDATE estudiantes SET `DIR_EST` = :DIR_EST, `TEL_EST` = :TEL_EST, `CEL_EST` = :CEL_EST WHERE `id` = :id";
+
+                            $consulta = "UPDATE estudiantes SET `DIR_EST` = :DIR_EST, `TEL_EST` = :TEL_EST, `CEL_EST` = :CEL_EST, `NOM_EST` = :NOM_EST, `APE_EST` = :APE_EST WHERE `id` = :id";
                                                     
                             $sql = $con->prepare($consulta);
                                             
                             $sql->bindParam(':DIR_EST',$DIR_EST,PDO::PARAM_STR,25);
                             $sql->bindParam(':TEL_EST',$TEL_EST,PDO::PARAM_STR,25);
                             $sql->bindParam(':CEL_EST',$CEL_EST,PDO::PARAM_STR,25);
+                            $sql->bindParam(':NOM_EST',$NOM_EST,PDO::PARAM_STR,25);
+                            $sql->bindParam(':APE_EST',$APE_EST,PDO::PARAM_STR,25);
 
                             $sql->bindParam(':id',$id,PDO::PARAM_INT);
 
@@ -339,6 +336,16 @@
                                         <input value="<?php echo $obj->id;?>" name="id" type="hidden">
                                         <div class="form-row">  
                                             <div class="form-group col-md-6">
+                                                <label for="NOM_EST">Nombre</label>
+                                                <input value="<?php echo $obj->NOM_EST;?>" name="NOM_EST" type="text" class="form-control" placeholder="Dirección...">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="TEL_EST">Apellido</label>
+                                                <input value="<?php echo $obj->APE_EST;?>" name="APE_EST" type="text" class="form-control" placeholder="Telefono...">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">  
+                                            <div class="form-group col-md-6">
                                                 <label for="DIR_EST">Dirección</label>
                                                 <input value="<?php echo $obj->DIR_EST;?>" name="DIR_EST" type="text" class="form-control" placeholder="Dirección...">
                                             </div>
@@ -349,8 +356,8 @@
                                         </div>
                                         <div class="form-row">  
                                             <div class="form-group col-md-6">
-                                                <label for="CEL_EST">Dirección</label>
-                                                <input value="<?php echo $obj->CEL_EST;?>" name="CEL_EST" type="text" class="form-control" placeholder="Dirección...">
+                                                <label for="CEL_EST">Celular</label>
+                                                <input value="<?php echo $obj->CEL_EST;?>" name="CEL_EST" type="text" class="form-control" placeholder="Celular...">
                                             </div>
                                         </div>
                                         <div class="form-group">

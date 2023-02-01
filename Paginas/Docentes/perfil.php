@@ -265,14 +265,6 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -305,13 +297,17 @@
                             $id=trim($_POST['id']);
                             $DIR_DOC=trim($_POST['DIR_DOC']);                                            
                             $TEL_DOC=trim($_POST['TEL_DOC']);
+                            $NOM_DOC=trim($_POST['NOM_DOC']);                                            
+                            $APE_DOC=trim($_POST['APE_DOC']);
 
-                            $consulta = "UPDATE docentes SET `DIR_DOC` = :DIR_DOC, `TEL_DOC` = :TEL_DOC WHERE `id` = :id";
+                            $consulta = "UPDATE docentes SET `DIR_DOC` = :DIR_DOC, `TEL_DOC` = :TEL_DOC, `NOM_DOC` = :NOM_DOC, `APE_DOC` = :APE_DOC WHERE `id` = :id";
                                                     
                             $sql = $con->prepare($consulta);
                                             
                             $sql->bindParam(':DIR_DOC',$DIR_DOC,PDO::PARAM_STR,25);
                             $sql->bindParam(':TEL_DOC',$TEL_DOC,PDO::PARAM_STR,25);
+                            $sql->bindParam(':NOM_DOC',$NOM_DOC,PDO::PARAM_STR,25);
+                            $sql->bindParam(':APE_DOC',$APE_DOC,PDO::PARAM_STR,25);
                             $sql->bindParam(':id',$id,PDO::PARAM_INT);
 
                             $sql->execute();
@@ -348,6 +344,16 @@
                                 <div class="col-12 col-md-12"> 
                                     <form role="form" method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
                                         <input value="<?php echo $obj->id;?>" name="id" type="hidden">
+                                        <div class="form-row">  
+                                            <div class="form-group col-md-6">
+                                                <label for="NOM_DOC">Nombre</label>
+                                                <input value="<?php echo $obj->NOM_DOC;?>" name="NOM_DOC" type="text" class="form-control" placeholder="Dirección...">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="APE_DOC">Apellido</label>
+                                                <input value="<?php echo $obj->APE_DOC;?>" name="APE_DOC" type="text" class="form-control" placeholder="Telefono...">
+                                            </div>
+                                        </div>
                                         <div class="form-row">  
                                             <div class="form-group col-md-6">
                                                 <label for="DIR_DOC">Dirección</label>
@@ -468,7 +474,7 @@
                                                                 <div>
                                                                     <div class="form-group label-floating">
                                                                         <div class="col-md-9">
-                                                                            <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png" />
+                                                                            <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png, .jfif, .svg" />
                                                                         </div>
                                                                     </div>
                                                                 </div>

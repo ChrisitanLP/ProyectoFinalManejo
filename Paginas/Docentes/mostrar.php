@@ -274,14 +274,6 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
                                 </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -390,8 +382,9 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Asignacion</th>
-                                            <th>Estudiante</th>
+                                            <th>Estudiante</th>                                  
                                             <th>Descripcion</th>
+                                            <th>Estado Envio</th>
                                             <th>Archivo</th>
                                             <th>Nota</th>
                                             <th>Acciones</th>
@@ -401,8 +394,9 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Asignacion</th>
-                                            <th>Estudiante</th>
+                                            <th>Estudiante</th>                                           
                                             <th>Descripcion</th>
+                                            <th>Estado Envio</th>
                                             <th>Archivo</th>
                                             <th>Nota</th>
                                             <th>Acciones</th>
@@ -410,7 +404,7 @@
                                     </tfoot>
                                     <tbody>
                                         <?php 
-                                            $consulta = "   SELECT DA.NOM_ARCH, DA.id, DA.TIP_ARCH, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
+                                            $consulta = "   SELECT DA.NOM_ARCH, DA.id, DA.TIP_ARCH, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG, DA.ESTADO
                                                             FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
                                                             WHERE DA.COD_ASIG_DEB = AD.id 
                                                             AND DA.ID_EST_ASIG = E.id 
@@ -460,6 +454,7 @@
                                                         <td>'.$resu['NOM_ASIG'].'</td>
                                                         <td>'.$resu['NOM_EST'].'</td>
                                                         <td>'.$resu['DES_ASIG_DEB'].'</td>
+                                                        <td>'.$resu['ESTADO'].'</td>
                                                         <td>
                                                             '.$resu['NOM_ARCH'].'
                                                         </td>
@@ -477,6 +472,7 @@
                                                         <td>'.$resu['NOM_ASIG'].'</td>
                                                         <td>'.$resu['NOM_EST'].'</td>
                                                         <td>'.$resu['DES_ASIG_DEB'].'</td>
+                                                        <td>'.$resu['ESTADO'].'</td>
                                                         <td>
                                                             <a href="../Estudiantes/cargar.php?id='.$resu['NOM_ARCH'].'">'.$valor.'descargar</a>
                                                         </td>
@@ -617,7 +613,7 @@
             $(".editar").click(function(){
                 fila= $(this).closest("tr");//captura la fila
                 asignacion_id=fila.find('td:eq(0)').text();//que busque la columna con la posicion
-                nota=fila.find('td:eq(5)').text();
+                nota=fila.find('td:eq(6)').text();
                 $("#nota").val(nota);
                 $("#modalCrud").modal('show');
             });
@@ -646,11 +642,11 @@
         <!--arial-labelledby="ejemplo" definir o delimitar el area  -->
         <div class="modal-dialog" role="document"> <!--document, digo que este modal va a tener incrustado un documento-->
             <div class="modal-content">   <!--dar color al contenedor  -->
-                <div class="modal-header">
-                    <h2>Asignar Calificación</h2>
-                    <!--data-dismiss="modal" que al cerrar quite los modals -->
-                    <button type="button" class="close" data-dismiss="modal"
-                    arial-label="Close">X</button>
+                <div class="modal-header" style="background: rgb(104, 6, 6); color: #fff;">
+                <h5 class="modal-title" id="exampleModalLabel">Asignar Calificación</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close" style="color: #fff;">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
                 <form id="formUsuarios">
                     <div class="modal-body">
@@ -666,8 +662,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn" type="button">Cancelar</button>
-                        <button class="btn" type="submit">Guardar</button>
+                        <button class="btn btn-secondary" type="button" style="background: rgb(75, 65, 65);">Cancelar</button>
+                        <button class="btn btn-secondary" type="submit" style="background: rgb(138, 4, 4);">Guardar</button>
                     </div>
                 </form>
             </div>

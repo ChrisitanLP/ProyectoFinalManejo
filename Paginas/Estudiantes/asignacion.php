@@ -91,7 +91,6 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo $_SESSION['NombreAsignacion']; echo $_SESSION['rol']; echo $_SESSION['codigoAsignacion']; echo $_SESSION['nombreArchivo'];?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -279,17 +278,9 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="editar.php" >
+                                <a class="dropdown-item" href="perfil.php" >
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
-                                </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -390,7 +381,7 @@
                                                     <div>
                                                         <div class="form-group label-floating">
                                                             <div class="col-md-9">
-                                                                <input type="file" name="archivoAsig2" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
+                                                                <input type="file" name="archivoAsig2" title="seleccionar fichero" id="importData" accept=".xls, .xlsx, .pdf, .doc, .zip, .rar" />
                                                             </div>
                                                         </div>
                                                     </div>

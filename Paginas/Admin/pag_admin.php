@@ -223,18 +223,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
-                                    Perfil
-                                </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
-                                </a>
+                                
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -285,6 +274,9 @@
                                                                     FISEI</div>
                                                                 <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
                                                                 <p class="titulo">Estudiantes</p>
+                                                                <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4); color: #fff;">
+                                                                    <a  href="estudiantes.php" style="color: #fff; text-decoration: none;">Ingresar</a>
+                                                                </button>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -315,6 +307,9 @@
                                                                 FISEI</div>
                                                                 <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
                                                                 <p class="titulo">Docentes</p>
+                                                                <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4); color: #fff;">
+                                                                    <a  href="docentes.php" style="color: #fff; text-decoration: none;">Ingresar</a>
+                                                                </button>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -345,6 +340,9 @@
                                                                 FISEI</div>
                                                                 <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
                                                                 <p class="titulo">Invitados</p>
+                                                                <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4); color: #fff;">
+                                                                    <a  href="usuarios.php" style="color: #fff; text-decoration: none;">Ingresar</a>
+                                                                </button>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -413,6 +411,10 @@
                                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                                     Asignaturas</div>
                                                                 <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
+                                                                <p class="titulo">Asignaturas</p>
+                                                                <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4); color: #fff;">
+                                                                    <a  href="asignaturas.php" style="color: #fff; text-decoration: none;">Ingresar</a>
+                                                                </button>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <i class="fa fa-graduation-cap" aria-hidden="true"></i>
@@ -442,6 +444,10 @@
                                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                                     Cursos</div>
                                                                 <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['numero'].'</div>
+                                                                <p class="titulo">Cursos</p>
+                                                                <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4); color: #fff;">
+                                                                    <a  href="cursos.php" style="color: #fff; text-decoration: none;">Ingresar</a>
+                                                                </button>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <i class="fa fa-graduation-cap" aria-hidden="true"></i>
