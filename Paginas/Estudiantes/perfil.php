@@ -284,14 +284,19 @@
                             $DIR_EST=trim($_POST['DIR_EST']);                                            
                             $TEL_EST=trim($_POST['TEL_EST']);
                             $CEL_EST=trim($_POST['CEL_EST']);
+                            $NOM_EST=trim($_POST['NOM_EST']);
+                            $APE_EST=trim($_POST['APE_EST']);
 
-                            $consulta = "UPDATE estudiantes SET `DIR_EST` = :DIR_EST, `TEL_EST` = :TEL_EST, `CEL_EST` = :CEL_EST WHERE `id` = :id";
+
+                            $consulta = "UPDATE estudiantes SET `DIR_EST` = :DIR_EST, `TEL_EST` = :TEL_EST, `CEL_EST` = :CEL_EST, `NOM_EST` = :NOM_EST, `APE_EST` = :APE_EST WHERE `id` = :id";
                                                     
                             $sql = $con->prepare($consulta);
                                             
                             $sql->bindParam(':DIR_EST',$DIR_EST,PDO::PARAM_STR,25);
                             $sql->bindParam(':TEL_EST',$TEL_EST,PDO::PARAM_STR,25);
                             $sql->bindParam(':CEL_EST',$CEL_EST,PDO::PARAM_STR,25);
+                            $sql->bindParam(':NOM_EST',$NOM_EST,PDO::PARAM_STR,25);
+                            $sql->bindParam(':APE_EST',$APE_EST,PDO::PARAM_STR,25);
 
                             $sql->bindParam(':id',$id,PDO::PARAM_INT);
 
@@ -329,6 +334,16 @@
                                 <div class="col-12 col-md-12"> 
                                     <form role="form" method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>">
                                         <input value="<?php echo $obj->id;?>" name="id" type="hidden">
+                                        <div class="form-row">  
+                                            <div class="form-group col-md-6">
+                                                <label for="NOM_EST">Nombre</label>
+                                                <input value="<?php echo $obj->NOM_EST;?>" name="NOM_EST" type="text" class="form-control" placeholder="Dirección...">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="TEL_EST">Apellido</label>
+                                                <input value="<?php echo $obj->APE_EST;?>" name="APE_EST" type="text" class="form-control" placeholder="Telefono...">
+                                            </div>
+                                        </div>
                                         <div class="form-row">  
                                             <div class="form-group col-md-6">
                                                 <label for="DIR_EST">Dirección</label>

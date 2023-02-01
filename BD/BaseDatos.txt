@@ -103,6 +103,9 @@ CREATE TABLE `detalle_asignacion` (
   `NOT_ASIG` INT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+ALTER TABLE detalle_asignacion 
+ADD `ESTADO` VARCHAR(15);
+
 CREATE TABLE `detalle_estudiantes` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,		
   `ID_ASI` INT NOT NULL REFERENCES asignaturas(id),

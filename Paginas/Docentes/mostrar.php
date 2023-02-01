@@ -382,8 +382,9 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Asignacion</th>
-                                            <th>Estudiante</th>
+                                            <th>Estudiante</th>                                  
                                             <th>Descripcion</th>
+                                            <th>Estado Envio</th>
                                             <th>Archivo</th>
                                             <th>Nota</th>
                                             <th>Acciones</th>
@@ -393,8 +394,9 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Asignacion</th>
-                                            <th>Estudiante</th>
+                                            <th>Estudiante</th>                                           
                                             <th>Descripcion</th>
+                                            <th>Estado Envio</th>
                                             <th>Archivo</th>
                                             <th>Nota</th>
                                             <th>Acciones</th>
@@ -402,7 +404,7 @@
                                     </tfoot>
                                     <tbody>
                                         <?php 
-                                            $consulta = "   SELECT DA.NOM_ARCH, DA.id, DA.TIP_ARCH, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG
+                                            $consulta = "   SELECT DA.NOM_ARCH, DA.id, DA.TIP_ARCH, DA.DES_ASIG_DEB, AD.NOM_ASIG, AD.DES_ASIG, E.NOM_EST, DA.NOT_ASIG, DA.ESTADO
                                                             FROM estudiantes E, detalle_asignacion DA, asignacion_deberes AD
                                                             WHERE DA.COD_ASIG_DEB = AD.id 
                                                             AND DA.ID_EST_ASIG = E.id 
@@ -452,6 +454,7 @@
                                                         <td>'.$resu['NOM_ASIG'].'</td>
                                                         <td>'.$resu['NOM_EST'].'</td>
                                                         <td>'.$resu['DES_ASIG_DEB'].'</td>
+                                                        <td>'.$resu['ESTADO'].'</td>
                                                         <td>
                                                             '.$resu['NOM_ARCH'].'
                                                         </td>
@@ -469,6 +472,7 @@
                                                         <td>'.$resu['NOM_ASIG'].'</td>
                                                         <td>'.$resu['NOM_EST'].'</td>
                                                         <td>'.$resu['DES_ASIG_DEB'].'</td>
+                                                        <td>'.$resu['ESTADO'].'</td>
                                                         <td>
                                                             <a href="../Estudiantes/cargar.php?id='.$resu['NOM_ARCH'].'">'.$valor.'descargar</a>
                                                         </td>

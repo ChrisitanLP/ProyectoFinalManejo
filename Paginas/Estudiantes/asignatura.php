@@ -362,7 +362,8 @@
                                                         AND id IN (
                                                                     SELECT COD_ASIG_DEB
                                                                     FROM detalle_asignacion
-                                                                    WHERE ID_EST_ASIG = ?
+                                                                    WHERE ESTADO <> 'Sin Enviar'
+                                                                    AND ID_EST_ASIG = ?
                                                         )
                                                         ";
                                         $sentencia = $con -> prepare($consulta);

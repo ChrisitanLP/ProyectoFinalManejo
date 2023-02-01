@@ -338,7 +338,7 @@
         $sentencia2 = $con -> prepare($query2);
         $sentencia2 -> execute(array($nombreAsig, $descripcionAsig, $fechaAsig, $codigoAsignatura, $codigoDocente));
         $r2 = $sentencia2->fetch();
-         
+        
         //Consulta para encontrar todos los usuarios pertenecientes a una asignatura
         $query3 = " SELECT id 
                     FROM estudiantes 
@@ -367,69 +367,113 @@
     $codigoAsignacion = $_SESSION['codigoAsignacion'];
     $codigoEstudiante = $_SESSION['codigoEstudiante'];
     $descripcionAsig = $_POST["informacionnAsig"];
-    
+    $estado = "";
+
     if(isset($_POST["enviarAsigE"]))
     { 
+        $query2 = " SELECT FEC_ASIG
+                    FROM asignacion_deberes
+                    WHERE id =?";
+        $sentencia2 = $con -> prepare($query2);
+        $sentencia2 -> execute(array($codigoAsignacion));
+        $r2 = $sentencia2->fetch();
 
-        if(is_uploaded_file($_FILES['archivoAsig2']['tmp_name'])){
-
-            $ruta = "../BD/archivos/"; 
-            $nombrefinal= trim ($_FILES['archivoAsig2']['name']); 
-            $rutaFinal= $ruta.$nombrefinal;  
-            $upload= $ruta.$nombrefinal;  
-
-            
-            if(move_uploaded_file($_FILES['archivoAsig2']['tmp_name'], $upload)) { 
-                    
-                $nombre = $_FILES['archivoAsig2']['name'];
-                $tipo = $_FILES['archivoAsig2']['type'];  
-                $tamano = $_FILES['archivoAsig2']['size'];
-            
-                $sqlAsig = "UPDATE detalle_asignacion 
-                            SET     DES_ASIG_DEB = '$descripcionAsig', 
-                                    NOM_ARCH = '$nombre', 
-                                    RUT_ARCH = '$rutaFinal', 
-                                    TIP_ARCH = '$tipo', 
-                                    TAM_ARCH = '$tamano'
-                            WHERE COD_ASIG_DEB = ?
-                            AND ID_EST_ASIG = ?";
-                $sqlAct= "UPDATE asignacion_deberes set EST_ASIG='S' WHERE id= $codigoAsignacion ";
-                $consultaAsiga=$con->prepare($sqlAct);
-                $consultaAsiga-> execute();
-                $consultaAsig = $con->prepare($sqlAsig);
-                $consultaAsig -> execute(array($codigoAsignacion, $codigoEstudiante));
-                $lastInsertIdAsig = $con->lastInsertId();
-            
-                if($lastInsertIdAsig>0){
-                   echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
-                    echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es 2: $nombreU  </div>";
-                }else{
-                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
-                    echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
-                    print_r($consultaAsig->errorInfo()); 
-                }
-            };
+        // comprobar si la fecha actual es anterior a la fecha límite
+        $fechaactual = date("Y-m-d");
+        if($fechaactual < $r2['FEC_ASIG']){
+            echo "dentro del limtie";
         }else{
-                $sqlAsig = "UPDATE detalle_asignacion 
-                            SET     DES_ASIG_DEB = '$descripcionAsig', 
-                            WHERE COD_ASIG_DEB = ?
-                            AND ID_EST_ASIG = ?";
-                $sqlAct= "UPDATE asignacion_deberes set EST_ASIG='S' WHERE id= $codigoAsignacion ";
-                $consultaAsiga=$con->prepare($sqlAct);
-                $consultaAsiga-> execute();
-                $consultaAsig = $con->prepare($sqlAsig);
-                $consultaAsig -> execute(array($codigoAsignacion, $codigoEstudiante));
-                $lastInsertIdAsig = $con->lastInsertId();
-            
-                if($lastInsertIdAsig>0){
-                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
-                    echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es 1: $nombreU  </div>";
-                }else{
-                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
-                    echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
-                    print_r($consultaAsig->errorInfo()); 
-                }
-        };
+            echo "fuera limite";
+        }
+        if ($fechaactual < $r2['FEC_ASIG']){
+            $estado = "Enviado";
+
+            if(is_uploaded_file($_FILES['archivoAsig2']['tmp_name'])){
+
+                $ruta = "../BD/archivos/"; 
+                $nombrefinal= trim ($_FILES['archivoAsig2']['name']); 
+                $rutaFinal= $ruta.$nombrefinal;  
+                $upload= $ruta.$nombrefinal;  
+    
+                
+                if(move_uploaded_file($_FILES['archivoAsig2']['tmp_name'], $upload)) { 
+                        
+                    $nombre = $_FILES['archivoAsig2']['name'];
+                    $tipo = $_FILES['archivoAsig2']['type'];  
+                    $tamano = $_FILES['archivoAsig2']['size'];
+                
+                    $sqlAsig = "UPDATE detalle_asignacion 
+                                SET     DES_ASIG_DEB = '$descripcionAsig', 
+                                        NOM_ARCH = '$nombre', 
+                                        RUT_ARCH = '$rutaFinal', 
+                                        TIP_ARCH = '$tipo', 
+                                        TAM_ARCH = '$tamano',
+                                        ESTADO = '$estado'
+                                WHERE COD_ASIG_DEB = ?
+                                AND ID_EST_ASIG = ?";
+                    $sqlAct= "UPDATE asignacion_deberes set EST_ASIG='S' WHERE id= $codigoAsignacion ";
+                    $consultaAsiga=$con->prepare($sqlAct);
+                    $consultaAsiga-> execute();
+                    $consultaAsig = $con->prepare($sqlAsig);
+                    $consultaAsig -> execute(array($codigoAsignacion, $codigoEstudiante));
+                    $lastInsertIdAsig = $con->lastInsertId();
+                
+                    if($lastInsertIdAsig>0){
+                       echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                        echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es 2: $nombreU  </div>";
+                    }else{
+                        echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                        echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                        print_r($consultaAsig->errorInfo()); 
+                    }
+                };
+            }else{
+                    $sqlAsig = "UPDATE detalle_asignacion 
+                                SET     DES_ASIG_DEB = '$descripcionAsig', 
+                                        ESTADO = '$estado'
+                                WHERE COD_ASIG_DEB = ?
+                                AND ID_EST_ASIG = ?";
+                    $sqlAct= "UPDATE asignacion_deberes set EST_ASIG='S' WHERE id= $codigoAsignacion ";
+                    $consultaAsiga=$con->prepare($sqlAct);
+                    $consultaAsiga-> execute();
+                    $consultaAsig = $con->prepare($sqlAsig);
+                    $consultaAsig -> execute(array($codigoAsignacion, $codigoEstudiante));
+                    $lastInsertIdAsig = $con->lastInsertId();
+                
+                    if($lastInsertIdAsig>0){
+                        echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                        echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es 1: $nombreU  </div>";
+                    }else{
+                        echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                        echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                        print_r($consultaAsig->errorInfo()); 
+                    }
+            };
+        }else {
+            $nota = 0;
+            $estado = "Sin Enviar";
+
+            $sqlAsig = "UPDATE  detalle_asignacion 
+                        SET     ESTADO = '$estado',
+                                NOT_ASIG = '$nota'
+                        WHERE COD_ASIG_DEB = ?
+                        AND ID_EST_ASIG = ?";
+            $sqlAct= "UPDATE asignacion_deberes set EST_ASIG='S' WHERE id= $codigoAsignacion ";
+            $consultaAsiga=$con->prepare($sqlAct);
+            $consultaAsiga-> execute();
+            $consultaAsig = $con->prepare($sqlAsig);
+            $consultaAsig -> execute(array($codigoAsignacion, $codigoEstudiante));
+            $lastInsertIdAsig = $con->lastInsertId();
+                
+            if($lastInsertIdAsig>0){
+                echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es 1: $nombreU  </div>";
+            }else{
+                echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                print_r($consultaAsig->errorInfo()); 
+            }
+        }
     };
 
      //************************************************************************* */
@@ -490,7 +534,6 @@
                 $tipo = $_FILES['archivoAsigE']['type'];  
                 $tamano = $_FILES['archivoAsigE']['size'];
             
-                //$sqlAsig = "INSERT INTO fotos(CED_EST_PER,NOM_ARCH, RUT_ARCH, TIP_ARCH, TAM_ARCH)values('$cedulaE', '$nombre', '$rutaFinal', '$tipo', '$tamano')";
                 $sqlAsig = "UPDATE docentes SET  NOM_ARCH='$nombre', RUT_ARCH='$rutaFinal', TIP_ARCH='$tipo', TAM_ARCH='$tamano' where CED_DOC=?";
                 $consultaAsig = $con->prepare($sqlAsig);
                 $consultaAsig -> execute(array($_SESSION['contraseña']));
