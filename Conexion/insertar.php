@@ -102,10 +102,10 @@
                 $lastInsertIdE = $con->lastInsertId();
                 
                 if($lastInsertIdE>0){
-                    //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
                     echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreE  </div>";
                 }else{
-                    //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/estudiantes.php'>";
                     echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
                     print_r($consultaE->errorInfo()); 
                 }
@@ -303,7 +303,7 @@
                     echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
 
                 }else{
-                    //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Docentes/asignacion.php'>";
                     echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
                     print_r($consultaAsig->errorInfo()); 
                 }
@@ -318,12 +318,12 @@
                     echo "<meta http-equiv='refresh' content='0;url=../Paginas/Docentes/asignacion.php'>";
                     echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
                 }else{
-                    //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Admin/usuarios.php'>";
+                    echo "<meta http-equiv='refresh' content='0;url=../Paginas/Docentes/asignacion.php'>";
                     echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
                     print_r($consultaAsig->errorInfo()); 
                 }
         }
-    };
+    }
     if(isset($_POST['enviarAsig'])) {
         $estadoA = "Sin Enviar";
         $con = conectar();
@@ -475,7 +475,7 @@
                 print_r($consultaAsig->errorInfo()); 
             }
         }
-    };
+    }
 
      //************************************************************************* */
 
@@ -512,8 +512,8 @@
                 }
             };
         }else{
-            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/perfil.php'>";
+            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
         };
     };
 
@@ -550,8 +550,8 @@
                 }
             };
         }else{
-            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
             echo "<meta http-equiv='refresh' content='0;url=../Paginas/Docentes/perfil.php'>";
+            echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
         };
     };
 
