@@ -319,12 +319,19 @@
                             <br>
                             <div class="card-group">
                                 <?php 
+                                        $vacio = "";
                                         $consulta = "   SELECT *
                                                         FROM asignacion_deberes
-                                                        WHERE COD_ASI = ? AND EST_ASIG='N'
+                                                        WHERE COD_ASI = ? 
+                                                        AND id IN (
+                                                                SELECT COD_ASIG_DEB
+                                                                FROM detalle_asignacion
+                                                                WHERE ESTADO = 'Sin Enviar'
+                                                                AND ID_EST_ASIG = ?
+                                                        )
                                                         ";
                                         $sentencia = $con -> prepare($consulta);
-                                        $sentencia -> execute(array($codigoAsig));
+                                        $sentencia -> execute(array($codigoAsig, $codigoEs));
                                         $r = $sentencia -> fetchAll();
                                         $codigo = "";
                                         foreach($r as $resu){
@@ -357,12 +364,11 @@
                                 <?php 
                                         $consulta = "   SELECT *
                                                         FROM asignacion_deberes
-                                                        WHERE COD_ASI = ?
-                                                        AND EST_ASIG <> 'N' 
+                                                        WHERE COD_ASI = ? 
                                                         AND id IN (
                                                                     SELECT COD_ASIG_DEB
                                                                     FROM detalle_asignacion
-                                                                    WHERE ESTADO <> 'Sin Enviar'
+                                                                    WHERE ESTADO = 'Enviado'
                                                                     AND ID_EST_ASIG = ?
                                                         )
                                                         ";

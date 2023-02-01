@@ -613,7 +613,7 @@
             $(".editar").click(function(){
                 fila= $(this).closest("tr");//captura la fila
                 asignacion_id=fila.find('td:eq(0)').text();//que busque la columna con la posicion
-                nota=fila.find('td:eq(5)').text();
+                nota=fila.find('td:eq(6)').text();
                 $("#nota").val(nota);
                 $("#modalCrud").modal('show');
             });

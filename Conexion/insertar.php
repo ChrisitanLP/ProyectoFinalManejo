@@ -325,6 +325,7 @@
         }
     };
     if(isset($_POST['enviarAsig'])) {
+        $estadoA = "Sin Enviar";
         $con = conectar();
         
         //Consulta para encontrar el id de la ultima actividad ingresada
@@ -353,10 +354,10 @@
         
         //Bucle para generar un detalle por cada usuario registrado
         foreach($r3 as $resu){
-            $query4 = " INSERT INTO detalle_asignacion(ID_EST_ASIG, COD_ASIG_DEB) 
-                        VALUES (?,?)";
+            $query4 = " INSERT INTO detalle_asignacion(ID_EST_ASIG, COD_ASIG_DEB, ESTADO) 
+                        VALUES (?,?,?)";
             $sentencia4 = $con -> prepare($query4);
-            $sentencia4 -> execute(array($resu['id'], $r2['id']));
+            $sentencia4 -> execute(array($resu['id'], $r2['id'], $estadoA));
         }
         echo("Actividad Ingresada");
         
@@ -451,7 +452,7 @@
             };
         }else {
             $nota = 0;
-            $estado = "Sin Enviar";
+            $estado = "No Enviado";
 
             $sqlAsig = "UPDATE  detalle_asignacion 
                         SET     ESTADO = '$estado',
