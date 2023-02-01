@@ -225,6 +225,40 @@
                                                         echo "";
                                                     }
                                                 }
+
+                                                if(isset($_POST['eliminar'])){
+                                                    $consulta = "   DELETE FROM `login` 
+                                                                    WHERE `USU_LOG`= ?
+                                                                    AND `PAS_LOG`= ?";
+                                                    $sentencia = $con-> prepare($consulta);
+                                                    $sentencia -> execute(array($_POST['correo'], $_POST['cedula']));
+                                                    $lastInsertIdAsig = $con->lastInsertId();
+                                                    if($lastInsertIdAsig>0){
+                                                            //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                                                            //echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es 2: $nombreU  </div>";
+                                                     }else{
+                                                         //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                                                         //echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                                                         //print_r($consultaAsig->errorInfo()); 
+                                                     }
+                                                }
+                                                if(isset($_POST['eliminar'])){
+                                                    $vacio = "";
+                                                    $consulta = "   UPDATE asignaturas
+                                                                    SET    DOC_ASI = $vacio
+                                                                    WHERE DOC_ASI = ?";
+                                                    $sentencia = $con-> prepare($consulta);
+                                                    $sentencia -> execute(array($_POST['id']));
+                                                    $lastInsertIdAsig = $con->lastInsertId();
+                                                    if($lastInsertIdAsig>0){
+                                                            //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                                                            //echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es 2: $nombreU  </div>";
+                                                     }else{
+                                                         //echo "<meta http-equiv='refresh' content='0;url=../Paginas/Estudiantes/asignatura.php'>";
+                                                         //echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                                                         //print_r($consultaAsig->errorInfo()); 
+                                                     }
+                                                }
                                             ?>
                                             <?php
                                                 $con = conectar();
@@ -374,6 +408,8 @@
                                                                                     <td>
                                                                                         <form  onsubmit=\"return confirm('Realmente desea eliminar el registro?');\" method='POST' action='".$_SERVER['PHP_SELF']."'>
                                                                                             <input type='hidden' name='id' value='".$result -> id."'>
+                                                                                            <input type='hidden' name='correo' value='".$result -> COR_INS_DOC."'>
+                                                                                            <input type='hidden' name='cedula' value='".$result -> CED_DOC."'>
                                                                                             <button class='btn btn-primary' style='color: #fff; background: rgb(168, 41, 9);' name='eliminar'>Eliminar</button>
                                                                                         </form>
                                                                                     </td>

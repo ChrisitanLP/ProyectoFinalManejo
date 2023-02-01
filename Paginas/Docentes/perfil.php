@@ -8,7 +8,7 @@
 
     //Se verifica que existan variables de sesion (USUARIO / ROL)
     //Segun su rol se crean unas variables
-    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
+    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Docente"){
         $usuario = $_SESSION['usuario'];
         $contraseña = $_SESSION['contraseña'];
     }else{
@@ -19,8 +19,8 @@
     
     //Se realiza una consulta en la tabla DOCENTES (Consigue id)
     $consulta = "   SELECT id
-                    FROM estudiantes
-                    WHERE COR_INS_EST = ? AND CED_EST = ?";
+                    FROM docentes
+                    WHERE COR_INS_DOC = ? AND CED_DOC = ?";
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
@@ -67,7 +67,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_docentes.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -80,7 +80,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_estudiantes.php">
+                <a class="nav-link" href="pag_docentes.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -94,6 +94,19 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
+                    <span>Administración</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Componentes:</h6>
+                        <a class="collapse-item" href="asignacion.php">Asignación</a>
+                    </div>
+                </div>
+            </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -107,23 +120,24 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes: </h6>
                             <?php 
+                                //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
                                     $consulta = "   SELECT *
                                                     FROM asignaturas
-                                                    WHERE id IN (
-                                                            SELECT ID_ASI
-                                                            FROM detalle_estudiantes
-                                                            WHERE ID_EST = ?
-                                                    )
-                                     ";
+                                                    WHERE DOC_ASI IN (
+                                                                    SELECT id 
+                                                                    FROM docentes
+                                                                    WHERE COR_INS_DOC = ? AND CED_DOC = ?
+                                                    )";
                                     $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
+                                    $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
                                     $r = $sentencia -> fetchAll();
-                                    $codigoA = "";
+                                    $codigo = "";
+                                    //Se muestran las asignaturas como hipervinculo del menu
                                     foreach($r as $resu){
-                                        $codigoA.='
+                                        $codigo.='
                                         <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
                                     }   
-                                    echo ($codigoA);      
+                                    echo ($codigo);      
                             ?>
                     </div>
                 </div>
@@ -281,23 +295,19 @@
                         if(isset($_POST['actualizar']))
                         {
                             $id=trim($_POST['id']);
-                            $DIR_EST=trim($_POST['DIR_EST']);                                            
-                            $TEL_EST=trim($_POST['TEL_EST']);
-                            $CEL_EST=trim($_POST['CEL_EST']);
-                            $NOM_EST=trim($_POST['NOM_EST']);
-                            $APE_EST=trim($_POST['APE_EST']);
+                            $DIR_DOC=trim($_POST['DIR_DOC']);                                            
+                            $TEL_DOC=trim($_POST['TEL_DOC']);
+                            $NOM_DOC=trim($_POST['NOM_DOC']);                                            
+                            $APE_DOC=trim($_POST['APE_DOC']);
 
-
-                            $consulta = "UPDATE estudiantes SET `DIR_EST` = :DIR_EST, `TEL_EST` = :TEL_EST, `CEL_EST` = :CEL_EST, `NOM_EST` = :NOM_EST, `APE_EST` = :APE_EST WHERE `id` = :id";
+                            $consulta = "UPDATE docentes SET `DIR_DOC` = :DIR_DOC, `TEL_DOC` = :TEL_DOC, `NOM_DOC` = :NOM_DOC, `APE_DOC` = :APE_DOC WHERE `id` = :id";
                                                     
                             $sql = $con->prepare($consulta);
                                             
-                            $sql->bindParam(':DIR_EST',$DIR_EST,PDO::PARAM_STR,25);
-                            $sql->bindParam(':TEL_EST',$TEL_EST,PDO::PARAM_STR,25);
-                            $sql->bindParam(':CEL_EST',$CEL_EST,PDO::PARAM_STR,25);
-                            $sql->bindParam(':NOM_EST',$NOM_EST,PDO::PARAM_STR,25);
-                            $sql->bindParam(':APE_EST',$APE_EST,PDO::PARAM_STR,25);
-
+                            $sql->bindParam(':DIR_DOC',$DIR_DOC,PDO::PARAM_STR,25);
+                            $sql->bindParam(':TEL_DOC',$TEL_DOC,PDO::PARAM_STR,25);
+                            $sql->bindParam(':NOM_DOC',$NOM_DOC,PDO::PARAM_STR,25);
+                            $sql->bindParam(':APE_DOC',$APE_DOC,PDO::PARAM_STR,25);
                             $sql->bindParam(':id',$id,PDO::PARAM_INT);
 
                             $sql->execute();
@@ -320,7 +330,7 @@
                             if (isset($_POST['editar']))
                             {
                                 $id = $_POST['id'];
-                                $sql= "SELECT * FROM estudiantes WHERE id = :id"; 
+                                $sql= "SELECT * FROM docentes WHERE id = :id"; 
                                 $stmt = $con->prepare($sql);
                                 $stmt->bindParam(':id', $id, PDO::PARAM_INT); 
                                 $stmt->execute();
@@ -336,28 +346,22 @@
                                         <input value="<?php echo $obj->id;?>" name="id" type="hidden">
                                         <div class="form-row">  
                                             <div class="form-group col-md-6">
-                                                <label for="NOM_EST">Nombre</label>
-                                                <input value="<?php echo $obj->NOM_EST;?>" name="NOM_EST" type="text" class="form-control" placeholder="Dirección...">
+                                                <label for="NOM_DOC">Nombre</label>
+                                                <input value="<?php echo $obj->NOM_DOC;?>" name="NOM_DOC" type="text" class="form-control" placeholder="Dirección...">
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label for="TEL_EST">Apellido</label>
-                                                <input value="<?php echo $obj->APE_EST;?>" name="APE_EST" type="text" class="form-control" placeholder="Telefono...">
-                                            </div>
-                                        </div>
-                                        <div class="form-row">  
-                                            <div class="form-group col-md-6">
-                                                <label for="DIR_EST">Dirección</label>
-                                                <input value="<?php echo $obj->DIR_EST;?>" name="DIR_EST" type="text" class="form-control" placeholder="Dirección...">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="TEL_EST">Telefono</label>
-                                                <input value="<?php echo $obj->TEL_EST;?>" name="TEL_EST" type="text" class="form-control" placeholder="Telefono...">
+                                                <label for="APE_DOC">Apellido</label>
+                                                <input value="<?php echo $obj->APE_DOC;?>" name="APE_DOC" type="text" class="form-control" placeholder="Telefono...">
                                             </div>
                                         </div>
                                         <div class="form-row">  
                                             <div class="form-group col-md-6">
-                                                <label for="CEL_EST">Celular</label>
-                                                <input value="<?php echo $obj->CEL_EST;?>" name="CEL_EST" type="text" class="form-control" placeholder="Celular...">
+                                                <label for="DIR_DOC">Dirección</label>
+                                                <input value="<?php echo $obj->DIR_DOC;?>" name="DIR_DOC" type="text" class="form-control" placeholder="Dirección...">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="TEL_DOC">Telefono</label>
+                                                <input value="<?php echo $obj->TEL_DOC;?>" name="TEL_DOC" type="text" class="form-control" placeholder="Telefono...">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -382,7 +386,7 @@
                             <?php
                                 $con = conectar();
 
-                                $sql = "SELECT * FROM estudiantes  WHERE COR_INS_EST = ? AND CED_EST = ?"; 
+                                $sql = "SELECT * FROM docentes  WHERE COR_INS_DOC = ? AND CED_DOC = ?"; 
                                 $query = $con -> prepare($sql); 
                                 $query -> execute(array($_SESSION['usuario'], $_SESSION['contraseña'])); 
                                 $results = $query -> fetchAll(PDO::FETCH_OBJ); 
@@ -396,9 +400,9 @@
                                                         <div class="card-body text-center">
                                                             <img src="../'.$result -> RUT_ARCH.'" alt="avatar"
                                                             class="rounded-circle img-fluid" style="width: 150px;">
-                                                            <h5 class="my-3">'.$result -> NOM_EST.' '.$result -> APE_EST.'</h5>
+                                                            <h5 class="my-3">'.$result -> NOM_DOC.' '.$result -> APE_DOC.'</h5>
                                                             <p class="text-muted mb-1">'.$_SESSION['rol'].'</p>
-                                                            <p class="text-muted mb-4">'.$result -> DIR_EST.'</p>
+                                                            <p class="text-muted mb-4">'.$result -> DIR_DOC.'</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -410,7 +414,7 @@
                                                                     <p class="mb-0">Nombre Completo</p>
                                                                 </div>
                                                                 <div class="col-sm-9">
-                                                                    <p class="text-muted mb-0">'.$result -> NOM_EST.' '.$result -> APE_EST.'</p>
+                                                                    <p class="text-muted mb-0">'.$result -> NOM_DOC.' '.$result -> APE_DOC.'</p>
                                                                 </div>
                                                             </div>
                                                             <hr>
@@ -419,7 +423,7 @@
                                                                     <p class="mb-0">Correo Electrónico</p>
                                                                 </div>
                                                                 <div class="col-sm-9">
-                                                                    <p class="text-muted mb-0">'.$result -> COR_INS_EST.'</p>
+                                                                    <p class="text-muted mb-0">'.$result -> COR_INS_DOC.'</p>
                                                                 </div>
                                                             </div>
                                                             <hr>
@@ -428,16 +432,7 @@
                                                                     <p class="mb-0">Telefono</p>
                                                                 </div>
                                                                 <div class="col-sm-9">
-                                                                    <p class="text-muted mb-0">'.$result -> TEL_EST.'</p>
-                                                                </div>
-                                                            </div>
-                                                            <hr>
-                                                            <div class="row">
-                                                                <div class="col-sm-3">
-                                                                    <p class="mb-0">Celular</p>
-                                                                </div>
-                                                                <div class="col-sm-9">
-                                                                    <p class="text-muted mb-0">'.$result -> CEL_EST.'</p>
+                                                                    <p class="text-muted mb-0">'.$result -> TEL_DOC.'</p>
                                                                 </div>
                                                             </div>
                                                             <hr>
@@ -446,7 +441,7 @@
                                                                     <p class="mb-0">Dirección</p>
                                                                 </div>
                                                                 <div class="col-sm-9">
-                                                                    <p class="text-muted mb-0">'.$result -> DIR_EST.'</p>
+                                                                    <p class="text-muted mb-0">'.$result -> DIR_DOC.'</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -479,14 +474,14 @@
                                                                 <div>
                                                                     <div class="form-group label-floating">
                                                                         <div class="col-md-9">
-                                                                            <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png" />
+                                                                            <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".jpg,.jpge,.png, .jfif, .svg" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </center>
                                                         </fieldset>
                                                         <p class="text-center">
-                                                            <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4);" name="enviarFoto"><i class="zmdi zmdi-floppy"></i> Subir Foto</button>
+                                                            <button href="#!" class="btn btn-primary" style="background: rgb(138, 4, 4);" name="enviarFotoD"><i class="zmdi zmdi-floppy"></i> Subir Foto</button>
                                                         </p>
                                                     </form>
                                                 </div> 

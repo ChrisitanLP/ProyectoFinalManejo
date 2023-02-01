@@ -1,35 +1,41 @@
 <?php
+
+    //Se incluye la pagina conectar que trae un metodo
     include_once('../../Conexion/conectar.php');
+    $con = conectar();
+
+    //Inicia la sesion actual
     session_start();
 
-    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Estudiante"){
+    //Se verifica que existan variables de sesion (USUARIO / ROL)
+    //Segun su rol se crean unas variables
+    if (isset($_SESSION['usuario']) && $_SESSION['rol'] == "Invitado"){
         $usuario = $_SESSION['usuario'];
+        $contraseña = $_SESSION['contraseña'];
     }else{
+        //Se redirecciona a login.php
         header('Location: ../../login.php');//Aqui lo redireccionas al lugar que quieras.
         die() ;
     }
-
-    $contraseña = $_SESSION['contraseña'];
-
-    $con = conectar();
     
+    //Se realiza una consulta en la tabla ESTUDIANTES (Consigue id)
     $consulta = "   SELECT id
-                    FROM estudiantes
-                    WHERE COR_INS_EST = ? AND CED_EST = ?";
+                    FROM usuarios
+                    WHERE COR_INS_USU = ? AND CED_USU = ?";
+
     $sentencia = $con -> prepare($consulta);
     $sentencia -> execute(array($_SESSION['usuario'], $_SESSION['contraseña']));
     $r = $sentencia -> fetchAll();
     $codigoEs = "";
+
+     //Se guarda en una variable la id del ESTUDIANTE
     foreach($r as $resu){
         $codigoEs.= $resu['id'];
     }
+   
+    //Se crea una variable de sesion
+    $_SESSION['codigoEstudiante'] = $codigoEs;
 
-    if(isset($_GET['codAsignacion'])){
-        $codigoAsig = $_GET['codAsignacion'];
-    }else{
-        header('Location: pag_estudiantes.php');
-        die();
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +52,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 
-    <title>Asignación <?php echo $_SESSION['NombreAsignatura'];?></title>
+    <title>Pagina Principal (Invitados)</title>
 
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -60,7 +66,6 @@
 </head>
 
 <body id="page-top">
-<?php echo $_SESSION['usuario']; echo $_SESSION['contraseña']; echo $_SESSION['NombreAsignacion']; echo $_SESSION['rol']; echo $_SESSION['codigoAsignacion']; echo $_SESSION['nombreArchivo'];?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -68,7 +73,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="background: rgb(158, 7, 7);">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_estudiantes.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="pag_invitados.php">
                 <div class="sidebar-brand-icon">
                     <img src="../../img/Escudo_de_la_Universidad_Técnica_de_Ambato.png" class="imgNavbar"><br>
                 </div>
@@ -81,7 +86,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="pag_estudiantes.php">
+                <a class="nav-link" href="pag_invitados.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Menu</span></a>
             </li>
@@ -99,49 +104,30 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog" style="color: #fff;"></i>
-                    <span>Administración</span>
+                    <span>Asignaturas</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Componentes:</h6>
-                        <a class="collapse-item" href="asignacion.php">Asignación</a>
+                        <?php 
+                            //Se realiza una consulta en la tabla asignaturas (Trae todos los datos)
+                                $consulta = "   SELECT *  FROM asignaturas";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute();
+                                    $r = $sentencia -> fetchAll();
+                                    $codigoS = "";
+                                    //Se muestran las asignaturas como hipervinculo del menu
+                                    foreach($r as $resu){
+                                        $codigoS.='
+                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
+                                    }   
+                                    echo ($codigoS);      
+                            ?>
                     </div>
                 </div>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench" style="color: #fff;"></i>
-                    <span>Asignaturas</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Componentes: </h6>
-                            <?php 
-                                    $consulta = "   SELECT *
-                                                    FROM asignaturas
-                                                    WHERE id IN (
-                                                            SELECT ID_ASI
-                                                            FROM detalle_estudiantes
-                                                            WHERE ID_EST = ?
-                                                    )
-                                     ";
-                                    $sentencia = $con -> prepare($consulta);
-                                    $sentencia -> execute(array($_SESSION['codigoEstudiante']));
-                                    $r = $sentencia -> fetchAll();
-                                    $codigoA = "";
-                                    foreach($r as $resu){
-                                        $codigoA.='
-                                        <a class="collapse-item" href="asignatura.php?codpagina='.$resu['id'].'">'.$resu['NOM_ASI'].'</a>';
-                                    }   
-                                    echo ($codigoA);      
-                            ?>
-                    </div>
-                </div>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -256,23 +242,14 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(58, 53, 53);">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small" ><?php echo $usuario; ?></span>
-                                <img class="img-profile rounded-circle"
-                                    src="../../img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="../../img/undraw_profile_2.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" >
+                                <a class="dropdown-item" href="perfil.php" >
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400" ></i>
                                     Perfil
-                                </a>
-                                <a class="dropdown-item" href="#" >
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Configuración
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Actividades
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -293,103 +270,76 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4" >
-                        <h1 class="h3 mb-0 text-gray-800">Asignación <?php echo $_SESSION['NombreAsignacion'];?></h1>
+                        <h1 class="h3 mb-0 text-gray-800">Información <?php echo $_SESSION['rol']; ?></h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="background: rgb(138, 4, 4); color: #fff;"><i
                                 class="fas fa-download fa-sm text-white-50" ></i> Generar Reporte</a>
                     </div>
+                    
+                    
+                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">
+                        <br>
+                        <h1 class="h5 mb-0 text-gray-800">Asignaturas </h1>
+                        <br>
+                        <div class="card-group">
+                            <?php 
+                                $con = conectar();
+                                if (isset($_POST['editar']))
+                               {
+                                    $id = $_POST['id'];
 
-                    <div class="container-fluid" style="background: #fff; border-radius: 20px;">  
-                        <div id="myTabContent" class="tab-content">
+                                    $sqlAsig = "INSERT INTO detalle_estudiantes(ID_ASI, ID_EST)values('$id', '$codigoEs')";
+                                    $consultaAsig = $con->prepare($sqlAsig);
+                                    $consultaAsig -> execute();
+                                    $lastInsertIdAsig = $con->lastInsertId();
+                                
+                                    if($lastInsertIdAsig>0){
+                                        echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
+                                        //echo "<div class='content alert alert-primary' > Gracias .. Tu Nombre es : $nombreU  </div>";
+                                    }else{
+                                        echo "<meta http-equiv='refresh' content='0;url=pag_estudiantes.php'>";
+                                        //echo "<div class='content alert alert-danger'> No se pueden agregar datos </div>";
+                                        //print_r($consultaAsig->errorInfo()); 
+                                    }
+                                }
+                            ?>
+                            <?php 
+                                //Se realiza una consulta en la tabla asignaturas(Trae TODOS los datos)
+                                    $consulta = "   SELECT * FROM asignaturas";
+                                    $sentencia = $con -> prepare($consulta);
+                                    $sentencia -> execute();
+                                    $r = $sentencia -> fetchAll();
+                                    $codigo = "";
 
-                                <div class="container-fluid">
-                                    <br>
-                                    <h1 class="h4 mb-0 text-danger-800" style="color: #000; font-family: Arial;">General</h1>
-                                    <br>
-                                    <?php 
-                                        $categoria= $tipoArchivo;
-                                         
-                                        $valor="";
-                                         if($categoria=='image/jpeg' || $categoria=='png'){
-                                             $valor="<img width='40' src='../../img/Logos/desconocido.png'>";
-                                         }
-                     
-                                         if($categoria=='application/pdf'){
-                                             $valor="<img  width='40' src='../../img/Logos/pdf.png'>";
-                                         }
-                     
-                                         if($categoria=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || $categoria=='xlsm' ){
-                                             $valor="<img  width='40' src='../../img/Logos/exel.png'>";
-                                         }
-                     
-                                         if($categoria=='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || $categoria=='docx'){
-                                             $valor="<img  width='40' src='../../img/Logos/word.png'>";
-                                         }
-                                         if($categoria=='application/zip'){
-                                             $valor="<img  width='40' src='../../img/Logos/comprimido.jpg'>";
-                                         }
-                     
-                                         if($categoria=='mp3'){
-                                             $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
-                                         }
-                     
-                                         if($valor==''){
-                                             $valor="<img  width='40' src='../../img/Logos/desconocido.png'>";
-                                         }
-
-                                       echo '<div>
-                                                <label class="control-label" style="color: #000; font-weight: 500;">'.$_SESSION['descripcionAsignacion'].'</label>
-                                                <br><label class="control-label" style="color: #000; font-weight: 500;">Fecha Limite: '.$fecha.'</label>
+                                    //Crea unas cuantas cards segun el numero de asignaturas existen
+                                    foreach($r as $resu){
+                                        $codigo.='
+                                            <div class="col-xl-3 col-md-6 mb-4">
+                                                <div class="card border-left-primary shadow h-100 py-2">
+                                                    <div class="card-body">
+                                                        <div class="row no-gutters align-items-center">
+                                                            <div class="col mr-2">
+                                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                    FISEI</div>
+                                                                <div class="h5 mb-0 font-weight-bold text-gray-800 Asignatura">'.$resu['NOM_ASI'].'.</div>
+                                                                <p class="titulo">'.$resu['NOM_ASI'].'</p>
+                                                                <form method="POST" action="'.$_SERVER['PHP_SELF'].'">
+                                                                    <input type="hidden" name="id" value="'.$resu['id'].'">
+                                                                    <button name="editar" class="btn btn-primary" style="color: #fff; background: rgb(231, 180, 40);"><a href="asignatura.php?codpagina='.$resu['id'].'" class="card-link")">Ingresar al Curso</a></button>
+                                                                </form>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>';
-                                    ?>
-                                    <?php 
-                                        if($_SESSION['nombreArchivo'] == ''){    
-                                            echo '<p></p>';
-                                        }else{
-                                           echo '   <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
-                                                    <a href="cargar.php?id='.$_SESSION['nombreArchivo'].'">'.$valor.'descargar</a>';
-                                        };
-                                    ?>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                            <br>
-                                            <form action="../../Conexion/insertar.php" method="POST" enctype="multipart/form-data">
-                                                <fieldset style="font-size: 20px; color: red; font-weight: 500;"></fieldset>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Información: </label>
-                                                    </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <textarea class="form-control" id="message" name="informacionnAsigE" placeholder="Ingresa descripción del deber..." rows="7"></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </center>
-                                                    <div>
-                                                        <label class="control-label" style="color: #000; font-weight: 500;">Archivo: </label>
-                                                    </div>
-                                                    <center>
-                                                    <div>
-                                                        <div class="form-group label-floating">
-                                                            <div class="col-md-9">
-                                                                <input type="file" name="archivoAsigE" title="seleccionar fichero" id="importData" accept=".xls,.xlsx" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </center>
-                                                </fieldset>
-                                                <p class="text-center">
-                                                    <button href="#!" class="btn btn-info btn-raised btn-sm" style="background: rgb(138, 4, 4); padding: 16px; border-radius: 8px;" name="enviarAsigE"><i class="zmdi zmdi-floppy"></i> Subir Asignación</button>
-                                                </p>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                    }   
+                                    echo ($codigo);      
+                            ?>
                         </div>
+                        <br>
                     </div>
-
                     <!-- Content Row -->
 
                     
@@ -397,7 +347,7 @@
                     <!-- Content Row -->
                     
 
-                    <br>
+                                </br>
                 </div>
                 <!-- /.container-fluid -->
 
