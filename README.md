@@ -11,7 +11,7 @@
 [![DataTables](https://img.shields.io/badge/DataTables-Plugin-1E90FF.svg?logo=datatables&logoColor=white)](https://datatables.net/)
 [![Chart.js](https://img.shields.io/badge/Chart.js-4.x-F5788D.svg?logo=chartdotjs&logoColor=white)](https://www.chartjs.org/)
 
-**Sistema de Gestión de Aprendizaje (LMS)** es una plataforma orientada a facilitar el proceso de enseñanza y aprendizaje dentro de la comunidad educativa. Su objetivo principal es brindar un espacio digital accesible y organizado donde docentes puedan gestionar sus cursos, compartir contenidos, evaluar el progreso de sus estudiantes, así mismo los estudiantes podrán inscribirse a sus cursos deseados, podrán editar su propia información y subir sus tareas, además contará con un administrador que tenga acceso editar la plataforma..
+**Sistema de Gestión de Aprendizaje (LMS)** es una plataforma orientada a facilitar el proceso de enseñanza y aprendizaje dentro de la comunidad educativa. Su objetivo principal es brindar un espacio digital accesible y organizado donde docentes puedan gestionar sus cursos, compartir contenidos, evaluar el progreso de sus estudiantes, así mismo los estudiantes podrán inscribirse a sus cursos deseados, podrán editar su propia información y subir sus tareas, además contará con un administrador que tenga acceso editar la plataforma.
 
 ---
 
